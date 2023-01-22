@@ -1,6 +1,7 @@
 ### AdvancedAnnouncement: 更高级的自动公告
 
 [English](README.md)
+[MCBBS](https://www.mcbbs.net/forum.php?mod=viewthread&tid=1420798&page=1&extra=#pid27960648)
 
 #### 目录
 + [公告类型](#公告类型)
