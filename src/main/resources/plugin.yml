@@ -1,0 +1,8 @@
+name: AdvancedAnnouncement
+version: '${version}'
+main: me.ed333.plugin.advancedannouncement.AdvancedAnnouncement
+api-version: 1.16
+commands:
+  autoannouncement:
+    aliases:
+      - aa

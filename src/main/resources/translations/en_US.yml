@@ -1,0 +1,37 @@
+# English translations
+# by: ed333
+
+prefix: '&2&lAdvanced&a&lAnnouncement &6&l>>> &r'
+
+internalError: '&cAn internal error occurred, please contact with admin(see the console)。'
+load:
+  exception: '&eAn exception occurred while loading announcement: &b{0}&e, (&c{1}&e)'
+  title-type-empty: '&eTitle type announcement ''&b{0}&e'' is empty, skipped.'
+  title-type-one-line: '&eTitle type announcement ''{0}'' only has 1 lines, it will be appear as the title.'
+  title-type-three-or-more: '&eTitle type announcement ''{0}'' has 3 ore more lines, we will choose the first 2 lines as the title and subtitle'
+  ann-type-unknown: '&eSkipped unknown announcement type. (&bannouncement name: &6{0}&b, type: &6{1}&e)'
+  preann-shown-type-unknown: '&eSkipped unknown shown type at pre announcement ''&b{0}&e'', shown type: &b{1}'
+  preann-shown-type-equals: '&eSkipped duplicated shown type. (&6name: &b{0}&e)'
+
+
+command:
+  permissionDeny: '&cyou do''t have permission ''{0}'' to run this command.'
+  invalidCommand: '&cinvalid command, type ''/aa help'' to get more information.'
+  invalidArgs: '&cinvalid args, type ''/aa help'' to get more information.'
+  playerOnly: '&conly player can run this command!'
+  command-display-message: '&ayou are displaying announcement ''&2{0}&a'''
+  command-display-not-found: '&cannouncement to display doesn''t exist.'
+  command-display-not-supported: '&cthis announcement cannot be displayed due to its type.'
+  command-display-sender-not-known: '&care you a player¿'
+  command-broadcast-not-found: '&cannouncement to broadcast doesn''t exist.'
+  command-broadcast-sent: '&6broadcast an announcement to all players, (&aannouncement: &2{0})'
+
+  help:
+    - '&6========== &2&lAdvanced&a&lAnnouncement &6=========='
+    - '&2/aa &ahelp &8- &6show this help'
+    - '&2/aa &alist &8- &6list all loaded announcement'
+    - '&2/aa &adisplay <name> &8- &6display an announcement to you'
+    - '&2/aa &aparse &8- &6parse a string with placeholders'
+    - '&2/aa &abroadcast &8- &6broad an announcement'
+    - '&2/aa &areload &8- &6reload this plugin'
+

@@ -1,88 +1,3 @@
-### AdvancedAnnouncement: Automatically announcement.
-
-[简体中文](README_zh.md)
-
-#### Contents
-+ [Announcement types](#Announcement-types)
-+ [Commands](#Command)
-+ [Configs](#configs)
-+ [Image view](#image-view)
-    + [CHAT type](#CHAT-type)
-    + [ACTION_BAR type](#ACTION_BAR-type)
-    + [BOSS_BAR type](#BOSS_BAR-type)
-    + [TITLE type](#TITLE-type)
-
-#### Announcement types
-All available announcements are as below:
-
-| announcement type | instruction |
-| ------------ | --- |
-| CHAT         | this announcement type will be sent to chat box |
-| ACTION_BAR   | this announcement type will be sent to player's action-bar |
-| BOSS_BAR     | this announcement type will be displayed by a boss bar |
-| TITLE        | this announcement type will be sent through a title |
-| PRE_ANNOUNCE | this announcement type will be sent to players at any time that you want |
-
-#### Command
-| Command | permission | description |
-|---|---|---|
-|/aa help     | -------------------- | show plugin help        |
-|/aa broadcast| aa.command.broadcast | broad an announcement     |
-|/aa display  | aa.command.display   | display an announcement to you  |
-|/aa list     | aa.command.list      | list all loaded announcement |
-|/aa parse    | aa.command.parse     | parse a string with placeholders    |
-|/aa reload   | aa.command.reload    | reload this plugin  |
-
-#### configs
-+ #### config.yml
-```yaml
-# translations:
-# zh_CN (简体中文) | en_US (English)
-translation: zh_CN
-
-# defines whether an announcement should be printed into console
-# ONLY CHAT TYPE AND PRE_ANNOUNCE TYPE WILL BE DISPLAYED
-Console-broadCast: true
-
-# enables PlaceholderAPI support
-PlaceholderAPI-support: true
-
-# pre-announce time date format
-date-format: yyyy-MM-dd HH:mm:ss
-
-# random announcement used.
-random: true
-
-# debug test
-debug: false
-```
-+ #### components.yml
-```yaml
-# TextComponents that will be showed into chat box.
-# ONLY USABLE ON CHAT TYPE ANNOUNCEMENT.
-
-# component name, DO NOT HAVE DUPLICATE NAME.
-example:
-  # the text will be shown.
-  text: '&f[&brun_command&f]'
-  onClick:
-    # Possible actions:
-    # OPEN_URL: open a web url, its value must match like: https://www.bing.com
-    # OPEN_FILE: open a file on player's local disk, its value must be an absolute path of file.
-    # RUN_COMMAND: makes a player run command, its value should have the prefix '/'
-    # SUGGEST_COMMAND: fill a text into player's chat box. its value can be any value.
-    action: RUN_COMMAND
-    value: '/say hello! this is a example action.'
-
-  # when player's mouse cursor move to this text, what content will be shown.
-  hover-value: |-
-    {#f4114a->#20d820}An example hover text.
-    &6you can use multiple lines.
-
-    &f&l>>> &b&lClick here &e&lRun command
-```
-+ #### announcement.yml
-```yaml
 announcements:
   # announce name, DO NOT HAVE DUPLICATE NAME.
   chat_announce_type_example:
@@ -204,6 +119,9 @@ announcements:
   pre_announce_example:
     # delay time to next announcement
     delay: 60s
+    # whether this pre-announcement automatically remove from configuration.
+    # not affected if you run the command '/aa display' or '/aa broadcast'
+    sef-drop: false
     # defines when this announcement will send to player
     # time format can be defined in config.yml
     date: 2024-1-1 00:00
@@ -218,20 +136,3 @@ announcements:
       - '{#bf0000->#00bfbf,&l}HAPPY NEW YEAR!'
       - ''
       - '{rainbow}==============================='
-```
-
-#### image view
-+ #### CHAT type
-  ![](docs/images/chatType.gif)
-
-+ #### ACTION_BAR type
-  ![](docs/images/actionBarType.gif)
-
-+ #### BOSS_BAR type
-  ![](docs/images/bossBarType.gif)
-
-+ #### TITLE type
-  ![](docs/images/titleType.gif)
-
-+ #### PRE_ANNOUNCE type
-  this type will be displayed using the 4 types above.
