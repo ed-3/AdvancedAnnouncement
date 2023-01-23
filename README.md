@@ -224,18 +224,18 @@ announcements:
 #### usage of command '/aa parse'
 ![parse.gif](https://s2.loli.net/2023/01/23/8vhblmMaDtGoCSZ.gif)
 
-#### image view
+#### Image view
 + #### CHAT type
-  ![](docs/images/chatType.gif)
+  ![chatType.gif](https://s2.loli.net/2023/01/23/mszgIDpcWUR6TAn.gif)
 
 + #### ACTION_BAR type
-  ![](docs/images/actionBarType.gif)
+  ![actionBarType.gif](https://s2.loli.net/2023/01/23/F2qKZnX1u8GcCx5.gif)
 
 + #### BOSS_BAR type
-  ![](docs/images/bossBarType.gif)
+  ![bossBarType.gif](https://s2.loli.net/2023/01/23/iZnydepk68mOgzM.gif)
 
 + #### TITLE type
-  ![](docs/images/titleType.gif)
+  ![titleType.gif](https://s2.loli.net/2023/01/23/gmNuj3ShGzpB5DK.gif)
 
 + #### PRE_ANNOUNCE type
-  this type will be displayed using the 4 types above.
+    this type will be displayed using the 4 types above.
