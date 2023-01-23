@@ -42,7 +42,6 @@ public class AA_CommandExecutor implements CommandExecutor {
                 method.invoke(clazz.getConstructor(), sender, args);
             } catch (ClassNotFoundException e) {
                 sender.sendMessage(LangUtils.getLangText_withPrefix("command.invalidCommand"));
-                e.printStackTrace();
             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 sender.sendMessage(LangUtils.getLangText_withPrefix("internalError") + "\n" + Arrays.toString(e.getStackTrace()));
                 e.printStackTrace();
