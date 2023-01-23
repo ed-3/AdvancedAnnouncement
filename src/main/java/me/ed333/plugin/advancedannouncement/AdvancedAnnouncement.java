@@ -14,6 +14,7 @@ import me.ed333.plugin.advancedannouncement.utils.LangUtils;
 import me.ed333.plugin.advancedannouncement.utils.TimeHandler;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -41,12 +42,18 @@ public final class AdvancedAnnouncement extends JavaPlugin {
         loadComponentBlock();
         loadAnnouncements();
 
+        if (ConfigKeys.BSTATS) {
+            int pluginID = 17508;
+            new Metrics(AdvancedAnnouncement.INSTANCE, pluginID);
+        }
+
         announceTask = new AnnounceRunnable().runTaskLaterAsynchronously(this, 600);
         GlobalConsoleSender.setDEBUG(ConfigKeys.DEBUG);
         GlobalConsoleSender.info("§6Announce task was started.");
 
-        getCommand("autoannouncement").setExecutor(new AA_CommandExecutor());
-        getCommand("autoannouncement").setTabCompleter(new AA_CommandCompleter());
+        String cmdName = "autoannouncement";
+        getCommand(cmdName).setExecutor(new AA_CommandExecutor());
+        getCommand(cmdName).setTabCompleter(new AA_CommandCompleter());
     }
 
     @Override

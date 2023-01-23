@@ -2,6 +2,9 @@ name: AdvancedAnnouncement
 version: '${version}'
 main: me.ed333.plugin.advancedannouncement.AdvancedAnnouncement
 api-version: 1.16
+depend:
+  - ProtocolLib
+  - PlaceholderAPI
 commands:
   autoannouncement:
     aliases:
