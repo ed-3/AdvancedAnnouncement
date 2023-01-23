@@ -1,6 +1,7 @@
 ### AdvancedAnnouncement: 更高级的自动公告
 
 [English](README.md)
+
 [MCBBS](https://www.mcbbs.net/forum.php?mod=viewthread&tid=1420798&page=1&extra=#pid27960648)
 
 #### 目录
@@ -211,18 +212,22 @@ announcements:
 
 ```
 
+#### 使用 '/aa parse' 解析字符串
+p话少说，直接上图:
+![parse.gif](https://s2.loli.net/2023/01/23/8vhblmMaDtGoCSZ.gif)
+
 #### 图片预览
 + #### CHAT 类型
-    ![](docs/images/chatType.gif)
+  ![chatType.gif](https://s2.loli.net/2023/01/23/mszgIDpcWUR6TAn.gif)
 
 + #### ACTION_BAR 类型
-    ![](docs/images/actionBarType.gif)
+  ![actionBarType.gif](https://s2.loli.net/2023/01/23/F2qKZnX1u8GcCx5.gif)
 
 + #### BOSS_BAR 类型
-    ![](docs/images/bossBarType.gif) 
+  ![bossBarType.gif](https://s2.loli.net/2023/01/23/iZnydepk68mOgzM.gif)
 
 + #### TITLE 类型
-    ![](docs/images/titleType.gif)
+  ![titleType.gif](https://s2.loli.net/2023/01/23/gmNuj3ShGzpB5DK.gif)
 
 + #### PRE_ANNOUNCE 类型
-    PRE_ANNOUNCE 类型公告当到达规定时间的时候，**_会以上述四种类型去进行显示_**。]()
+    PRE_ANNOUNCE 类型公告当到达规定时间的时候，**_会以上述四种类型去进行显示_**。

@@ -6,6 +6,7 @@
 + [Announcement types](#Announcement-types)
 + [Commands](#Command)
 + [Configs](#configs)
++ [usage of command '/aa parse'](#usage-of-command-aa-parse)
 + [Image view](#image-view)
     + [CHAT type](#CHAT-type)
     + [ACTION_BAR type](#ACTION_BAR-type)
@@ -27,9 +28,9 @@ All available announcements are as below:
 | Command | permission | description |
 |---|---|---|
 |/aa help     | -------------------- | show plugin help        |
-|/aa broadcast| aa.command.broadcast | broad an announcement     |
+|/aa broadcast| aa.command.broadcast | broadcast an announcement     |
 |/aa display  | aa.command.display   | display an announcement to you  |
-|/aa list     | aa.command.list      | list all loaded announcement |
+|/aa list     | aa.command.list      | list all loaded announcements |
 |/aa parse    | aa.command.parse     | parse a string with placeholders    |
 |/aa reload   | aa.command.reload    | reload this plugin  |
 
@@ -219,6 +220,9 @@ announcements:
       - ''
       - '{rainbow}==============================='
 ```
+
+#### usage of command '/aa parse'
+![parse.gif](https://s2.loli.net/2023/01/23/8vhblmMaDtGoCSZ.gif)
 
 #### image view
 + #### CHAT type
