@@ -159,7 +159,7 @@ public class BossBarTypeAnnouncement extends Announcement {
                     @Override
                     public void run() {
                         progress = remain / bar.stay;
-                        remain = remain - 0.05;
+                        remain = remain - 0.05; // 0.05 is 1 tick.
                         bar.bar.setProgress(progress);
                     }
                 }.runTaskTimerAsynchronously(AdvancedAnnouncement.INSTANCE, startTime < 0 ? 0 : startTime, 1);
