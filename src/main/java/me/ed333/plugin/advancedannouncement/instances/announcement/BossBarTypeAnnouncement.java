@@ -61,7 +61,7 @@ public class BossBarTypeAnnouncement extends Announcement {
             }
 
             bars.add(new AdvancedBossBar(barText.toString(), barColor, style, nextDelay + stay, update, stay, progress));
-            nextDelay = nextDelay + stay;
+            nextDelay = nextDelay + stay + delay;
         }
     }
 

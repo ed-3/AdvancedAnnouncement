@@ -24,7 +24,7 @@ public abstract class Announcement {
      * @param delay the delay time to next announcement.
      * @param content the content of this announcement.
      */
-    public Announcement(int index, @NotNull String name, AnnouncementType type, String permissionName, int delay, List<String> content) {
+    public Announcement(int index, @NotNull String name, @NotNull AnnouncementType type, @Nullable String permissionName, int delay, List<String> content) {
         this.index = index;
         this.name = name;
         this.content = content;

@@ -30,14 +30,20 @@ public class ActionBarTypeAnnouncement extends Announcement {
             for (String rawText : content()) {
                 StringBuilder barText = new StringBuilder();
                 double stay = 5;
+                double delay = 0;
                 int lastIndex = 0;
 
-                Matcher matcher = ActionBarPlaceholderRegex.getSTAY_SEC_REGEX_MATCHER(rawText);
+                Matcher matcher = ActionBarPlaceholderRegex.getACTION_BAR_PLACEHOLDER_REGEX_MATCHER(rawText);
                 while (matcher.find()) {
                     int start = matcher.start();
                     int end = matcher.end();
                     String placeholderStr = matcher.group();
-                    stay = ActionBarPlaceholderRegex.getSec(placeholderStr);
+                    double timeSec = ActionBarPlaceholderRegex.getSec(placeholderStr);
+                    if (placeholderStr.matches(ActionBarPlaceholderRegex.STAY_SEC_REGEX_STRING)) {
+                        stay = timeSec;
+                    } else if (placeholderStr.matches(ActionBarPlaceholderRegex.DELAY_TO_NEXT_REGEX_STRING)) {
+                        delay = timeSec;
+                    }
                     barText.append(rawText, lastIndex, start);
                     lastIndex = end;
                 }
@@ -47,7 +53,7 @@ public class ActionBarTypeAnnouncement extends Announcement {
 
                 ActionBarRunnable abr = new ActionBarRunnable(barText.toString(), (Player) sender, nextDelay);
                 abr.runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, (long) ((stay + nextDelay) * 20L));
-                nextDelay = nextDelay + stay;
+                nextDelay = nextDelay + stay + delay;
             }
             return true;
         } else {
