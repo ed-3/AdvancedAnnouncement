@@ -9,10 +9,11 @@ import org.jetbrains.annotations.NotNull;
 public class Parse {
     @PermissionRequirement("aa.command.parse")
     public static void callCmd(@NotNull CommandSender sender, String @NotNull [] args) {
-        sender.sendMessage("handle color: " + TextHandler.handleColor(args[1], false));
+
+        sender.sendMessage("handle color: " + TextHandler.handleColor(args[1], sender));
         TextComponent textComponent = new TextComponent();
         textComponent.addExtra("handle component: ");
-        textComponent.addExtra(TextHandler.toTextComponent(args[1], false));
+        textComponent.addExtra(TextHandler.toTextComponent(args[1], sender));
         sender.spigot().sendMessage(textComponent);
     }
 }

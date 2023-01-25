@@ -30,6 +30,6 @@ public class AnnounceRunnable extends BukkitRunnable {
         lastIndex = announcement.getIndex();
 
         GlobalConsoleSender.debugInfo("Sending announcement: " + announcement.getName());
-        AdvancedAnnouncement.INSTANCE.announceTask = new AnnounceRunnable().runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, announcement.delay() * 20L);
+        AdvancedAnnouncement.announceTask = new AnnounceRunnable().runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, announcement.delay() * 20L);
     }
 }

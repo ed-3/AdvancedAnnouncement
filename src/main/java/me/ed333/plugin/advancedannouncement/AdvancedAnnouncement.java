@@ -1,5 +1,7 @@
 package me.ed333.plugin.advancedannouncement;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import me.ed333.plugin.advancedannouncement.cmd.AA_CommandCompleter;
 import me.ed333.plugin.advancedannouncement.cmd.AA_CommandExecutor;
 import me.ed333.plugin.advancedannouncement.config.Config;
@@ -12,21 +14,26 @@ import me.ed333.plugin.advancedannouncement.runnables.PreAnnRunnable;
 import me.ed333.plugin.advancedannouncement.utils.GlobalConsoleSender;
 import me.ed333.plugin.advancedannouncement.utils.LangUtils;
 import me.ed333.plugin.advancedannouncement.utils.TimeHandler;
+import me.ed333.toolkits.utils.http.HttpRequest;
+import me.ed333.toolkits.utils.http.HttpResponse;
+import me.ed333.toolkits.utils.version.InvalidVersionException;
+import me.ed333.toolkits.utils.version.Version;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
 public final class AdvancedAnnouncement extends JavaPlugin {
-    public BukkitTask announceTask = null;
+    public static BukkitTask announceTask = null;
+    public static Metrics metrics = null;
 
     private final File DATA_FOLDER = getDataFolder();
     public static AdvancedAnnouncement INSTANCE;
@@ -42,9 +49,10 @@ public final class AdvancedAnnouncement extends JavaPlugin {
         loadComponentBlock();
         loadAnnouncements();
 
+        // bStats
         if (ConfigKeys.BSTATS) {
             int pluginID = 17508;
-            new Metrics(AdvancedAnnouncement.INSTANCE, pluginID);
+            metrics = new Metrics(this, pluginID);
         }
 
         announceTask = new AnnounceRunnable().runTaskLaterAsynchronously(this, 600);
@@ -54,6 +62,8 @@ public final class AdvancedAnnouncement extends JavaPlugin {
         String cmdName = "autoannouncement";
         getCommand(cmdName).setExecutor(new AA_CommandExecutor());
         getCommand(cmdName).setTabCompleter(new AA_CommandCompleter());
+
+        checkUpdate();
     }
 
     @Override
@@ -197,5 +207,32 @@ public final class AdvancedAnnouncement extends JavaPlugin {
         );
         ConfigManager.checkFile(c);
         c.load();
+    }
+
+    public static void checkUpdate() {
+        String updateUrl = "https://api.github.com/repos/ed-3/AdvancedAnnouncement/releases/latest";
+        if (ConfigKeys.UPDATE_SOURCE == 0) {
+            updateUrl = "https://gitee.com/api/v5/repos/ed3/advanced-announcement/releases/latest";
+        }
+        JsonParser parser = new JsonParser();
+        HttpRequest request = new HttpRequest();
+        try {
+            HttpResponse response = request.send(updateUrl);
+            JsonObject object = parser.parse(response.getBody()).getAsJsonObject();
+            String tag = object.get("tag_name").getAsString();
+            Version latestVer = Version.parse(tag);
+            Version pluginVer = Version.parse(AdvancedAnnouncement.INSTANCE.getDescription().getVersion());
+            boolean isLatest = latestVer.isNewer(pluginVer);
+            if (isLatest) {
+                GlobalConsoleSender.info(String.format("You are running outdated version(%s) while latest version is %s", pluginVer, latestVer));
+                GlobalConsoleSender.info("Please go to github(or gitee) release page to download the latest release.");
+            } else {
+                GlobalConsoleSender.info("You are running the latest AdvancedAnnouncement.");
+            }
+        } catch (IOException e) {
+            GlobalConsoleSender.warn("an error occurred while checking plugin update.");
+            e.printStackTrace();
+        } catch (InvalidVersionException ignored) {
+        }
     }
 }

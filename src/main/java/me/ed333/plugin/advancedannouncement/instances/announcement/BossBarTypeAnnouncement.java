@@ -90,10 +90,10 @@ public class BossBarTypeAnnouncement extends Announcement {
         private final boolean progress;
 
         private AdvancedBossBar(String title, @NotNull BarColor color, @NotNull BarStyle style, double delay, double update, double stay, boolean progress) {
-            bar = Bukkit.createBossBar(TextHandler.handleColor(title, ProtocolUtils.isLegacyServer()), color, style);
+            bar = Bukkit.createBossBar(TextHandler.handleColor(title, null), color, style);
             this.color = color;
             this.style = style;
-            this.title = TextHandler.handleColor(title, ProtocolUtils.isLegacyServer());
+            this.title = TextHandler.handleColor(title, null);
             this.update = update;
             this.stay = stay;
             this.delay = delay;
@@ -144,7 +144,7 @@ public class BossBarTypeAnnouncement extends Announcement {
                 updateTask = new BukkitRunnable() {
                     @Override
                     public void run() {
-                        bar.bar.setTitle(TextHandler.handleColor(PlaceholderAPI.setPlaceholders(sendTo, bar.title), ProtocolUtils.isPlayerLegacyVer(sendTo)));
+                        bar.bar.setTitle(TextHandler.handleColor(PlaceholderAPI.setPlaceholders(sendTo, bar.title), sendTo));
                     }
                 }.runTaskTimerAsynchronously(AdvancedAnnouncement.INSTANCE, startTime < 0 ? 0 : startTime, (long) (bar.update * 20L));
             } else {

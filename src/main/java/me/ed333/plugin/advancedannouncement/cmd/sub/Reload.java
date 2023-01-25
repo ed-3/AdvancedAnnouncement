@@ -16,8 +16,8 @@ public class Reload {
     public static void callCmd(@NotNull CommandSender sender, String[] args) {
 
         PreAnnRunnable.preAnnRunnableList.forEach(PreAnnRunnable::cancel);
-        if (AdvancedAnnouncement.INSTANCE.announceTask != null) {
-            AdvancedAnnouncement.INSTANCE.announceTask.cancel();
+        if (AdvancedAnnouncement.announceTask != null) {
+            AdvancedAnnouncement.announceTask.cancel();
             GlobalConsoleSender.info("§6Announce task was canceled.");
         }
 
@@ -26,7 +26,7 @@ public class Reload {
         AdvancedAnnouncement.INSTANCE.loadComponentBlock();
         AdvancedAnnouncement.INSTANCE.loadAnnouncements();
 
-        AdvancedAnnouncement.INSTANCE.announceTask = new AnnounceRunnable().runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, 600);
+        AdvancedAnnouncement.announceTask = new AnnounceRunnable().runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, 600);
         GlobalConsoleSender.setDEBUG(ConfigKeys.DEBUG);
         GlobalConsoleSender.info("§6Announce task was started.");
         LangUtils.refreshLang();

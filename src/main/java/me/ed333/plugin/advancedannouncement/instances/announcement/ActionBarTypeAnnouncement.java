@@ -72,7 +72,7 @@ public class ActionBarTypeAnnouncement extends Announcement {
             stayTask = new BukkitRunnable() {
                 @Override
                 public void run() {
-                    sendTo.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextHandler.toTextComponent(text, ProtocolUtils.getPlayerClientVersion(sendTo) < 735));
+                    sendTo.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextHandler.toTextComponent(text, sendTo));
                 }
             }.runTaskTimerAsynchronously(AdvancedAnnouncement.INSTANCE, (long) (delay * 20L), 40);
         }

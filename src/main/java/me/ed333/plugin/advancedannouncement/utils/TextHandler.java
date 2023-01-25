@@ -1,9 +1,14 @@
 package me.ed333.plugin.advancedannouncement.utils;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+import me.ed333.plugin.advancedannouncement.ConfigKeys;
 import me.ed333.plugin.advancedannouncement.instances.component.TextComponentBlock;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,8 +16,15 @@ import java.awt.*;
 import java.util.regex.Matcher;
 
 public class TextHandler {
-    public static @NotNull String handleColor(String content, boolean legacy) {
+    public static @NotNull String handleColor(String content, @Nullable CommandSender sendTo) {
         StringBuilder sb = new StringBuilder();
+        boolean legacy = ProtocolUtils.isLegacyServer();
+        if (sendTo != null) {
+            if (sendTo instanceof Player) {
+                legacy = ProtocolUtils.isPlayerLegacyVer((Player) sendTo);
+            }
+        }
+
         Matcher colorMatcher = PlaceholderRegex.getCOLOR_PLACEHOLDER_MATCHER(content);
         int lastIndex = 0;
         String lastCode = null;
@@ -128,7 +140,15 @@ public class TextHandler {
                 sb.append(textBetween);
             }
         }
-        return sb.toString();
+        if (ConfigKeys.PLACEHOLDER_API_SUPPORT) {
+            Player p = null;
+            if (sendTo instanceof Player) {
+                p = ((Player) sendTo);
+            }
+            return PlaceholderAPI.setPlaceholders(p, sb.toString());
+        } else {
+            return sb.toString();
+        }
     }
 
     public static @NotNull String createGradientString(String text, Color from, Color to, boolean legacy, @Nullable String magicCode) {
@@ -177,7 +197,7 @@ public class TextHandler {
         return sb.toString();
     }
 
-    public static @NotNull TextComponent toTextComponent(String content, boolean legacy) {
+    public static @NotNull TextComponent toTextComponent(String content, CommandSender sendTo) {
         TextComponent result = new TextComponent();
         Matcher matcher = PlaceholderRegex.getCOMPONENT_PLACEHOLDER_MATCHER(content);
 
@@ -186,7 +206,7 @@ public class TextHandler {
             int start = matcher.start();
             int end = matcher.end();
             TextComponent coloredPlainText = new TextComponent();
-            for (BaseComponent baseComponent : TextComponent.fromLegacyText(handleColor(content.substring(lastIndex, start), legacy))) {
+            for (BaseComponent baseComponent : TextComponent.fromLegacyText(handleColor(content.substring(lastIndex, start), sendTo))) {
                 coloredPlainText.addExtra(baseComponent);
             }
             result.addExtra(coloredPlainText);
@@ -201,7 +221,7 @@ public class TextHandler {
 
         if (lastIndex < content.length()) {
             TextComponent coloredPlainText = new TextComponent();
-            for (BaseComponent baseComponent : TextComponent.fromLegacyText(handleColor(content.substring(lastIndex), legacy))) {
+            for (BaseComponent baseComponent : TextComponent.fromLegacyText(handleColor(content.substring(lastIndex), sendTo))) {
                 coloredPlainText.addExtra(baseComponent);
             }
             result.addExtra(coloredPlainText);

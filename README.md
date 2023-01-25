@@ -159,7 +159,9 @@ announcements:
       # 2s display, max time is 10
       - '{rainbow}this is an action bar announcement{stay:2}'
       # default display time: 5s
-      - 'the next action bar'
+      # delay to next bar is 2s
+      # default delay time is sets to 0
+      - 'the next action bar{delay:2}'
       - 'test{stay:2}'
 
   boss_bar_type_example:
@@ -174,7 +176,9 @@ announcements:
       # requires placeholder expansion: Animations
       # command: /papi ecloud download Animations (if you enabled ecloud feature)
       - '%animations_<shine start=&9 middle=&4 end=&9 normal=&b size=3>this is an auto-updated boss bar</shine>%{update:0.5}'
-      - '&6progressing boss bar{progress:true}'
+      # delay to next bar is 2s
+      # default delay time is sets to 0
+      - '&6progressing boss bar{progress:true}{delay:2}'
       # sets segments to 10
       # default delay sets to 5 sec
       # default color sets to PURPLE

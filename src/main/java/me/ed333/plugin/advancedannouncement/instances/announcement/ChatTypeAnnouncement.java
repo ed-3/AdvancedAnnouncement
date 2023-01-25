@@ -36,19 +36,13 @@ public class ChatTypeAnnouncement extends Announcement {
     public boolean send(CommandSender sender) {
         final List<TextComponent> components = new ArrayList<>();
         boolean legacy;
-        if (sender instanceof Player) {
-            Player player = ((Player) sender);
-            int clientVer = ProtocolLibrary.getProtocolManager().getProtocolVersion(player);
-            legacy = clientVer < 735;
-        } else if (sender instanceof ConsoleCommandSender) {
-            legacy = ProtocolUtils.isLegacyServer();
-        } else {
+        if (!(sender instanceof Player || sender instanceof ConsoleCommandSender)) {
             sender.sendMessage(LangUtils.getLangText_withPrefix("command.command-display-sender-not-known"));
             return false;
         }
 
         for (Object raw : content()) {
-            components.add(TextHandler.toTextComponent(raw.toString(), legacy));
+            components.add(TextHandler.toTextComponent(raw.toString(), sender));
         }
         components.forEach(sender.spigot()::sendMessage);
         return true;

@@ -21,7 +21,7 @@ public class TextComponentBlock {
     }
 
     public TextComponentBlock(String name, String text) {
-        textComponent = new TextComponent(TextHandler.handleColor(text, ProtocolUtils.isLegacyServer()));
+        textComponent = new TextComponent(TextHandler.handleColor(text, null));
         this.name = name;
         blocks.put(name, this);
     }
@@ -31,7 +31,7 @@ public class TextComponentBlock {
     }
 
     public void setHover(HoverEvent.Action action, String content) {
-        HoverEvent hover = new HoverEvent(action, TextComponent.fromLegacyText(TextHandler.handleColor(content, ProtocolUtils.isLegacyServer())));
+        HoverEvent hover = new HoverEvent(action, TextComponent.fromLegacyText(TextHandler.handleColor(content, null)));
         textComponent.setHoverEvent(hover);
     }
 

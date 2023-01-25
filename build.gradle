@@ -28,7 +28,6 @@ dependencies {
     compileOnly 'me.clip:placeholderapi:2.10.9'
     compileOnly 'com.comphenix.protocol:ProtocolLib:4.8.0'
     compileOnly 'org.junit.jupiter:junit-jupiter:5.7.0'
-    compileOnly 'org.bstats:bstats-bukkit:3.0.0'
 }
 
 def targetJavaVersion = 8

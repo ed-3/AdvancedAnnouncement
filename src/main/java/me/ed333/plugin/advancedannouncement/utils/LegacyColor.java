@@ -39,13 +39,14 @@ public enum LegacyColor {
         int closestIndex = -1;
         double closestDistance = Double.POSITIVE_INFINITY;
 
+        // use euclidean metric
         for (int index = 0; index < values().length; index++) {
             LegacyColor legacyColor = values()[index];
             double distance =
                     Math.sqrt((legacyColor.r - target.getRed()) * (legacyColor.r - target.getRed()) +
                             (legacyColor.g - target.getGreen()) * (legacyColor.g - target.getGreen()) +
                             (legacyColor.b - target.getBlue()) * (legacyColor.b - target.getBlue()));
-            if (distance < closestDistance) {
+            if (distance < closestDistance) { // compare the closest
                 closestIndex = index;
                 closestDistance = distance;
             }

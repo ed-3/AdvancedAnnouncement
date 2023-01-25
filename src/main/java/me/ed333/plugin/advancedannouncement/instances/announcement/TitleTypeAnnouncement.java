@@ -29,9 +29,8 @@ public class TitleTypeAnnouncement extends Announcement {
             sender.sendMessage(LangUtils.getLangText_withPrefix("command.command-display-not-supported"));
             return false;
         } else if (sender instanceof Player) {
-            boolean legacy = ProtocolUtils.getPlayerClientVersion(((Player) sender)) < 735;
-            String title = TextHandler.handleColor(content().get(0), legacy);
-            String subTitle = TextHandler.handleColor(content().get(1).isEmpty() ? "" : content().get(1), legacy);
+            String title = TextHandler.handleColor(content().get(0), sender);
+            String subTitle = TextHandler.handleColor(content().get(1).isEmpty() ? "" : content().get(1), sender);
             ((Player) sender).sendTitle(title, subTitle, fadeIn, stay, fadeOut);
             return true;
         } else {
