@@ -3,7 +3,6 @@ package me.ed333.plugin.advancedannouncement.instances.announcement;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.ed333.plugin.advancedannouncement.AdvancedAnnouncement;
 import me.ed333.plugin.advancedannouncement.utils.LangUtils;
-import me.ed333.plugin.advancedannouncement.utils.ProtocolUtils;
 import me.ed333.plugin.advancedannouncement.utils.TextHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
@@ -30,6 +29,7 @@ public class BossBarTypeAnnouncement extends Announcement {
         for (String rawText : content()) {
             StringBuilder barText = new StringBuilder();
             double stay = 5;
+            double delaySec = 0;
             double update = -1;
             boolean progress = false;
             BarColor barColor = BarColor.PURPLE;
@@ -44,7 +44,9 @@ public class BossBarTypeAnnouncement extends Announcement {
                 String placeHolder = placeHolderMatcher.group();
                 if (placeHolder.matches(BossBarPlaceholderRegex.STAY_PLACEHOLDER_REGEX_STRING)) {
                     stay = BossBarPlaceholderRegex.getSec(placeHolder);
-                } else if (placeHolder.matches(BossBarPlaceholderRegex.UPDATE_PLACEHOLDER_REGEX_STRING)) {
+                } else if (placeHolder.matches(BossBarPlaceholderRegex.DELAY_PLACEHOLDER_REGEX_STRING)) {
+                    delaySec = BossBarPlaceholderRegex.getSec(placeHolder);
+                }else if (placeHolder.matches(BossBarPlaceholderRegex.UPDATE_PLACEHOLDER_REGEX_STRING)) {
                     update = BossBarPlaceholderRegex.getSec(placeHolder);
                 } else if (placeHolder.matches(BossBarPlaceholderRegex.PROGRESS_PLACEHOLDER_REGEX_STRING)) {
                     progress = BossBarPlaceholderRegex.getBool(placeHolder);
@@ -60,8 +62,8 @@ public class BossBarTypeAnnouncement extends Announcement {
                 barText.append(rawText.substring(lastIndex));
             }
 
-            bars.add(new AdvancedBossBar(barText.toString(), barColor, style, nextDelay + stay, update, stay, progress));
-            nextDelay = nextDelay + stay + delay;
+            bars.add(new AdvancedBossBar(barText.toString(), barColor, style, nextDelay + stay + delaySec, update, delaySec, stay, progress));
+            nextDelay = nextDelay + stay + delaySec;
         }
     }
 
@@ -71,7 +73,7 @@ public class BossBarTypeAnnouncement extends Announcement {
             sender.sendMessage(LangUtils.getLangText_withPrefix("command.command-display-not-supported"));
             return false;
         } else if (sender instanceof Player) {
-            bars.forEach(bar -> new BossBarRunnable(bar.clone(), (Player) sender).runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, (long) (bar.delay * 20L)));
+            bars.forEach(bar -> new BossBarRunnable(bar.clone(), (Player) sender).runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, (long) ((bar.delay - bar.nextDelay) * 20L)));
             return true;
         } else {
             sender.sendMessage(LangUtils.getLangText_withPrefix("command.command-display-sender-not-known"));
@@ -88,8 +90,9 @@ public class BossBarTypeAnnouncement extends Announcement {
         private final double stay;
         private final double delay;
         private final boolean progress;
+        private final double nextDelay;
 
-        private AdvancedBossBar(String title, @NotNull BarColor color, @NotNull BarStyle style, double delay, double update, double stay, boolean progress) {
+        private AdvancedBossBar(String title, @NotNull BarColor color, @NotNull BarStyle style, double delay, double update, double nextDelay, double stay, boolean progress) {
             bar = Bukkit.createBossBar(TextHandler.handleColor(title, null), color, style);
             this.color = color;
             this.style = style;
@@ -98,6 +101,7 @@ public class BossBarTypeAnnouncement extends Announcement {
             this.stay = stay;
             this.delay = delay;
             this.progress = progress;
+            this.nextDelay = nextDelay;
         }
 
         @Override
@@ -132,7 +136,7 @@ public class BossBarTypeAnnouncement extends Announcement {
             this.bar = bar;
             this.sendTo = sendTo;
 
-            long startTime = (long) ((bar.delay - bar.stay) * 20L);
+            long startTime = (long) ((bar.delay - (bar.stay + bar.nextDelay)) * 20L);
             new BukkitRunnable() {
                 @Override
                 public void run() {

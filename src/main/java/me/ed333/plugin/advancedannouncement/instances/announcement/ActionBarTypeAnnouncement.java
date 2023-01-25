@@ -52,7 +52,7 @@ public class ActionBarTypeAnnouncement extends Announcement {
                 }
 
                 ActionBarRunnable abr = new ActionBarRunnable(barText.toString(), (Player) sender, nextDelay);
-                abr.runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, (long) ((stay + nextDelay) * 20L));
+                abr.runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, (long) ((stay + nextDelay - delay) * 20L));
                 nextDelay = nextDelay + stay + delay;
             }
             return true;

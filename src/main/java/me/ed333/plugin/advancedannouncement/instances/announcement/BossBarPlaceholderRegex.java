@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class BossBarPlaceholderRegex {
-    public static final String PLACEHOLDER_REGEX_STRING = "\\{progress:(true|false)\\}|\\{stay|update|delay:(0|[1-9])(\\.\\d)?\\}|(\\{color:[A-Za-z]+\\})|\\{segment:(6|10|12|20)\\}";
+    public static final String PLACEHOLDER_REGEX_STRING = "\\{progress:(true|false)\\}|\\{(stay|update|delay):(0|[1-9])(\\.\\d)?\\}|(\\{color:[A-Za-z]+\\})|\\{segment:(6|10|12|20)\\}";
     public static final String STAY_PLACEHOLDER_REGEX_STRING = "\\{stay:(0|[1-9])(\\.\\d)?\\}";
     public static final String COLOR_PLACEHOLDER_REGEX_STRING = "\\{color:[A-Za-z]+\\}";
     public static final String PROGRESS_PLACEHOLDER_REGEX_STRING = "\\{progress:(true|false)\\}";
