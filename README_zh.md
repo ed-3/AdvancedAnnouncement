@@ -156,8 +156,9 @@ announcements:
       # 2s 的停留时间，最长是 10 秒
       # 默认停留时间为 5 秒
       - '{rainbow}this is an action bar announcement{stay:2}'
+      # 在显示下一条 Action bar 时，中间会停留 2 秒
       # 默认停留时间为 5 秒
-      - 'the next action bar'
+      - 'the next action bar{delay:2}'
       - 'test'
 
   boss_bar_type_example:
@@ -172,8 +173,8 @@ announcements:
       # 下载指令: /papi ecloud download Animations (如果你启用了 ecloud 功能)
       # 每 0.5 秒更新一次
       - '%animations_<shine start=&9 middle=&4 end=&9 normal=&b size=3>this is an auto-updated boss bar</shine>%{update:0.5}'
-      # 显示进度动画
-      - '&6progressing boss bar{progress:true}'
+      # 在显示下一个 BOSS 栏时，中间会停留 2 秒
+      - '&6progressing boss bar{progress:true}{delay:2}'
       # 默认停留时间是 5 秒
       # 默认颜色为 PURPLE
       - '&bthe next boss bar{segment:10}'
