@@ -210,6 +210,7 @@ public final class AdvancedAnnouncement extends JavaPlugin {
     }
 
     public static void checkUpdate() {
+        GlobalConsoleSender.info("Checking update...");
         String updateUrl = "https://api.github.com/repos/ed-3/AdvancedAnnouncement/releases/latest";
         if (ConfigKeys.UPDATE_SOURCE == 0) {
             updateUrl = "https://gitee.com/api/v5/repos/ed3/advanced-announcement/releases/latest";
@@ -224,8 +225,8 @@ public final class AdvancedAnnouncement extends JavaPlugin {
             Version pluginVer = Version.parse(AdvancedAnnouncement.INSTANCE.getDescription().getVersion());
             boolean isLatest = latestVer.isNewer(pluginVer);
             if (isLatest) {
-                GlobalConsoleSender.info(String.format("You are running outdated version(%s) while latest version is %s", pluginVer, latestVer));
-                GlobalConsoleSender.info("Please go to github(or gitee) release page to download the latest release.");
+                GlobalConsoleSender.warn(String.format("You are running outdated version(%s) while latest version is %s", pluginVer, latestVer));
+                GlobalConsoleSender.warn("Please go to github(or gitee) release page to download the latest release.");
             } else {
                 GlobalConsoleSender.info("You are running the latest AdvancedAnnouncement.");
             }
