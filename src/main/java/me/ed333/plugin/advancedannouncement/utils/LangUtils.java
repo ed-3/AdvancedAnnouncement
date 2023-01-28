@@ -15,6 +15,7 @@ public class LangUtils {
 
     public static void refreshLang() {
         langCfg = ConfigManager.getConfig("lang");
+        System.out.println("refresh lang: " + langCfg.getConfigFile());
     }
 
     public static @NotNull String parseLang_withPrefix(String path, Object @NotNull ... objects) {

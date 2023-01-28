@@ -1,8 +1,20 @@
 prefix: '&2&lAdvanced&a&lAnnouncement &6&l>>> &r'
 
 internalError: '&c发生内部错误。请联系服务器管理员。'
+ann-task-start: '&6公告任务已建立。'
+ann-task-cancel: '&6已取消公告任务。'
+
+update:
+  check: '&2检查更新中...'
+  has-update-line1: '&e你正在运行旧版本的 &2AdvancedAnnouncement&e(&b{0}&e)，新版本 &b{0} &e已经发布！'
+  has-update-line2: '&e请前往 GitHub(或者 Gitee) 发布页下载最新的插件。'
+  check-latest: '&2当前运行的插件版本是最新的版本。'
+  check-exception: '&e检查更新时发生异常:'
+
 load:
   exception: '&e加载公告(&2名称: &b{0}&e)时发生严重错误: &c{1}'
+  load-announcements-done: '&3加载了 &b{0} &3个公告。'
+  load-components-done: '&3加载了 &b{0} &3个 JSON 组件。'
   title-type-empty: '&e标题类型公告(&2名称: &b{0}&e)内容为空，已跳过加载。'
   title-type-one-line: '&e标题类型公告(&2名称: &b{0}&e)只有一行内容，它将自动作为主标题出现。'
   title-type-three-or-more: '&e标题类型公告(&2名称: &b{0}&e)内容已超过三行，将只选取前两行作为主标题和副标题出现。'

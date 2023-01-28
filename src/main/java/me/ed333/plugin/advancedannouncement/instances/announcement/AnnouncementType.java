@@ -8,5 +8,6 @@ public enum AnnouncementType {
     ACTION_BAR,
     BOSS_BAR,
     TITLE,
-    PRE_ANNOUNCE
+    PRE_ANNOUNCE,
+    MULTIPLE_LINE_BOSS_BAR;
 }

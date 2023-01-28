@@ -15,7 +15,7 @@ public class ConfigKeys {
     public static boolean BSTATS = true;
     public static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    public static void initCfg(File cfgFile) {
+    public static void initKey(File cfgFile) {
         ymlCfg = YamlConfiguration.loadConfiguration(cfgFile);
 
         RANDOM = ymlCfg.getBoolean("random", true);

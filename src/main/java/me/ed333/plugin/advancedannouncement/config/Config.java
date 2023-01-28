@@ -17,12 +17,14 @@ import java.nio.file.Files;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public abstract class Config {
     private final @NotNull File configFile;
     private final @NotNull String identify;
+    private String rawContent;
     private YamlConfiguration configurationInStream = null;
-    private final YamlConfiguration configuration = new YamlConfiguration();
+    private YamlConfiguration configuration = new YamlConfiguration();
 
     public Config(@NotNull String identify, @Nullable InputStream cfgStream, @NotNull File configFile) {
         Validate.notNull(identify, "identify cannot be null!");
@@ -32,8 +34,14 @@ public abstract class Config {
         this.identify = identify;
         this.configFile = configFile;
         if (cfgStream != null) {
+            try {
+                rawContent = Streams.read(cfgStream, StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             this.configurationInStream = YamlConfiguration.loadConfiguration(new InputStreamReader(cfgStream, StandardCharsets.UTF_8));
         }
+
         ConfigManager.addConfig(identify, this);
     }
 
@@ -53,14 +61,13 @@ public abstract class Config {
         return configurationInStream;
     }
 
+    public String getRawContent() {
+        return rawContent;
+    }
+
     public void load() {
-        try {
-            this.configuration.load(configFile);
-            GlobalConsoleSender.debugInfo("loaded config from disk '" + configFile.getAbsolutePath() + "'");
-        } catch (InvalidConfigurationException | IOException e) {
-            GlobalConsoleSender.err("could not load config from disk file '" + configFile + "'.\n " +
-                    "cause: " + e.getLocalizedMessage());
-        }
+        this.configuration = YamlConfiguration.loadConfiguration(configFile);
+        GlobalConsoleSender.debugInfo("loaded config from disk '" + configFile.getAbsolutePath() + "'");
     }
 
     public void save() {

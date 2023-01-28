@@ -80,7 +80,7 @@ public class ConfigManager {
             file.getParentFile().mkdirs();
             if (config.getConfigurationInStream() != null) {
                 try {
-                    config.getConfigurationInStream().save(config.getConfigFile());
+                    Streams.save(config.getRawContent(), config.getConfigFile());
                     GlobalConsoleSender.debugInfo("extract config file: " + file.getAbsolutePath());
                 } catch (IOException e) {
                     GlobalConsoleSender.err("could not save config file into disk file '" + file + "'.\n " +

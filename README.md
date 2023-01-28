@@ -12,6 +12,7 @@
     + [ACTION_BAR type](#ACTION_BAR-type)
     + [BOSS_BAR type](#BOSS_BAR-type)
     + [TITLE type](#TITLE-type)
+    + [MULTIPLE_LINE_BOSS_BAR type (1.0.2+)](#MULTIPLE_LINE_BOSS_BAR-type)
 
 #### Announcement types
 All available announcements are as below:
@@ -23,6 +24,7 @@ All available announcements are as below:
 | BOSS_BAR     | this announcement type will be displayed by a boss bar |
 | TITLE        | this announcement type will be sent through a title |
 | PRE_ANNOUNCE | this announcement type will be sent to players at any time that you want |
+|MULTIPLE_LINE_BOSS_BAR | this announcement type will be displayed by multiple boss bars. (Since 1.0.2)|
 
 #### Command
 | Command | permission | description |
@@ -102,11 +104,12 @@ announcements:
     # - 1year, the delay time is 1 year (hey? are you serious?)
     delay: 60s
     # Possible types:
-    # CHAT: this announcement type will be sent to chat box.
-    # ACTION_BAR: this announcement type will be sent to player's action-bar.
-    # BOSS_BAR: this announcement type will be displayed by a boss bar.
-    # TITLE: this announcement type will be sent through a title.
-    # PRE_ANNOUNCE: this announcement type will be sent to players at any time that you want.
+    # 1. CHAT: this announcement type will be sent to chat box.
+    # 2. TITLE: this announcement type will be sent through a title.
+    # 3. BOSS_BAR: this announcement type will be displayed by a boss bar.
+    # 4. ACTION_BAR: this announcement type will be sent to player's action-bar.
+    # 5. PRE_ANNOUNCE: this announcement type will be sent to players at any time that you want.
+    # 6. MULTIPLE_LINE_BOSS_BAR: this announcement type will be displayed by multiple boss bars. (Since 1.0.2)
     type: CHAT
     # Content of this announcement.
     # +==+==+==+==+==+==+==+==+==+==+==+==+==
@@ -223,6 +226,32 @@ announcements:
       - '{#bf0000->#00bfbf,&l}HAPPY NEW YEAR!'
       - ''
       - '{rainbow}==============================='
+
+  # the multiple line boss bar type example
+  # Since 1.0.2
+  multiple_line_boss_bar_example:
+    delay: 60s
+    # stay time
+    # unit: second
+    # default is 5 sec
+    stay: 3
+    type: MULTIPLE_LINE_BOSS_BAR
+    # Placeholders below are not supported:
+    # {stay:<double>}
+    # {delay:<double>}
+    content:
+      # Possible bar color:
+      # PINK, BLUE, RED, GREEN, YELLOW, PURPLE, WHITE
+      # Possible segment count: 6, 10, 12, 20
+      - '{#4d6ea5->#a7bce5}this is an boss bar announcement{stay:2}{color:GREEN}{segment:20}'
+      # requires placeholder expansion: Animations
+      # command: /papi ecloud download Animations (if you enabled ecloud feature)
+      - '%animations_<shine start=&9 middle=&4 end=&9 normal=&b size=3>this is an auto-updated boss bar</shine>%{update:0.5}'
+      - '&6progressing boss bar{progress:true}'
+      # sets segments to 10
+      # default delay sets to 5 sec
+      # default color sets to PURPLE
+      - '&bthe next boss bar{segment:10}'
 ```
 
 #### usage of command '/aa parse'
@@ -241,5 +270,9 @@ announcements:
 + #### TITLE type
   ![titleType.gif](https://s2.loli.net/2023/01/23/gmNuj3ShGzpB5DK.gif)
 
++ #### MULTIPLE_LINE_BOSS_BAR type
+  This type has been added **_since the version of 1.0.2_**
+  ![multipleBossBar.gif](https://s2.loli.net/2023/01/28/9TIz2WCZPnBaocS.gif)
+
 + #### PRE_ANNOUNCE type
-    this type will be displayed using the 4 types above.
+    this type will be displayed using the 5 types above.

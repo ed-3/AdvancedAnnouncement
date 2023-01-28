@@ -37,17 +37,18 @@ public final class AdvancedAnnouncement extends JavaPlugin {
     public static BukkitTask announceTask = null;
     public static Metrics metrics = null;
 
-    private final File DATA_FOLDER = getDataFolder();
+    public static File DATA_FOLDER;
     public static AdvancedAnnouncement INSTANCE;
 
     public AdvancedAnnouncement() {
         INSTANCE = this;
+        DATA_FOLDER = getDataFolder();
     }
 
     @Override
     public void onEnable() {
         initCfg();
-        ConfigKeys.initCfg(ConfigManager.getConfigFile("config"));
+        ConfigKeys.initKey(ConfigManager.getConfigFile("config"));
         loadComponentBlock();
         loadAnnouncements();
 
@@ -62,6 +63,7 @@ public final class AdvancedAnnouncement extends JavaPlugin {
                 int bossBarCount = 0;
                 int titleTypeCount = 0;
                 int preTypeCount = 0;
+                int multipleBossBarCount = 0;
                 for (Announcement ann : AnnouncementManager.loadedAnnouncements) {
                     if (ann.type().equals(AnnouncementType.CHAT)) {
                         chatCount++;
@@ -73,6 +75,8 @@ public final class AdvancedAnnouncement extends JavaPlugin {
                         titleTypeCount++;
                     } else if (ann.type().equals(AnnouncementType.PRE_ANNOUNCE)) {
                         preTypeCount++;
+                    } else if (ann.type().equals(AnnouncementType.MULTIPLE_LINE_BOSS_BAR)) {
+                        multipleBossBarCount++;
                     }
                 }
 
@@ -89,7 +93,7 @@ public final class AdvancedAnnouncement extends JavaPlugin {
 
         announceTask = new AnnounceRunnable().runTaskLaterAsynchronously(this, 600);
         GlobalConsoleSender.setDEBUG(ConfigKeys.DEBUG);
-        GlobalConsoleSender.info("§6Announce task was started.");
+        GlobalConsoleSender.info(LangUtils.getLangText("ann-task-start"));
 
         String cmdName = "autoannouncement";
         getCommand(cmdName).setExecutor(new AA_CommandExecutor());
@@ -105,7 +109,7 @@ public final class AdvancedAnnouncement extends JavaPlugin {
         PreAnnRunnable.preAnnRunnableList.forEach(PreAnnRunnable::cancel);
         if (announceTask != null) {
             announceTask.cancel();
-            GlobalConsoleSender.info("§6Announce task was canceled.");
+            GlobalConsoleSender.info(LangUtils.getLangText("ann-task-cancel"));
         }
     }
 
@@ -127,7 +131,7 @@ public final class AdvancedAnnouncement extends JavaPlugin {
             componentBlock.setClick(clickAction, clickVal);
             componentBlock.setHover(HoverEvent.Action.SHOW_TEXT, hover_value);
         }
-        GlobalConsoleSender.info(String.format("Loaded %s components.", TextComponentBlock.blocks.size()));
+        GlobalConsoleSender.info(LangUtils.parseLang("load.load-components-done", TextComponentBlock.blocks.size()));
     }
 
     public void loadAnnouncements() {
@@ -160,6 +164,9 @@ public final class AdvancedAnnouncement extends JavaPlugin {
             switch (type) {
                 case CHAT:
                     announcement = new ChatTypeAnnouncement(index, key, permission, delay, contents);
+                    break;
+                case MULTIPLE_LINE_BOSS_BAR:
+                    announcement = new MultipleLineBossBarTypeAnnouncement(index, key, permission, delay, stay, contents);
                     break;
                 case BOSS_BAR:
                     announcement = new BossBarTypeAnnouncement(index, key, permission, delay, contents);
@@ -211,7 +218,7 @@ public final class AdvancedAnnouncement extends JavaPlugin {
 
             index++;
         }
-        GlobalConsoleSender.info(String.format("loaded %s announcements", AnnouncementManager.loadedAnnouncements.size()));
+        GlobalConsoleSender.info(LangUtils.parseLang("load.load-announcements-done", AnnouncementManager.loadedAnnouncements.size()));
     }
 
     public void initCfg() {
@@ -245,7 +252,7 @@ public final class AdvancedAnnouncement extends JavaPlugin {
     }
 
     public static void checkUpdate() {
-        GlobalConsoleSender.info("Checking update...");
+        GlobalConsoleSender.info(LangUtils.getLangText("update.check"));
         String updateUrl = "https://api.github.com/repos/ed-3/AdvancedAnnouncement/releases/latest";
         if (ConfigKeys.UPDATE_SOURCE == 0) {
             updateUrl = "https://gitee.com/api/v5/repos/ed3/advanced-announcement/releases/latest";
@@ -260,13 +267,13 @@ public final class AdvancedAnnouncement extends JavaPlugin {
             Version pluginVer = Version.parse(AdvancedAnnouncement.INSTANCE.getDescription().getVersion());
             boolean isLatest = latestVer.isNewer(pluginVer);
             if (isLatest) {
-                GlobalConsoleSender.warn(String.format("You are running outdated version(%s) while latest version is %s", pluginVer, latestVer));
-                GlobalConsoleSender.warn("Please go to github(or gitee) release page to download the latest release.");
+                GlobalConsoleSender.warn(LangUtils.parseLang("update.has-update-line1", pluginVer, latestVer));
+                GlobalConsoleSender.warn(LangUtils.getLangText("update.has-update-line2"));
             } else {
-                GlobalConsoleSender.info("You are running the latest AdvancedAnnouncement.");
+                GlobalConsoleSender.info(LangUtils.getLangText("update.check-latest"));
             }
         } catch (IOException e) {
-            GlobalConsoleSender.warn("an error occurred while checking plugin update.");
+            GlobalConsoleSender.warn(LangUtils.getLangText("update.check-exception"));
             e.printStackTrace();
         } catch (InvalidVersionException ignored) {
         }

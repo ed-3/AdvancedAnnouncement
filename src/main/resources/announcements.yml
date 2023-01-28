@@ -16,11 +16,12 @@ announcements:
     # - 1year, the delay time is 1 year (hey? are you serious?)
     delay: 60s
     # Possible types:
-    # CHAT: this announcement type will be sent to chat box.
-    # ACTION_BAR: this announcement type will be sent to player's action-bar.
-    # BOSS_BAR: this announcement type will be displayed by a boss bar.
-    # TITLE: this announcement type will be sent through a title.
-    # PRE_ANNOUNCE: this announcement type will be sent to players at any time that you want.
+    # 1. CHAT: this announcement type will be sent to chat box.
+    # 5. TITLE: this announcement type will be sent through a title.
+    # 3. BOSS_BAR: this announcement type will be displayed by a boss bar.
+    # 2. ACTION_BAR: this announcement type will be sent to player's action-bar.
+    # 6. PRE_ANNOUNCE: this announcement type will be sent to players at any time that you want.
+    # 4. MULTIPLE_LINE_BOSS_BAR: this announcement type will be displayed by multiple boss bars.
     type: CHAT
     # Content of this announcement.
     # +==+==+==+==+==+==+==+==+==+==+==+==+==
@@ -137,3 +138,28 @@ announcements:
       - '{#bf0000->#00bfbf,&l}HAPPY NEW YEAR!'
       - ''
       - '{rainbow}==============================='
+
+  # the multiple line boss bar type example
+  multiple_line_boss_bar_example:
+    delay: 60s
+    # stay time
+    # unit: second
+    # default is 5 sec
+    stay: 3
+    type: MULTIPLE_LINE_BOSS_BAR
+    # Placeholders below are not supported:
+    # {stay:<double>}
+    # {delay:<double>}
+    content:
+      # Possible bar color:
+      # PINK, BLUE, RED, GREEN, YELLOW, PURPLE, WHITE
+      # Possible segment count: 6, 10, 12, 20
+      - '{#4d6ea5->#a7bce5}this is an boss bar announcement{stay:2}{color:GREEN}{segment:20}'
+      # requires placeholder expansion: Animations
+      # command: /papi ecloud download Animations (if you enabled ecloud feature)
+      - '%animations_<shine start=&9 middle=&4 end=&9 normal=&b size=3>this is an auto-updated boss bar</shine>%{update:0.5}'
+      - '&6progressing boss bar{progress:true}'
+      # sets segments to 10
+      # default delay sets to 5 sec
+      # default color sets to PURPLE
+      - '&bthe next boss bar{segment:10}'

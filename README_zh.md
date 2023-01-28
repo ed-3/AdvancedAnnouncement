@@ -13,6 +13,7 @@
   + [ACTION_BAR 类型](#ACTION_BAR-类型)
   + [BOSS_BAR 类型](#BOSS_BAR-类型)
   + [TITLE 类型](#TITLE-类型)
+  + [MULTIPLE_LINE_BOSS_BAR 类型](#MULTIPLE_LINE_BOSS_BAR-类型)
 
 #### 公告类型
 目前的公告类型如下:
@@ -24,6 +25,7 @@
 | BOSS_BAR     | 公告会以 BOSS 栏的方式显示在玩家屏幕正上方 |
 | TITLE        | 公告会以标题的形式发送到玩家的屏幕中间 |
 | PRE_ANNOUNCE | 公告会在指定时间到达时被发送出去 |
+| MULTIPLE_LINE_BOSS_BAR | 该公告会以多行 BOSS 栏的形式发送到玩家屏幕上方. (自 1.0.2 版本起)|
 
 #### 指令
 |指令|权限|描述|
@@ -102,11 +104,12 @@ announcements:
     # - 1year， 1 年 (¿认真的吗)
     delay: 60s
     # 可用的类型:
-    # CHAT: 该公告会被发送到聊天栏中
-    # ACTION_BAR: 该公告会被发送到玩家的物品栏上方
-    # BOSS_BAR: 该公告会以 BOSS 栏的方式发送到玩家的屏幕上方
-    # TITLE: 该公告会以标题形式发送到玩家屏幕中间
-    # PRE_ANNOUNCE: 指定时间发送的公告
+    # 1. CHAT: 该公告会被发送到聊天栏中
+    # 2. PRE_ANNOUNCE: 指定时间发送的公告
+    # 3. TITLE: 该公告会以标题形式发送到玩家屏幕中间
+    # 4. ACTION_BAR: 该公告会被发送到玩家的物品栏上方
+    # 5. BOSS_BAR: 该公告会以 BOSS 栏的方式发送到玩家的屏幕上方
+    # 6. MULTIPLE_LINE_BOSS_BAR: 该公告会以多行 BOSS 栏的形式发送到玩家屏幕上方. (自 1.0.2 版本起)
     type: CHAT
     # 公告内容
     # +==+==+==+==+==+==+==+==+==+==+==+==+==
@@ -211,6 +214,29 @@ announcements:
       - ''
       - '{rainbow}==============================='
 
+  # 多行 BOSS 栏公告例子 (该类型自 1.0.2 版本增加)
+  multiple_line_boss_bar_example:
+    delay: 60s
+    # 停留时间（秒）
+    # 默认 5 秒
+    stay: 3
+    type: MULTIPLE_LINE_BOSS_BAR
+    # 该类型中以下占位符将无法使用:
+    # {stay:<double>}
+    # {delay:<double>}
+    content:
+      # 可用的 BOSS 栏颜色:
+      # PINK, BLUE, RED, GREEN, YELLOW, PURPLE, WHITE
+      # 可用的 BOSS 栏节段: 6, 10, 12, 20
+      - '{#4d6ea5->#a7bce5}this is an boss bar announcement{stay:2}{color:GREEN}{segment:20}'
+      # 需要 PAPI 拓展变量: Animations
+      # 下载指令: /papi ecloud download Animations (如果你启用了 ecloud 功能)
+      # 每 0.5 秒更新一次
+      - '%animations_<shine start=&9 middle=&4 end=&9 normal=&b size=3>this is an auto-updated boss bar</shine>%{update:0.5}'
+      - '&6progressing boss bar{progress:true}'
+      # 默认停留时间是 5 秒
+      # 默认颜色为 PURPLE
+      - '&bthe next boss bar{segment:10}'
 ```
 
 #### 使用 '/aa parse' 解析字符串
@@ -229,6 +255,10 @@ p话少说，直接上图:
 
 + #### TITLE 类型
   ![titleType.gif](https://s2.loli.net/2023/01/23/gmNuj3ShGzpB5DK.gif)
++ 
++ #### MULTIPLE_LINE_BOSS_BAR 类型
+  **_自 1.0.2 版本起_** 加入了这个类型
+  ![multipleBossBar.gif](https://s2.loli.net/2023/01/28/9TIz2WCZPnBaocS.gif)
 
 + #### PRE_ANNOUNCE 类型
-    PRE_ANNOUNCE 类型公告当到达规定时间的时候，**_会以上述四种类型去进行显示_**。
+    PRE_ANNOUNCE 类型公告当到达规定时间的时候，**_会以上述 5 种类型去进行显示_**。

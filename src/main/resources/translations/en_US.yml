@@ -4,8 +4,20 @@
 prefix: '&2&lAdvanced&a&lAnnouncement &6&l>>> &r'
 
 internalError: '&cAn internal error occurred, please contact with admin(see the console)。'
+ann-task-start: '&6Announce task has been started.'
+ann-task-cancel: '&6Announce task has been canceled.'
+
+update:
+  check: '&2Checking updates...'
+  has-update-line1: '&eYou are running outdated version(&b{0}&e) while latest version is &b{0}&e.'
+  has-update-line2: '&ePlease go to github(or gitee) release page to download the latest release.'
+  check-latest: '&2You are running the latest AdvancedAnnouncement。'
+  check-exception: '&eAn error occurred while checking update:'
+
 load:
   exception: '&eAn exception occurred while loading announcement: &b{0}&e, (&c{1}&e)'
+  load-announcements-done: '&3loaded &b{0} &3announcements。'
+  load-components-done: '&3loaded &b{0} &3components。'
   title-type-empty: '&eTitle type announcement ''&b{0}&e'' is empty, skipped.'
   title-type-one-line: '&eTitle type announcement ''{0}'' only has 1 lines, it will be appear as the title.'
   title-type-three-or-more: '&eTitle type announcement ''{0}'' has 3 ore more lines, we will choose the first 2 lines as the title and subtitle'

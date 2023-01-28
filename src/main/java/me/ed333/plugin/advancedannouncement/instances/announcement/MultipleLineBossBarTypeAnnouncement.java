@@ -1,33 +1,32 @@
 package me.ed333.plugin.advancedannouncement.instances.announcement;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import me.ed333.plugin.advancedannouncement.AdvancedAnnouncement;
 import me.ed333.plugin.advancedannouncement.utils.LangUtils;
 import me.ed333.plugin.advancedannouncement.utils.TextHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
-public class BossBarTypeAnnouncement extends Announcement {
+public class MultipleLineBossBarTypeAnnouncement extends Announcement {
     private final List<AdvancedBossBar> bars = new ArrayList<>();
 
-    public BossBarTypeAnnouncement(int index, @NotNull String name, String permissionName, int delay, List<String> content) {
-        super(index, name, AnnouncementType.BOSS_BAR, permissionName, delay, content);
-        double nextDelay = 0;
+    public MultipleLineBossBarTypeAnnouncement(int index, @NotNull String name, @Nullable String permissionName, int delay, double stay, List<String> content) {
+        super(index, name, AnnouncementType.MULTIPLE_LINE_BOSS_BAR, permissionName, delay, content);
 
         for (String rawText : content()) {
             StringBuilder barText = new StringBuilder();
-            double stay = 5;
-            double delaySec = 0;
             double update = -1;
             boolean progress = false;
             BarColor barColor = BarColor.PURPLE;
@@ -40,11 +39,14 @@ public class BossBarTypeAnnouncement extends Announcement {
                 int end = placeHolderMatcher.end();
 
                 String placeHolder = placeHolderMatcher.group();
-                if (placeHolder.matches(BossBarPlaceholderRegex.STAY_PLACEHOLDER_REGEX_STRING)) {
-                    stay = BossBarPlaceholderRegex.getSec(placeHolder);
-                } else if (placeHolder.matches(BossBarPlaceholderRegex.DELAY_PLACEHOLDER_REGEX_STRING)) {
-                    delaySec = BossBarPlaceholderRegex.getSec(placeHolder);
-                }else if (placeHolder.matches(BossBarPlaceholderRegex.UPDATE_PLACEHOLDER_REGEX_STRING)) {
+//                if (placeHolder.matches(BossBarPlaceholderRegex.STAY_PLACEHOLDER_REGEX_STRING)) {
+//                    // skip placeholder: {stay:<double>}
+//                    continue;
+//                } else if (placeHolder.matches(BossBarPlaceholderRegex.DELAY_PLACEHOLDER_REGEX_STRING)) {
+//                    // skip placeholder: {delay:<double>}
+//                    continue;
+//                } else
+                if (placeHolder.matches(BossBarPlaceholderRegex.UPDATE_PLACEHOLDER_REGEX_STRING)) {
                     update = BossBarPlaceholderRegex.getSec(placeHolder);
                 } else if (placeHolder.matches(BossBarPlaceholderRegex.PROGRESS_PLACEHOLDER_REGEX_STRING)) {
                     progress = BossBarPlaceholderRegex.getBool(placeHolder);
@@ -60,8 +62,8 @@ public class BossBarTypeAnnouncement extends Announcement {
                 barText.append(rawText.substring(lastIndex));
             }
 
-            bars.add(new AdvancedBossBar(barText.toString(), barColor, style, nextDelay + stay + delaySec, update, delaySec, stay, progress));
-            nextDelay = nextDelay + stay + delaySec;
+            double nextDelay = 0;
+            bars.add(new AdvancedBossBar(barText.toString(), barColor, style, nextDelay, update, nextDelay, stay, progress));
         }
     }
 
@@ -71,7 +73,7 @@ public class BossBarTypeAnnouncement extends Announcement {
             sender.sendMessage(LangUtils.getLangText_withPrefix("command.command-display-not-supported"));
             return false;
         } else if (sender instanceof Player) {
-            bars.forEach(bar -> new BossBarRunnable(bar.clone(), (Player) sender).runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, (long) ((bar.delay - bar.nextDelay) * 20L)));
+            bars.forEach(bar -> new BossBarRunnable(bar.clone(), (Player) sender).runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, (long) (bar.stay * 20L)));
             return true;
         } else {
             sender.sendMessage(LangUtils.getLangText_withPrefix("command.command-display-sender-not-known"));
@@ -88,13 +90,12 @@ public class BossBarTypeAnnouncement extends Announcement {
             this.bar = bar;
             this.sendTo = sendTo;
 
-            long startTime = (long) ((bar.delay - (bar.stay + bar.nextDelay)) * 20L);
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     bar.bar.addPlayer(sendTo);
                 }
-            }.runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, startTime < 0 ? 0 : startTime);
+            }.runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, 0);
 
             if (bar.update != -1) {
                 updateTask = new BukkitRunnable() {
@@ -102,7 +103,7 @@ public class BossBarTypeAnnouncement extends Announcement {
                     public void run() {
                         bar.bar.setTitle(TextHandler.handleColor(bar.title, sendTo));
                     }
-                }.runTaskTimerAsynchronously(AdvancedAnnouncement.INSTANCE, startTime < 0 ? 0 : startTime, (long) (bar.update * 20L));
+                }.runTaskTimerAsynchronously(AdvancedAnnouncement.INSTANCE, 0, (long) (bar.update * 20L));
             } else {
                 updateTask = null;
             }
@@ -118,7 +119,7 @@ public class BossBarTypeAnnouncement extends Announcement {
                         remain = remain - 0.05; // 0.05 is 1 tick.
                         bar.bar.setProgress(progress);
                     }
-                }.runTaskTimerAsynchronously(AdvancedAnnouncement.INSTANCE, startTime < 0 ? 0 : startTime, 1);
+                }.runTaskTimerAsynchronously(AdvancedAnnouncement.INSTANCE, 0, 1);
             } else {
                 progressTask = null;
             }
