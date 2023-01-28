@@ -37,6 +37,21 @@
 |/aa parse    | aa.command.parse     | 解析一个字符串    |
 |/aa reload   | aa.command.reload    | 重新加载插件  |
 
+#### 所有可用的占位符表
+| 占位符名称| 描述 | 哪些公告可以使用 |
+| ------- | --- | --- |
+| {rainbow} | 彩虹渐变文本占位符 | 所有类型 |
+| {#RRGGBB[,&lt;arg1&gt;,&lt;arg2&gt;,...]} | RGB 文本颜色占位符 | 所有类型 |
+| {#RRGGBB->#GGBBRR[,&lt;arg1&gt;,&lt;arg2&gt;,...]}| 渐变色文本占位符| 所有类型|
+| {delay:&lt;double&gt;} | 在显示下一条文本前的间隔时间 | 1. ACTION_BAR <br/> 2. BOSS_BAR |
+| {stay:&lt;double&gt;} | 文本的停留时间 | 1. ACTION_BAR <br/> 2. BOSS_BAR |
+| {color:&lt;PINK&#124;BLUE&#124;GREEN&#124;RED&#124;YELLOW&#124;PURPLE&#124;WHITE&gt;} | BOSS 栏的颜色 | 1. ACTION_BAR <br/> 2. BOSS_BAR <br/> 3. MULTIPLE_LINE_BOSS_BAR |
+| {update:&lt;double&gt;} | BOSS 栏文本的更新时间 | 1. BOSS_BAR <br/> 2. MULTIPLE_LINE_BOSS_BAR |
+| {progress:&lt;true&#124;false&gt;} | 显示 BOSS 栏进度动画 | 1. BOSS_BAR <br/> 2. MULTIPLE_LINE_BOSS_BAR |
+| {segment:&lt;6&#124;10&#124;12&#124;20&gt;} | BOSS 栏的节段 | 1. BOSS_BAR <br/> 2. MULTIPLE_LINE_BOSS_BAR |
+
+
+
 #### 配置
 + #### config.yml
 ```yaml

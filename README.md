@@ -36,6 +36,19 @@ All available announcements are as below:
 |/aa parse    | aa.command.parse     | parse a string with placeholders    |
 |/aa reload   | aa.command.reload    | reload this plugin  |
 
+#### all available placeholders
+| name | description | you can use it on |
+| ------- | --- | --- |
+| {rainbow} | gradient rainbow text | all |
+| {#RRGGBB[,&lt;arg1&gt;,&lt;arg2&gt;,...]} | RGB color text | all |
+| {#RRGGBB->#GGBBRR[,&lt;arg1&gt;,&lt;arg2&gt;,...]}| gradient text | all |
+| {delay:&lt;double&gt;} | the delay time to next text | 1. ACTION_BAR <br/> 2. BOSS_BAR |
+| {stay:&lt;double&gt;} | the stay time of text | 1. ACTION_BAR <br/> 2. BOSS_BAR |
+| {color:&lt;PINK&#124;BLUE&#124;GREEN&#124;RED&#124;YELLOW&#124;PURPLE&#124;WHITE&gt;} | the color of the boss bar | 1. ACTION_BAR <br/> 2. BOSS_BAR <br/> 3. MULTIPLE_LINE_BOSS_BAR |
+| {update:&lt;double&gt;} | the update time of the boss bar's title | 1. BOSS_BAR <br/> 2. MULTIPLE_LINE_BOSS_BAR |
+| {progress:&lt;true&#124;false&gt;} | show the progressing animation | 1. BOSS_BAR <br/> 2. MULTIPLE_LINE_BOSS_BAR |
+| {segment:&lt;6&#124;10&#124;12&#124;20&gt;} | the segments of the boss bar | 1. BOSS_BAR <br/> 2. MULTIPLE_LINE_BOSS_BAR |
+
 #### configs
 + #### config.yml
 ```yaml
