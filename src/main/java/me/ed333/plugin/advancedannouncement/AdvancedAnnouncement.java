@@ -29,7 +29,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class AdvancedAnnouncement extends JavaPlugin {
     public static BukkitTask announceTask = null;
@@ -53,6 +55,36 @@ public final class AdvancedAnnouncement extends JavaPlugin {
         if (ConfigKeys.BSTATS) {
             int pluginID = 17508;
             metrics = new Metrics(this, pluginID);
+
+            Metrics.AdvancedPie pie = new Metrics.AdvancedPie("ann_types", () -> {
+                int chatCount = 0;
+                int actionBarCount = 0;
+                int bossBarCount = 0;
+                int titleTypeCount = 0;
+                int preTypeCount = 0;
+                for (Announcement ann : AnnouncementManager.loadedAnnouncements) {
+                    if (ann.type().equals(AnnouncementType.CHAT)) {
+                        chatCount++;
+                    } else if (ann.type().equals(AnnouncementType.ACTION_BAR)) {
+                        actionBarCount++;
+                    } else if (ann.type().equals(AnnouncementType.BOSS_BAR)) {
+                        bossBarCount++;
+                    } else if (ann.type().equals(AnnouncementType.TITLE)) {
+                        titleTypeCount++;
+                    } else if (ann.type().equals(AnnouncementType.PRE_ANNOUNCE)) {
+                        preTypeCount++;
+                    }
+                }
+
+                Map<String, Integer> data = new HashMap<>();
+                data.put("CHAT", chatCount);
+                data.put("ACTION_BAR", actionBarCount);
+                data.put("BOSS_BAR", bossBarCount);
+                data.put("TITLE", titleTypeCount);
+                data.put("PRE_ANNOUNCE", preTypeCount);
+                return data;
+            });
+            metrics.addCustomChart(pie);
         }
 
         announceTask = new AnnounceRunnable().runTaskLaterAsynchronously(this, 600);
@@ -120,6 +152,11 @@ public final class AdvancedAnnouncement extends JavaPlugin {
             List<String> contents = section.getStringList("content");
 
             Announcement announcement = null;
+            // for title type
+            double fadeIn = section.getDouble("fadeIn", 0.2);
+            double stay = section.getDouble("stay", 3);
+            double fadeOut = section.getDouble("fadeOut", 1);
+
             switch (type) {
                 case CHAT:
                     announcement = new ChatTypeAnnouncement(index, key, permission, delay, contents);
@@ -131,10 +168,6 @@ public final class AdvancedAnnouncement extends JavaPlugin {
                     announcement = new ActionBarTypeAnnouncement(index, key, permission, delay, contents);
                     break;
                 case TITLE:
-                    double fadeIn = section.getDouble("fadeIn", 0.2);
-                    double stay = section.getDouble("stay", 3);
-                    double fadeOut = section.getDouble("fadeOut", 1);
-
                     if (contents.size() == 0) {
                         GlobalConsoleSender.warn(LangUtils.parseLang_withPrefix("load.title-type-empty", key));
                         break;
@@ -148,12 +181,14 @@ public final class AdvancedAnnouncement extends JavaPlugin {
                     break;
                 case PRE_ANNOUNCE:
                     Date dateTime;
+                    String dateStr = section.getString("date");
                     try {
-                        dateTime = TimeHandler.toDate(section.getString("date"));
+                        dateTime = TimeHandler.toDate(dateStr);
                     } catch (ParseException e) {
-                        LangUtils.parseLang("load.exception", key, e.getMessage());
+                        GlobalConsoleSender.warn(LangUtils.parseLang("load.preann-time-format-err", key, dateStr, ConfigKeys.DATE_FORMAT));
                         continue;
                     }
+
                     AnnouncementType shownType;
                     try {
                         shownType = AnnouncementType.valueOf(section.getString("displayType"));
@@ -166,7 +201,7 @@ public final class AdvancedAnnouncement extends JavaPlugin {
                         continue;
                     }
 
-                    announcement = new PreTypeAnnouncement(index, key, permission, delay, contents, dateTime, shownType);
+                    announcement = new PreTypeAnnouncement(index, key, permission, delay, contents, dateTime, shownType, fadeIn, stay, fadeOut);
 
                     new PreAnnRunnable(((PreTypeAnnouncement) announcement)).runTaskLaterAsynchronously(this, TimeHandler.getTimeSecRemain(dateTime) * 20L);
             }

@@ -78,20 +78,20 @@ public class ConfigManager {
         GlobalConsoleSender.debugInfo("Checking file: " + file.getAbsolutePath());
         if (!file.exists()) {
             file.getParentFile().mkdirs();
-            if (config.getInputStream() != null) {
+            if (config.getConfigurationInStream() != null) {
                 try {
-                    Streams.save(config.getInputStream(), config.getConfigFile());
-                    GlobalConsoleSender.debugInfo("extract moduleConfig file: " + file.getAbsolutePath());
+                    config.getConfigurationInStream().save(config.getConfigFile());
+                    GlobalConsoleSender.debugInfo("extract config file: " + file.getAbsolutePath());
                 } catch (IOException e) {
-                    GlobalConsoleSender.err("could not save moduleConfig into disk file '" + file + "'.\n " +
+                    GlobalConsoleSender.err("could not save config file into disk file '" + file + "'.\n " +
                             "cause: " + e.getLocalizedMessage());
                 }
             } else {
                 try {
                     file.createNewFile();
-                    GlobalConsoleSender.debugInfo("Create new moduleConfig file: " + file.getAbsolutePath());
+                    GlobalConsoleSender.debugInfo("Create new config file: " + file.getAbsolutePath());
                 } catch (IOException e) {
-                    GlobalConsoleSender.err("could not save moduleConfig into disk file '" + file + "'.\n " +
+                    GlobalConsoleSender.err("could not create config file into disk file '" + file + "'.\n " +
                             "cause: " + e.getLocalizedMessage());
                 }
             }

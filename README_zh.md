@@ -200,7 +200,7 @@ announcements:
     delay: 60s
     # 这个公告什么时候会被发送
     # 时间格式可以在 config.yml 中修改
-    date: 2024-1-1 00:00
+    date: '2024-1-1 00:00:00'
     type: PRE_ANNOUNCE
     # 时间到的时候，这个公告会以什么形式发送出来
     displayType: CHAT

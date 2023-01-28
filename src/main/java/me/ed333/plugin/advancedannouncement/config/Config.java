@@ -11,6 +11,8 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -19,7 +21,7 @@ import java.util.Map;
 public abstract class Config {
     private final @NotNull File configFile;
     private final @NotNull String identify;
-    private final @Nullable InputStream inputStream;
+    private YamlConfiguration configurationInStream = null;
     private final YamlConfiguration configuration = new YamlConfiguration();
 
     public Config(@NotNull String identify, @Nullable InputStream cfgStream, @NotNull File configFile) {
@@ -29,12 +31,10 @@ public abstract class Config {
 
         this.identify = identify;
         this.configFile = configFile;
-        this.inputStream = cfgStream;
+        if (cfgStream != null) {
+            this.configurationInStream = YamlConfiguration.loadConfiguration(new InputStreamReader(cfgStream, StandardCharsets.UTF_8));
+        }
         ConfigManager.addConfig(identify, this);
-    }
-
-    public @Nullable InputStream getInputStream() {
-        return inputStream;
     }
 
     public @NotNull String getIdentify() {
@@ -47,6 +47,10 @@ public abstract class Config {
 
     public YamlConfiguration getConfiguration() {
         return configuration;
+    }
+
+    public @Nullable YamlConfiguration getConfigurationInStream() {
+        return configurationInStream;
     }
 
     public void load() {
@@ -121,10 +125,9 @@ public abstract class Config {
 
     @Override
     public String toString() {
-        return "ModuleConfig{" +
-                "configFile=" + configFile +
+        return "Config{" + "configFile=" + configFile +
                 ", identify='" + identify + '\'' +
-                ", inStream=" + inputStream +
+                ", configurationInStream=" + configurationInStream +
                 ", configuration=" + configuration +
                 '}';
     }

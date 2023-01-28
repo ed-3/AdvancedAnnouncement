@@ -9,6 +9,7 @@ load:
   ann-type-unknown: '&e未知的公告类型(&2名称: &b{0}&2, 类型:{1}&e)，已跳过加载'
   preann-shown-type-unknown: '&e预公告中未知的展示类型(&2名称: &b{0}&2, 展示类型:{1}&e)，已跳过加载'
   preann-shown-type-equals: '&e预公告中展示类型和预公告类型相同(&2名称: &b{0}&e)，已跳过加载'
+  preann-time-format-err: '&e预公告类型(&2名称: &b{0}&e)时间格式错误(&a{1}&e)，请使用 config.yml 中规定的时间格式：{2}'
 
 
 command:

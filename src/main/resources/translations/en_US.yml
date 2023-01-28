@@ -12,6 +12,7 @@ load:
   ann-type-unknown: '&eSkipped unknown announcement type. (&bannouncement name: &6{0}&b, type: &6{1}&e)'
   preann-shown-type-unknown: '&eSkipped unknown shown type at pre announcement ''&b{0}&e'', shown type: &b{1}'
   preann-shown-type-equals: '&eSkipped duplicated shown type. (&6name: &b{0}&e)'
+  preann-time-format-err: '&eSkipped wrong date time(&2name: &b{0}&e, date: &a{1}&e), please use the specified format in config.yml: {2}'
 
 
 command:

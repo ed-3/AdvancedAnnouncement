@@ -17,7 +17,7 @@ public abstract class Announcement {
     private final AnnouncementType type;
 
     /**
-     * @param index the index of this announcement, auto generated when loading announcements
+     * @param index the index of this announcement, auto generated when loading announcements, random used.
      * @param name the name of this announcement
      * @param type the {@linkplain AnnouncementType type} of this announcement
      * @param permissionName the permission name that this announcement will be required. can be null or an empty string.

@@ -12,9 +12,6 @@ public class PreTypeAnnouncement extends Announcement {
     private final Date date;
     private final AnnouncementType shownType;
     private final Announcement shownAnn;
-    private final double fadeIn;
-    private final double stay;
-    private final double fadeout;
 
     public PreTypeAnnouncement(
             int index,
@@ -28,6 +25,7 @@ public class PreTypeAnnouncement extends Announcement {
         this(index, name, permissionName, delay, content, date, shownType, -1, -1, -1);
     }
 
+    // if display type is TITLE
     public PreTypeAnnouncement(
             int index,
             @NotNull String name,
@@ -44,9 +42,6 @@ public class PreTypeAnnouncement extends Announcement {
 
         this.shownType = shownType;
         this.date = date;
-        this.fadeIn = fadeIn;
-        this.fadeout = fadeout;
-        this.stay = stay;
 
         int subIndex = preAnn_shown.size();
         name = name + ".shown";

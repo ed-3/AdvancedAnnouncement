@@ -63,6 +63,7 @@ announcements:
       - '  {#ffff00}This is an example announcement'
       - '  {#04ff00->#bf0000}gradient color text @example@ '
       - '{rainbow}==============================='
+
   # the action bar type example
   action_bar_type_example:
     # anyone can receive this announcement
@@ -78,6 +79,7 @@ announcements:
       - 'the next action bar{delay:2}'
       - 'test{stay:2}'
 
+  # the boss bar type example
   boss_bar_type_example:
     delay: 60s
     type: BOSS_BAR
@@ -98,6 +100,7 @@ announcements:
       # default color sets to PURPLE
       - '&bthe next boss bar{segment:10}'
 
+  # the title type example
   title_type_example:
     delay: 60s
     type: TITLE
@@ -116,12 +119,13 @@ announcements:
     # title fadeout time, Unit: seconds
     fadeout: 1
 
+  # the pre_announce example
   pre_announce_example:
     # delay time to next announcement
     delay: 60s
     # defines when this announcement will send to player
     # time format can be defined in config.yml
-    date: 2024-1-1 00:00
+    date: '2024-1-1 00:00:00'
     # refers to a pre-announcement
     type: PRE_ANNOUNCE
     # defines When the time arrives, what form will this announcement be displayed.

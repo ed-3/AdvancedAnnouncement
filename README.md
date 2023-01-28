@@ -211,7 +211,7 @@ announcements:
     delay: 60s
     # defines when this announcement will send to player
     # time format can be defined in config.yml
-    date: 2024-1-1 00:00
+    date: '2024-1-1 00:00:00'
     # refers to a pre-announcement
     type: PRE_ANNOUNCE
     # defines When the time arrives, what form will this announcement be displayed.
