@@ -13,7 +13,7 @@
   + [ACTION_BAR 类型](#ACTION_BAR-类型)
   + [BOSS_BAR 类型](#BOSS_BAR-类型)
   + [TITLE 类型](#TITLE-类型)
-  + [MULTIPLE_LINE_BOSS_BAR 类型](#MULTIPLE_LINE_BOSS_BAR-类型)
+  + [MULTIPLE_LINE_BOSS_BAR 类型(自 1.0.2 版本起)](#MULTIPLE_LINE_BOSS_BAR-类型)
 
 #### 公告类型
 目前的公告类型如下:
