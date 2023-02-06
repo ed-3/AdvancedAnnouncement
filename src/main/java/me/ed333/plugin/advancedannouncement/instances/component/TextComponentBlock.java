@@ -1,6 +1,5 @@
 package me.ed333.plugin.advancedannouncement.instances.component;
 
-import me.ed333.plugin.advancedannouncement.utils.ProtocolUtils;
 import me.ed333.plugin.advancedannouncement.utils.TextHandler;
 import net.md_5.bungee.api.chat.*;
 import org.jetbrains.annotations.Nullable;

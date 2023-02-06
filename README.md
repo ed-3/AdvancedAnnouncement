@@ -200,10 +200,6 @@ announcements:
       # default color sets to PURPLE
       - '&bthe next boss bar{segment:10}'
 
-      # this type will display 2 boss_bars for player
-      - - '&6&lappear with two line{stay:5}{progress:true}'
-        - '&b&lanother line, time remains [sec]s{stay:5}{progress:true}{update:1}'
-
   title_type_example:
     delay: 60s
     type: TITLE

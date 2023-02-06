@@ -6,7 +6,7 @@ ann-task-cancel: '&6已取消公告任务。'
 
 update:
   check: '&2检查更新中...'
-  has-update-line1: '&e你正在运行旧版本的 &2AdvancedAnnouncement&e(&b{0}&e)，新版本 &b{0} &e已经发布！'
+  has-update-line1: '&e你正在运行旧版本的 &2AdvancedAnnouncement&e(&b{0}&e)，新版本 &b{0} &e已经发布! '
   has-update-line2: '&e请前往 GitHub(或者 Gitee) 发布页下载最新的插件。'
   check-latest: '&2当前运行的插件版本是最新的版本。'
   check-exception: '&e检查更新时发生异常:'
@@ -26,9 +26,9 @@ load:
 
 command:
   permissionDeny: '&c你缺少权限 &e{0} &c来使用这个命令。'
-  invalidCommand: '&c命令错误，请输入''/aa help'' 查看帮助。'
-  invalidArgs: '&c参数错误，请输入 ''/aa help'' 查看帮助。'
-  playerOnly: '&c该命令只能由玩家执行！'
+  invalidCommand: '&c命令错误, 请输入''/aa help'' 查看帮助。'
+  invalidArgs: '&c参数错误, 请输入 ''/aa help'' 查看帮助。'
+  playerOnly: '&c该命令只能由玩家执行! '
   command-display-message: '&a你正在预览公告 &2{0}'
   command-display-not-found: '&c该公告不存在哦。'
   command-display-not-supported: '&c该公告不适合在控制台中预览~'
@@ -44,4 +44,3 @@ command:
     - '&2/aa &aparse &8- &6解析含颜色代码的字符串(用于测试用途)'
     - '&2/aa &abroadcast &8- &6广播一个公告'
     - '&2/aa &areload &8- &6重载插件'
-
