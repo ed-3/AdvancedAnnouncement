@@ -1,5 +1,5 @@
 ### AdvancedAnnouncement: Automatically announcement.
-
+[![Page Views Count](https://badges.toozhao.com/badges/01GYWAZ52JF155Z2GK2B572APH/green.svg)](https://badges.toozhao.com/stats/01GYWAZ52JF155Z2GK2B572APH "Get your own page views count badge on badges.toozhao.com")
 [简体中文](README_zh.md)
 
 #### Contents
