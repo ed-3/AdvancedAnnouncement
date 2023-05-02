@@ -74,7 +74,7 @@ public class AA_CommandExecutor implements CommandExecutor {
     @SubCmd("start")
     @PermissionRequirement("aa.command.start")
     @SuppressWarnings("unused")
-    void start() {
+    void start(CommandSender sender, String @NotNull [] args) {
         AnnounceRunnable runnable = AdvancedAnnouncement.getAnnounceRunnable();
         if (!runnable.isRunning()) {
             runnable.start();
@@ -84,7 +84,7 @@ public class AA_CommandExecutor implements CommandExecutor {
     @SubCmd("stop")
     @PermissionRequirement("aa.command.start")
     @SuppressWarnings("unused")
-    void stop() {
+    void stop(CommandSender sender, String @NotNull [] args) {
         AnnounceRunnable runnable = AdvancedAnnouncement.getAnnounceRunnable();
         if (runnable.isRunning()) {
             runnable.stop();

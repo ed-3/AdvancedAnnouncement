@@ -4,6 +4,7 @@ import me.ed333.plugin.advancedannouncement.AdvancedAnnouncement;
 import me.ed333.plugin.advancedannouncement.utils.LangUtils;
 import me.ed333.plugin.advancedannouncement.utils.TextHandler;
 import net.md_5.bungee.api.ChatMessageType;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 
 public class ActionBarTypeAnnouncement extends Announcement {
@@ -21,44 +23,49 @@ public class ActionBarTypeAnnouncement extends Announcement {
 
     @Override
     public boolean send(CommandSender sender) {
-        if (sender instanceof ConsoleCommandSender) {
-            sender.sendMessage(LangUtils.getLangText_withPrefix("command.command-display-not-supported"));
-        } else if (sender instanceof Player) {
-            double nextDelay = 0;
-            for (String rawText : content()) {
-                StringBuilder barText = new StringBuilder();
-                double stay = 5;
-                double delay = 0;
-                int lastIndex = 0;
+        AtomicBoolean result = new AtomicBoolean(false);
 
-                Matcher matcher = ActionBarPlaceholderRegex.getACTION_BAR_PLACEHOLDER_REGEX_MATCHER(rawText);
-                while (matcher.find()) {
-                    int start = matcher.start();
-                    int end = matcher.end();
-                    String placeholderStr = matcher.group();
-                    double timeSec = ActionBarPlaceholderRegex.getSec(placeholderStr);
-                    if (placeholderStr.matches(ActionBarPlaceholderRegex.STAY_SEC_REGEX_STRING)) {
-                        stay = timeSec;
-                    } else if (placeholderStr.matches(ActionBarPlaceholderRegex.DELAY_TO_NEXT_REGEX_STRING)) {
-                        delay = timeSec;
+        Bukkit.getScheduler().runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, () -> {
+            if (sender instanceof ConsoleCommandSender) {
+                sender.sendMessage(LangUtils.getLangText_withPrefix("command.command-display-not-supported"));
+            } else if (sender instanceof Player) {
+                double nextDelay = 0;
+                for (String rawText : content()) {
+                    StringBuilder barText = new StringBuilder();
+                    double stay = 5;
+                    double delay = 0;
+                    int lastIndex = 0;
+
+                    Matcher matcher = ActionBarPlaceholderRegex.getACTION_BAR_PLACEHOLDER_REGEX_MATCHER(rawText);
+                    while (matcher.find()) {
+                        int start = matcher.start();
+                        int end = matcher.end();
+                        String placeholderStr = matcher.group();
+                        double timeSec = ActionBarPlaceholderRegex.getSec(placeholderStr);
+                        if (placeholderStr.matches(ActionBarPlaceholderRegex.STAY_SEC_REGEX_STRING)) {
+                            stay = timeSec;
+                        } else if (placeholderStr.matches(ActionBarPlaceholderRegex.DELAY_TO_NEXT_REGEX_STRING)) {
+                            delay = timeSec;
+                        }
+                        barText.append(rawText, lastIndex, start);
+                        lastIndex = end;
                     }
-                    barText.append(rawText, lastIndex, start);
-                    lastIndex = end;
-                }
-                if (lastIndex < rawText.length()) {
-                    barText.append(rawText.substring(lastIndex));
-                }
+                    if (lastIndex < rawText.length()) {
+                        barText.append(rawText.substring(lastIndex));
+                    }
 
-                ActionBarRunnable abr = new ActionBarRunnable(barText.toString(), (Player) sender, nextDelay);
-                abr.runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, (long) ((stay + nextDelay - delay) * 20L));
-                nextDelay = nextDelay + stay + delay;
+                    ActionBarRunnable abr = new ActionBarRunnable(barText.toString(), (Player) sender, nextDelay);
+                    abr.runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, (long) ((stay + nextDelay - delay) * 20L));
+                    nextDelay = nextDelay + stay + delay;
+                }
+                result.set(true);
+            } else {
+                sender.sendMessage(LangUtils.getLangText_withPrefix("command.command-display-sender-not-known"));
+                result.set(false);
             }
-            return true;
-        } else {
-            sender.sendMessage(LangUtils.getLangText_withPrefix("command.command-display-sender-not-known"));
-            return false;
-        }
-        return false;
+        },0L);
+
+        return result.get();
     }
 
 

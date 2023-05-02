@@ -16,6 +16,8 @@ public class BossBarRunnable extends BukkitRunnable {
         this.bar = bar;
         this.sendTo = sendTo;
 
+        // time of this bar start to show
+        // when start time is smaller than 0, then appear immediately
         long startTime = (long) (bar.settings.nextDelay - (bar.settings.delaySec + bar.settings.stay)) * 20L;
         new BukkitRunnable() {
             @Override
@@ -24,6 +26,7 @@ public class BossBarRunnable extends BukkitRunnable {
             }
         }.runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, startTime < 0 ? 0 : startTime);
 
+        // deal update bar setting
         if (bar.settings.update != -1) {
             updateTask = new BukkitRunnable() {
                 @Override
@@ -35,6 +38,7 @@ public class BossBarRunnable extends BukkitRunnable {
             updateTask = null;
         }
 
+        // deal processing bar setting
         if (bar.settings.progress) {
             progressTask = new BukkitRunnable() {
                 double remain = bar.settings.stay;
