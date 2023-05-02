@@ -9,7 +9,7 @@ update:
   has-update-line1: '&e你正在运行旧版本的 &2AdvancedAnnouncement&e(&b{0}&e)，新版本 &b{0} &e已经发布! '
   has-update-line2: '&e请前往 GitHub(或者 Gitee) 发布页下载最新的插件。'
   check-latest: '&2当前运行的插件版本是最新的版本。'
-  check-exception: '&e检查更新时发生异常:'
+  check-exception: '&e检查更新时发生异常: '
 
 load:
   exception: '&e加载公告(&2名称: &b{0}&e)时发生严重错误: &c{1}'
@@ -23,6 +23,9 @@ load:
   preann-shown-type-equals: '&e预公告中展示类型和预公告类型相同(&2名称: &b{0}&e)，已跳过加载'
   preann-time-format-err: '&e预公告类型(&2名称: &b{0}&e)时间格式错误(&a{1}&e)，请使用 config.yml 中规定的时间格式：{2}'
 
+reload:
+  start: "&e重新加载中..."
+  done: "&a重载完毕!"
 
 command:
   permissionDeny: '&c你缺少权限 &e{0} &c来使用这个命令。'

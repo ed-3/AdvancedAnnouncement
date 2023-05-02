@@ -13,7 +13,6 @@ public class PlaceholderRegex {
     public static final String HEX_COLOR_PLACEHOLDER_REGEX_STRING = "\\{#[A-Fa-f0-9]{6}((,&[K-Ok-oRr])+)?\\}";
     public static final String GRADIENT_COLOR_PLACEHOLDER_REGEX_STRING = "\\{#[A-Fa-f0-9]{6}->#[A-Fa-f0-9]{6}((,&[K-Ok-oRr])+)?\\}";
     public static final String RAINBOW_PLACEHOLDER_REGEX_STRING = "\\{rainbow((,&[K-Ok-oRr])+)?\\}";
-    public static final String COMPONENT_NAME_REGEX_STRING = "[A-Za-z0-9-_]";
     public static final String COMPONENT_PLACEHOLDER_REGEX_STRING = "@[A-Za-z0-9-_]+@";
 
     public static @NotNull Pattern compilePattern(String regex) {
@@ -28,22 +27,6 @@ public class PlaceholderRegex {
         return getRegexMatcher(HEX_COLOR_CODE_REGEX_STRING, matchText);
     }
 
-    public static @NotNull Matcher getHEX_COLOR_PLACEHOLDER_MATCHER(String matchText) {
-        return getRegexMatcher(HEX_COLOR_PLACEHOLDER_REGEX_STRING, matchText);
-    }
-
-    public static @NotNull Matcher getGRADIENT_COLOR_PLACEHOLDER_MATCHER(String matchText) {
-        return getRegexMatcher(GRADIENT_COLOR_PLACEHOLDER_REGEX_STRING, matchText);
-    }
-
-    public static @NotNull Matcher getRAINBOW_PLACEHOLDER_MATCHER(String matchText) {
-        return getRegexMatcher(RAINBOW_PLACEHOLDER_REGEX_STRING, matchText);
-    }
-
-    public static @NotNull Matcher getCOMPONENT_NAME_REGEX_MATCHER(String matchText) {
-        return getRegexMatcher(COMPONENT_NAME_REGEX_STRING, matchText);
-    }
-
     public static @NotNull Matcher getCOMPONENT_PLACEHOLDER_MATCHER(String matchText) {
         return getRegexMatcher(COMPONENT_PLACEHOLDER_REGEX_STRING, matchText);
     }
@@ -54,9 +37,5 @@ public class PlaceholderRegex {
 
     public static @NotNull Matcher getMAGIC_CODE_MATCHER(String matchText) {
         return getRegexMatcher(MAGIC_CODE_REGEX_STRING, matchText);
-    }
-
-    public static @NotNull Matcher getLEGACY_CODE_MATCHER(String matchText) {
-        return getRegexMatcher(LEGACY_CODE_REGEX_STRING, matchText);
     }
 }

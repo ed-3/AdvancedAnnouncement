@@ -26,6 +26,9 @@ load:
   preann-shown-type-equals: '&eSkipped duplicated shown type. (&6name: &b{0}&e)'
   preann-time-format-err: '&eSkipped wrong date time(&2name: &b{0}&e, date: &a{1}&e), please use the specified format in config.yml: {2}'
 
+reload:
+  start: "&ereloading..."
+  done: "&adone!"
 
 command:
   permissionDeny: '&cyou do''t have permission ''{0}'' to run this command.'

@@ -3,7 +3,6 @@ package me.ed333.plugin.advancedannouncement.utils;
 import me.ed333.plugin.advancedannouncement.config.Config;
 import me.ed333.plugin.advancedannouncement.config.ConfigManager;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -15,7 +14,6 @@ public class LangUtils {
 
     public static void refreshLang() {
         langCfg = ConfigManager.getConfig("lang");
-        System.out.println("refresh lang: " + langCfg.getConfigFile());
     }
 
     public static @NotNull String parseLang_withPrefix(String path, Object @NotNull ... objects) {

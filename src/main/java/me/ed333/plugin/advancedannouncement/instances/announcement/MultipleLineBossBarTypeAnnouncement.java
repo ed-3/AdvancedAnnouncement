@@ -2,14 +2,9 @@ package me.ed333.plugin.advancedannouncement.instances.announcement;
 
 import me.ed333.plugin.advancedannouncement.AdvancedAnnouncement;
 import me.ed333.plugin.advancedannouncement.utils.LangUtils;
-import me.ed333.plugin.advancedannouncement.utils.TextHandler;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,10 +20,8 @@ public class MultipleLineBossBarTypeAnnouncement extends Announcement {
 
         for (String rawText : content()) {
             StringBuilder barText = new StringBuilder();
-            double update = -1;
-            boolean progress = false;
-            BarColor barColor = BarColor.PURPLE;
-            BarStyle style = BarStyle.SOLID;
+            BossBarTextSettings settings = new BossBarTextSettings();
+            settings.stay = stay;
 
             int lastIndex = 0;
             Matcher placeHolderMatcher = BossBarPlaceholderRegex.getPLACEHOLDER_REGEX_MATCHER(rawText);
@@ -45,14 +38,15 @@ public class MultipleLineBossBarTypeAnnouncement extends Announcement {
 //                    continue;
 //                } else
                 if (placeHolder.matches(BossBarPlaceholderRegex.UPDATE_PLACEHOLDER_REGEX_STRING)) {
-                    update = BossBarPlaceholderRegex.getSec(placeHolder);
+                    settings.update = BossBarPlaceholderRegex.getSec(placeHolder);
                 } else if (placeHolder.matches(BossBarPlaceholderRegex.PROGRESS_PLACEHOLDER_REGEX_STRING)) {
-                    progress = BossBarPlaceholderRegex.getBool(placeHolder);
+                    settings.progress = BossBarPlaceholderRegex.getBool(placeHolder);
                 } else if (placeHolder.matches(BossBarPlaceholderRegex.COLOR_PLACEHOLDER_REGEX_STRING)) {
-                    barColor = BossBarPlaceholderRegex.getBarColor(placeHolder);
+                    settings.barColor = BossBarPlaceholderRegex.getBarColor(placeHolder);
                 } else if (placeHolder.matches(BossBarPlaceholderRegex.SEGMENT_PLACEHOLDER_REGEX_STRING)) {
-                    style = BossBarPlaceholderRegex.getBarStyle(placeHolder);
+                    settings.style = BossBarPlaceholderRegex.getBarStyle(placeHolder);
                 }
+
                 barText.append(rawText, lastIndex, start);
                 lastIndex = end;
             }
@@ -60,8 +54,7 @@ public class MultipleLineBossBarTypeAnnouncement extends Announcement {
                 barText.append(rawText.substring(lastIndex));
             }
 
-            double nextDelay = 0;
-            bars.add(new AdvancedBossBar(barText.toString(), barColor, style, nextDelay, update, nextDelay, stay, progress));
+            bars.add(new AdvancedBossBar(barText.toString(), settings));
         }
     }
 
@@ -71,63 +64,12 @@ public class MultipleLineBossBarTypeAnnouncement extends Announcement {
             sender.sendMessage(LangUtils.getLangText_withPrefix("command.command-display-not-supported"));
             return false;
         } else if (sender instanceof Player) {
-            bars.forEach(bar -> new BossBarRunnable(bar.clone(), (Player) sender).runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, (long) (bar.stay * 20L)));
+            bars.forEach(bar -> new BossBarRunnable(bar, (Player) sender)
+                    .runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, (long) (bar.settings.stay * 20L)));
             return true;
         } else {
             sender.sendMessage(LangUtils.getLangText_withPrefix("command.command-display-sender-not-known"));
             return false;
-        }
-    }
-
-    private static class BossBarRunnable extends BukkitRunnable {
-        private final AdvancedBossBar bar;
-        private final Player sendTo;
-        private final BukkitTask updateTask;
-        private final BukkitTask progressTask;
-        private BossBarRunnable(AdvancedBossBar bar, Player sendTo) {
-            this.bar = bar;
-            this.sendTo = sendTo;
-
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    bar.bar.addPlayer(sendTo);
-                }
-            }.runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, 0);
-
-            if (bar.update != -1) {
-                updateTask = new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        bar.bar.setTitle(TextHandler.handleColor(bar.title, sendTo));
-                    }
-                }.runTaskTimerAsynchronously(AdvancedAnnouncement.INSTANCE, 0, (long) (bar.update * 20L));
-            } else {
-                updateTask = null;
-            }
-
-            if (bar.progress) {
-                progressTask = new BukkitRunnable() {
-                    double remain = bar.stay;
-                    double progress = 1.0;
-
-                    @Override
-                    public void run() {
-                        progress = remain / bar.stay;
-                        remain = remain - 0.05; // 0.05 is 1 tick.
-                        bar.bar.setProgress(progress);
-                    }
-                }.runTaskTimerAsynchronously(AdvancedAnnouncement.INSTANCE, 0, 1);
-            } else {
-                progressTask = null;
-            }
-        }
-
-        @Override
-        public void run() {
-            if (updateTask != null) updateTask.cancel();
-            if (progressTask != null) progressTask.cancel();
-            bar.bar.removePlayer(sendTo);
         }
     }
 }

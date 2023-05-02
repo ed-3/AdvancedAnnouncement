@@ -28,26 +28,6 @@ public class BossBarPlaceholderRegex {
         return getRegexMatcher(PLACEHOLDER_REGEX_STRING, matchText);
     }
 
-    public static @NotNull Matcher getSTAY_PLACEHOLDER_REGEX_MATCHER(String matchText) {
-        return getRegexMatcher(STAY_PLACEHOLDER_REGEX_STRING, matchText);
-    }
-
-    public static @NotNull Matcher getCOLOR_PLACEHOLDER_REGEX_MATCHER(String matchText) {
-        return getRegexMatcher(COLOR_PLACEHOLDER_REGEX_STRING, matchText);
-    }
-
-    public static @NotNull Matcher getUPDATE_PLACEHOLDER_REGEX_MATCHER(String matchText) {
-        return getRegexMatcher(UPDATE_PLACEHOLDER_REGEX_STRING, matchText);
-    }
-
-    public static @NotNull Matcher getSEGMENT_PLACEHOLDER_REGEX_MATCHER(String matchText) {
-        return getRegexMatcher(SEGMENT_PLACEHOLDER_REGEX_STRING, matchText);
-    }
-
-    public static @NotNull Matcher getDELAY_PLACEHOLDER_REGEX_MATCHER(String matchText) {
-        return getRegexMatcher(DELAY_PLACEHOLDER_REGEX_STRING, matchText);
-    }
-
     protected static double getSec(@NotNull String matchText) {
         double result = 0.0;
         Matcher matcher = getRegexMatcher("(0|[1-9])(\\.\\d)?", matchText);

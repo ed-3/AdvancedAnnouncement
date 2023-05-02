@@ -7,7 +7,6 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,9 +24,9 @@ public class TextHandler {
             }
         }
 
-        Matcher colorMatcher = PlaceholderRegex.getCOLOR_PLACEHOLDER_MATCHER(content);
         int lastIndex = 0;
         String lastCode = null;
+        Matcher colorMatcher = PlaceholderRegex.getCOLOR_PLACEHOLDER_MATCHER(content);
 
         while (colorMatcher.find()) {
             int start = colorMatcher.start();
@@ -37,52 +36,7 @@ public class TextHandler {
                 sb.append(content, lastIndex, start);
             } else {
                 String textBetween = content.substring(lastIndex, start);
-                StringBuilder magicCodes = new StringBuilder();
-                Matcher magicCodeMatcher = PlaceholderRegex.getMAGIC_CODE_MATCHER(lastCode);
-                while (magicCodeMatcher.find()) {
-                    magicCodes.append(magicCodeMatcher.group());
-                }
-
-                if (lastCode.matches(PlaceholderRegex.HEX_COLOR_PLACEHOLDER_REGEX_STRING)) {
-                    Matcher matcher = PlaceholderRegex.getHEX_COLOR_CODE_MATCHER(lastCode);
-                    String colorCode ="#FFFFFF";
-                    if (matcher.find()) {
-                        colorCode = matcher.group();
-                    }
-                    ChatColor chatColor;
-                    Color color = new Color(Integer.parseInt(colorCode.substring(1), 16));
-                    if (legacy) {
-                        chatColor = LegacyColor.getLegacyClosestColor(color);
-                        if (chatColor == null) chatColor = ChatColor.WHITE;
-                    } else {
-                        chatColor = ChatColor.of(color);
-                    }
-
-                    textBetween = chatColor + ChatColor.translateAlternateColorCodes('&', magicCodes.toString()) + textBetween;
-                } else if (lastCode.matches(PlaceholderRegex.GRADIENT_COLOR_PLACEHOLDER_REGEX_STRING)) {
-                    Matcher hexMatcher = PlaceholderRegex.getHEX_COLOR_CODE_MATCHER(lastCode);
-                    String fromCode = null;
-                    String toCode = null;
-
-                    while (hexMatcher.find()) {
-                        if (fromCode == null) {
-                            fromCode = hexMatcher.group();
-                        } else {
-                            toCode = hexMatcher.group();
-                        }
-                    }
-
-                    if (fromCode != null && toCode != null) {
-                        Color fromColor = new Color(Integer.parseInt(fromCode.substring(1), 16));
-                        Color toColor = new Color(Integer.parseInt(toCode.substring(1), 16));
-                        textBetween = createGradientString(textBetween, fromColor, toColor, legacy, magicCodes.toString());
-                    }
-                } else if (lastCode.matches(PlaceholderRegex.RAINBOW_PLACEHOLDER_REGEX_STRING)) {
-                    textBetween = createRainbowGradient(textBetween, legacy, magicCodes.toString());
-                } else if (lastCode.matches(PlaceholderRegex.LEGACY_CODE_REGEX_STRING)) {
-                    textBetween = ChatColor.translateAlternateColorCodes('&', lastCode + textBetween);
-                }
-                sb.append(textBetween);
+                sb.append(dealColor(textBetween, lastCode, legacy));
             }
             lastCode = colorMatcher.group();
             lastIndex = end;
@@ -93,51 +47,7 @@ public class TextHandler {
                 sb.append(content, lastIndex, content.length());
             } else {
                 String textBetween = content.substring(lastIndex);
-                StringBuilder magicCodes = new StringBuilder();
-                Matcher magicCodeMatcher = PlaceholderRegex.getMAGIC_CODE_MATCHER(lastCode);
-                while (magicCodeMatcher.find()) {
-                    magicCodes.append(magicCodeMatcher.group());
-                }
-
-                if (lastCode.matches(PlaceholderRegex.HEX_COLOR_PLACEHOLDER_REGEX_STRING)) {
-                    Matcher matcher = PlaceholderRegex.getHEX_COLOR_CODE_MATCHER(lastCode);
-                    String colorCode ="#FFFFFF";
-                    if (matcher.find()) {
-                        colorCode = matcher.group();
-                    }
-                    ChatColor chatColor;
-                    Color color = new Color(Integer.parseInt(colorCode.substring(1), 16));
-                    if (legacy) {
-                        chatColor = LegacyColor.getLegacyClosestColor(color);
-                        if (chatColor == null) chatColor = ChatColor.WHITE;
-                    } else {
-                        chatColor = ChatColor.of(color);
-                    }
-
-                    textBetween = chatColor + ChatColor.translateAlternateColorCodes('&', magicCodes.toString()) + textBetween;
-                } else if (lastCode.matches(PlaceholderRegex.GRADIENT_COLOR_PLACEHOLDER_REGEX_STRING)) {
-                    Matcher hexMatcher = PlaceholderRegex.getHEX_COLOR_CODE_MATCHER(lastCode);
-                    String fromCode = null;
-                    String toCode = null;
-                    while (hexMatcher.find()) {
-                        if (fromCode == null) {
-                            fromCode = hexMatcher.group();
-                        } else {
-                            toCode = hexMatcher.group();
-                        }
-                    }
-                    if (fromCode != null && toCode != null) {
-                        Color fromColor = new Color(Integer.parseInt(fromCode.substring(1), 16));
-                        Color toColor = new Color(Integer.parseInt(toCode.substring(1), 16));
-
-                        textBetween = createGradientString(textBetween, fromColor, toColor, legacy, magicCodes.toString());
-                    }
-                } else if (lastCode.matches(PlaceholderRegex.RAINBOW_PLACEHOLDER_REGEX_STRING)) {
-                    textBetween = createRainbowGradient(textBetween, legacy, magicCodes.toString());
-                } else if (lastCode.matches(PlaceholderRegex.LEGACY_CODE_REGEX_STRING)) {
-                    textBetween = ChatColor.translateAlternateColorCodes('&', lastCode + textBetween);
-                }
-                sb.append(textBetween);
+                sb.append(dealColor(textBetween, lastCode, legacy));
             }
         }
         if (ConfigKeys.PLACEHOLDER_API_SUPPORT) {
@@ -227,5 +137,59 @@ public class TextHandler {
             result.addExtra(coloredPlainText);
         }
         return result;
+    }
+    
+    private static String dealColor(String input, String lastCode, boolean legacy) {
+        // deal magic code
+        StringBuilder magicCodes = new StringBuilder();
+        Matcher magicCodeMatcher = PlaceholderRegex.getMAGIC_CODE_MATCHER(lastCode);
+        while (magicCodeMatcher.find()) {
+            magicCodes.append(magicCodeMatcher.group());
+        }
+
+        // deal hex color
+        if (lastCode.matches(PlaceholderRegex.HEX_COLOR_PLACEHOLDER_REGEX_STRING)) {
+            Matcher matcher = PlaceholderRegex.getHEX_COLOR_CODE_MATCHER(lastCode);
+            String colorCode ="#FFFFFF";
+            if (matcher.find()) {
+                colorCode = matcher.group();
+            }
+            ChatColor chatColor;
+            Color color = new Color(Integer.parseInt(colorCode.substring(1), 16));
+            if (legacy) {
+                chatColor = LegacyColor.getLegacyClosestColor(color);
+                if (chatColor == null) chatColor = ChatColor.WHITE;
+            } else {
+                chatColor = ChatColor.of(color);
+            }
+
+            input = chatColor + ChatColor.translateAlternateColorCodes('&', magicCodes.toString()) + input;
+
+        } else if (lastCode.matches(PlaceholderRegex.GRADIENT_COLOR_PLACEHOLDER_REGEX_STRING)) {
+            // deal gradient color
+            Matcher hexMatcher = PlaceholderRegex.getHEX_COLOR_CODE_MATCHER(lastCode);
+            String fromCode = null;
+            String toCode = null;
+            while (hexMatcher.find()) {
+                if (fromCode == null) {
+                    fromCode = hexMatcher.group();
+                } else {
+                    toCode = hexMatcher.group();
+                }
+            }
+            if (fromCode != null && toCode != null) {
+                Color fromColor = new Color(Integer.parseInt(fromCode.substring(1), 16));
+                Color toColor = new Color(Integer.parseInt(toCode.substring(1), 16));
+
+                input = createGradientString(input, fromColor, toColor, legacy, magicCodes.toString());
+            }
+        } else if (lastCode.matches(PlaceholderRegex.RAINBOW_PLACEHOLDER_REGEX_STRING)) {
+            // deal rainbow color
+            input = createRainbowGradient(input, legacy, magicCodes.toString());
+        } else if (lastCode.matches(PlaceholderRegex.LEGACY_CODE_REGEX_STRING)) {
+            // deal legacy color
+            input = ChatColor.translateAlternateColorCodes('&', lastCode + input);
+        }
+        return input;
     }
 }

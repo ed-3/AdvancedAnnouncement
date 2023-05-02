@@ -2,7 +2,6 @@ package me.ed333.plugin.advancedannouncement.instances.announcement;
 
 import me.ed333.plugin.advancedannouncement.AdvancedAnnouncement;
 import me.ed333.plugin.advancedannouncement.utils.LangUtils;
-import me.ed333.plugin.advancedannouncement.utils.ProtocolUtils;
 import me.ed333.plugin.advancedannouncement.utils.TextHandler;
 import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.command.CommandSender;
@@ -24,7 +23,6 @@ public class ActionBarTypeAnnouncement extends Announcement {
     public boolean send(CommandSender sender) {
         if (sender instanceof ConsoleCommandSender) {
             sender.sendMessage(LangUtils.getLangText_withPrefix("command.command-display-not-supported"));
-            return false;
         } else if (sender instanceof Player) {
             double nextDelay = 0;
             for (String rawText : content()) {
@@ -60,6 +58,7 @@ public class ActionBarTypeAnnouncement extends Announcement {
             sender.sendMessage(LangUtils.getLangText_withPrefix("command.command-display-sender-not-known"));
             return false;
         }
+        return false;
     }
 
 

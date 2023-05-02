@@ -2,6 +2,11 @@
 
 [简体中文](README_zh.md)
 
+[MCBBS](https://www.mcbbs.net/forum.php?mod=viewthread&tid=1420798&page=1&extra=#pid27960648)
+[SPIGOT](https://www.spigotmc.org/resources/advancedannouncement-automatically-announce-new-types-added.107574/)
+
+![aa_preview](https://camo.githubusercontent.com/99ffa8fd8aace3339b68c6aeb9848b08c7a491a299f0b944697daae6d98762df/68747470733a2f2f6261646765732e746f6f7a68616f2e636f6d2f6261646765732f3031475957415a35324a463135355a32474b32423537324150482f677265656e2e737667)
+
 #### Contents
 + [Announcement types](#Announcement-types)
 + [Commands](#Command)

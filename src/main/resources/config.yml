@@ -8,12 +8,14 @@ translation: zh_CN
 updateCheck: true
 
 # update source for check update
-# set to 0 is Gitee (for China user)
+# set to 0 is Gitee (faster for China user)
 # set to 1 is GitHub
 updateSource: 1
 
-# use bStats to collect some information of your server
+# use bStats to collect some information of your server.
 # This information helps us to improve the plugin.
+# Your information will be sent anonymously to bstats:
+# https://bstats.org/plugin/bukkit/AdvancedAnnouncements/17508
 bStats: true
 
 # defines whether an announcement should be printed into console
@@ -29,5 +31,5 @@ date-format: yyyy-MM-dd HH:mm:ss
 # random announcement used.
 random: true
 
-# debug test
+# debug, open when necessary.
 debug: false

@@ -3,7 +3,6 @@ package me.ed333.plugin.advancedannouncement.config;
 import me.ed333.plugin.advancedannouncement.utils.GlobalConsoleSender;
 import me.ed333.plugin.advancedannouncement.utils.Streams;
 import org.apache.commons.lang.Validate;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,7 +16,6 @@ import java.nio.file.Files;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 public abstract class Config {
     private final @NotNull File configFile;
@@ -100,6 +98,7 @@ public abstract class Config {
         }
     }
 
+    // not supported to set a section to null
     public @NotNull String saveToStr_withComment() {
         StringBuilder sb = new StringBuilder();
         Map<Integer, String> toStringMap = new LinkedHashMap<>();

@@ -1,8 +1,10 @@
 package me.ed333.plugin.advancedannouncement.instances.announcement;
 
+import me.ed333.plugin.advancedannouncement.AdvancedAnnouncement;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,11 +60,16 @@ public abstract class Announcement {
     }
 
     public void broadcast() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            String permissionName = permissionName();
-            if (permissionName != null && !player.hasPermission(permissionName)) continue;
-            send(player);
-        }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    String permissionName = permissionName();
+                    if (permissionName != null && !player.hasPermission(permissionName)) continue;
+                    send(player);
+                }
+            }
+        }.runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, 1L);
     }
 
     public abstract boolean send(CommandSender sender);

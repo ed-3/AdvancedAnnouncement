@@ -8,12 +8,11 @@ import me.ed333.plugin.advancedannouncement.runnables.PreAnnRunnable;
 import me.ed333.plugin.advancedannouncement.utils.GlobalConsoleSender;
 import me.ed333.plugin.advancedannouncement.utils.LangUtils;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 
 public final class AdvancedAnnouncement extends JavaPlugin {
-    public static BukkitTask announceTask = null;
+    private static AnnounceRunnable announceRunnable = null;
 
     public static File DATA_FOLDER;
     public static AdvancedAnnouncement INSTANCE;
@@ -35,7 +34,9 @@ public final class AdvancedAnnouncement extends JavaPlugin {
             Bootstrap.collectData();
         }
 
-        announceTask = new AnnounceRunnable().runTaskLaterAsynchronously(this, 600);
+        announceRunnable = new AnnounceRunnable();
+        announceRunnable.start();
+
         GlobalConsoleSender.setDEBUG(ConfigKeys.DEBUG);
         GlobalConsoleSender.info(LangUtils.getLangText("ann-task-start"));
 
@@ -51,9 +52,12 @@ public final class AdvancedAnnouncement extends JavaPlugin {
         INSTANCE = null;
 
         PreAnnRunnable.preAnnRunnableList.forEach(PreAnnRunnable::cancel);
-        if (announceTask != null) {
-            announceTask.cancel();
-            GlobalConsoleSender.info(LangUtils.getLangText("ann-task-cancel"));
+        if (announceRunnable != null) {
+            announceRunnable.cancel();
         }
+    }
+
+    public static AnnounceRunnable getAnnounceRunnable() {
+        return announceRunnable;
     }
 }

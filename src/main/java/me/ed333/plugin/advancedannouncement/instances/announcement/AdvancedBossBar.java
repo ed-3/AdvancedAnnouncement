@@ -6,58 +6,66 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class AdvancedBossBar implements Cloneable {
-    BossBar bar;
+import java.util.HashMap;
+import java.util.Map;
+
+public class AdvancedBossBar {
+    final BossBar bar;
     final String title;
-    final BarColor color;
-    final BarStyle style;
-    final double update;
-    final double stay;
-    final double delay;
-    final boolean progress;
-    final double nextDelay;
+    final BossBarTextSettings settings;
 
+    AdvancedBossBar(@NotNull String title, @NotNull BossBarTextSettings settings) {
+        if (!BarManager.hasBar(title)) {
+            bar = Bukkit.createBossBar(TextHandler.handleColor(title, null), settings.barColor, settings.style);
+            BarManager.barMap.put(title.hashCode(), bar);
+        } else {
+            bar = BarManager.forTitle(title);
+        }
+
+        this.settings = settings;
+        this.title = title;
+    }
+    @Deprecated
     AdvancedBossBar(
             @NotNull String title,
             @NotNull BarColor color,
             @NotNull BarStyle style,
-            double delay,
+            double delaySec,
             double update,
             double nextDelay,
             double stay,
             boolean progress
     ) {
-        bar = Bukkit.createBossBar(TextHandler.handleColor(title, null), color, style);
-        this.color = color;
-        this.style = style;
-        this.title = TextHandler.handleColor(title, null);
-        this.update = update;
-        this.stay = stay;
-        this.delay = delay;
-        this.progress = progress;
-        this.nextDelay = nextDelay;
+        if (!BarManager.hasBar(title)) {
+            bar = Bukkit.createBossBar(TextHandler.handleColor(title, null), color, style);
+            BarManager.barMap.put(title.hashCode(), bar);
+        } else {
+            bar = BarManager.forTitle(title);
+        }
+
+        this.title = title;
+        this.settings = new BossBarTextSettings(stay, delaySec, nextDelay, update, progress, color, style);
     }
 
-    @Override
-    public String toString() {
-        return "AdvancedBossBar{" + "bar=" + bar +
-                ", title='" + title + '\'' +
-                ", update=" + update +
-                ", stay=" + stay +
-                ", delay=" + delay +
-                ", progress=" + progress +
-                '}';
-    }
+    private static class BarManager {
+        private final static Map<Integer, BossBar> barMap = new HashMap<>();
 
-    @Override
-    public @NotNull AdvancedBossBar clone() {
-        try {
-            AdvancedBossBar clone = (AdvancedBossBar) super.clone();
-            clone.bar = Bukkit.createBossBar(title, color, style);
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
+        private static @Nullable BossBar forTitle(String title) {
+            return forHash(title.hashCode());
+        }
+
+        private static @Nullable BossBar forHash(int hash) {
+            return barMap.get(hash);
+        }
+
+        private static boolean hasBar(String text) {
+            return hasBar(text.hashCode());
+        }
+
+        private static boolean hasBar(int hash) {
+            return barMap.containsKey(hash);
         }
     }
 }

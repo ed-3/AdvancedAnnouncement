@@ -22,14 +22,6 @@ public class ActionBarPlaceholderRegex {
         return getRegexMatcher(ACTION_BAR_PLACEHOLDER_REGEX_STRING, matchText);
     }
 
-    public static @NotNull Matcher getDELAY_TO_NEXT_REGEX_MATCHER(String matchText) {
-        return getRegexMatcher(DELAY_TO_NEXT_REGEX_STRING, matchText);
-    }
-
-    public static @NotNull Matcher getSTAY_SEC_REGEX_MATCHER(String matchText) {
-        return getRegexMatcher(STAY_SEC_REGEX_STRING, matchText);
-    }
-
     protected static double getSec(@NotNull String matchText) {
         double result = 0.0;
         Matcher matcher = getRegexMatcher("(0|[1-9])(\\.\\d)?", matchText);

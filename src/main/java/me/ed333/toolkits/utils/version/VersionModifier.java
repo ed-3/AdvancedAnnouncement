@@ -11,11 +11,6 @@ public class VersionModifier {
         this.version = version;
     }
 
-    public VersionModifier(@NotNull ModifierEnum modifier, int version) {
-        this.modifierName = modifier.getName();
-        this.version = version;
-    }
-
     public String getModifierName() {
         return this.modifierName;
     }

@@ -1,43 +1,31 @@
 package me.ed333.plugin.advancedannouncement;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.ParseException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import me.ed333.plugin.advancedannouncement.config.Config;
-import me.ed333.plugin.advancedannouncement.config.PluginConfig;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
-
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
+import me.ed333.plugin.advancedannouncement.config.Config;
 import me.ed333.plugin.advancedannouncement.config.ConfigManager;
-import me.ed333.plugin.advancedannouncement.instances.announcement.ActionBarTypeAnnouncement;
-import me.ed333.plugin.advancedannouncement.instances.announcement.Announcement;
-import me.ed333.plugin.advancedannouncement.instances.announcement.AnnouncementManager;
-import me.ed333.plugin.advancedannouncement.instances.announcement.AnnouncementType;
-import me.ed333.plugin.advancedannouncement.instances.announcement.BossBarTypeAnnouncement;
-import me.ed333.plugin.advancedannouncement.instances.announcement.ChatTypeAnnouncement;
-import me.ed333.plugin.advancedannouncement.instances.announcement.MultipleLineBossBarTypeAnnouncement;
-import me.ed333.plugin.advancedannouncement.instances.announcement.PreTypeAnnouncement;
-import me.ed333.plugin.advancedannouncement.instances.announcement.TitleTypeAnnouncement;
+import me.ed333.plugin.advancedannouncement.config.PluginConfig;
+import me.ed333.plugin.advancedannouncement.instances.announcement.*;
 import me.ed333.plugin.advancedannouncement.instances.component.TextComponentBlock;
 import me.ed333.plugin.advancedannouncement.runnables.PreAnnRunnable;
 import me.ed333.plugin.advancedannouncement.utils.GlobalConsoleSender;
 import me.ed333.plugin.advancedannouncement.utils.LangUtils;
 import me.ed333.plugin.advancedannouncement.utils.TimeHandler;
-import me.ed333.toolkits.utils.http.HttpRequest;
-import me.ed333.toolkits.utils.http.HttpResponse;
 import me.ed333.toolkits.utils.version.InvalidVersionException;
 import me.ed333.toolkits.utils.version.Version;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Bootstrap {
 
@@ -115,7 +103,7 @@ public class Bootstrap {
         metrics.addCustomChart(pie);
     }
 
-    static void loadComponentBlock() {
+    public static void loadComponentBlock() {
         YamlConfiguration componentCfg = ConfigManager.getConfig("components").getConfiguration();
         for (String key : componentCfg.getKeys(false)) {
             if (TextComponentBlock.blocks.containsKey(key)) continue;
@@ -143,10 +131,33 @@ public class Bootstrap {
             updateUrl = "https://gitee.com/api/v5/repos/ed3/advanced-announcement/releases/latest";
         }
         JsonParser parser = new JsonParser();
-        HttpRequest request = new HttpRequest();
+
         try {
-            HttpResponse response = request.send(updateUrl);
-            JsonObject object = parser.parse(response.getBody()).getAsJsonObject();
+            // make http request
+            URL url = new URL(updateUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setReadTimeout(5000);
+            connection.setConnectTimeout(5000);
+            int statusCode = connection.getResponseCode();
+            InputStream inStream = connection.getInputStream();
+            InputStreamReader inReader = new InputStreamReader(inStream);
+            BufferedReader reader = new BufferedReader(inReader);
+            String lines;
+            StringBuilder responseBody = new StringBuilder();
+            while ((lines = reader.readLine()) != null) {
+                responseBody.append(lines);
+            }
+            reader.close();
+            inReader.close();
+            inStream.close();
+
+            if (statusCode != 200) {
+                GlobalConsoleSender.warn(LangUtils.getLangText("update.check-exception") + "HTTP: " + statusCode);
+                return;
+            }
+
+            JsonObject object = parser.parse(responseBody.toString()).getAsJsonObject();
             String tag = object.get("tag_name").getAsString();
             Version latestVer = Version.parse(tag);
             Version pluginVer = Version.parse(AdvancedAnnouncement.INSTANCE.getDescription().getVersion());
@@ -160,11 +171,10 @@ public class Bootstrap {
         } catch (IOException e) {
             GlobalConsoleSender.warn(LangUtils.getLangText("update.check-exception"));
             e.printStackTrace();
-        } catch (InvalidVersionException ignored) {
-        }
+        } catch (InvalidVersionException ignored) {}
     }
 
-    static void loadAnnouncements() {
+    public static void loadAnnouncements() {
         ConfigurationSection announceCfg = ConfigManager.getConfig("announcements").getConfiguration().getConfigurationSection("announcements");
 
         int index = 0;

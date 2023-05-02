@@ -34,6 +34,7 @@ json_example:
   type: JSON
   # Suggest website: https://minecraft.tools/en/json_text.php
   # example json msg is available on minecraft 1.15+
+  # onClick and hover-value can use Json text
   text: |-
     {
       "text": "This is an example Json text.",
@@ -44,6 +45,3 @@ json_example:
       },
       "insertion": "suggest text example"
     }
-
-  # onClick and hover-value can use Json text
-  # SO PLEASE DO NOT WRITE THESE SECTIONS.
