@@ -24,12 +24,10 @@ jobs:
           java-version: '8'
       - name: Configure Git User Details
         run: git config --global user.email "actions@github.com" && git config --global user.name "Github Actions"
-      - name: Apply Patches
-        run: ./gradlew applyPatches
-      - name: Build
+      - name: Build Jar
         run: ./gradlew clean jar
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: Folia Artifact
+          name: Artifact
           path: build/libs/AdvancedAnnouncement-*.jar
