@@ -6,7 +6,8 @@
 [SPIGOT](https://www.spigotmc.org/resources/advancedannouncement-automatically-announce-new-types-added.107574/)
 
 ![aa_preview](https://camo.githubusercontent.com/99ffa8fd8aace3339b68c6aeb9848b08c7a491a299f0b944697daae6d98762df/68747470733a2f2f6261646765732e746f6f7a68616f2e636f6d2f6261646765732f3031475957415a35324a463135355a32474b32423537324150482f677265656e2e737667)
-![aa_release](https://img.shields.io/github/v/release/ed-3/AdvancedAnnouncement?color=00ff00&label=release&style=for-the-badge)
+![aa_buildState](https://img.shields.io/github/actions/workflow/status/ed-3/AdvancedAnnouncement/main.yml?label=build)
+![aa_release](https://img.shields.io/github/v/release/ed-3/AdvancedAnnouncement?label=latest%20release)
 
 ## 目录
 + [公告类型表](#公告类型表)
@@ -14,6 +15,7 @@
 + [所有可用的占位符表](#所有可用的占位符表)
 + [使用 '/aa parse' 解析字符串](#使用-'/aa-parse'-解析字符串)
 + [创建一个公告](#创建公告)
++ [使用 RGB 颜色](#使用-RGB-颜色代码)
 + [图片效果](#图片效果)
   + [CHAT 类型](#CHAT-类型)
   + [ACTION_BAR 类型](#ACTION_BAR-类型)
@@ -83,8 +85,8 @@ annName:
 > 如果你的服务器版本低于了 1.16, 那么推荐使用原版颜色代码。尽管插件对低版本做了兼容<br/>
 > (它会自动将 RGB 颜色替换成与原版最接近的颜色), 仍然不建议在低版本服务器中使用 RGB 颜色代码
 
-+ ### RGB 颜色  
-格式：`{<Color>[,<arg1>,<arg2>,...]}`，
+### RGB 颜色  
+格式：`{<Color>[,<arg1>,<arg2>,...]}`<br/>
 其中 `[,<arg1>,<arg2>,...]` 是一个可选择项目，它代表该文本是否使用 **加粗字体** _斜体_ 等等
 可同时设置多个来达到不同的效果
 
@@ -96,18 +98,18 @@ annName:
   3. `{#00abcd,&l,&n}aaaa` 加粗和下划线的RGB颜色文本
      + 效果: <br/>![rgb-normal-bolded-underlined](docs/images/rgb-example/rgb-normal-bolded-underlined.JPG)
 
-+ ### RGB 渐变色
-格式 `{<Color1>-><Color2>[,<arg1>,<arg2>,...]}`，与上面介绍的一样，
-`[,<arg1>,<arg2>,...]` 是一个可选择项目，它代表该文本是否使用 **加粗字体** _斜体_ 等等
+### RGB 渐变色
+格式 `{<Color1>-><Color2>[,<arg1>,<arg2>,...]}`，<br/>
+与上面介绍的一样，`[,<arg1>,<arg2>,...]` 是一个可选择项目，它代表该文本是否使用 **加粗字体** _斜体_ 等等
 可同时设置多个来达到不同的效果
 
 下面是示例:
   1. `{#00abcd->#123456}123456789987654321`
      + 效果: <br/> ![gradient-example](docs/images/rgb-example/gradient-example.JPG)
 
-+ ### RGB 彩虹渐变色
-格式 `{rainbow[,<arg1>,<arg2>,...]}`，与上面介绍的一样，
-`[,<arg1>,<arg2>,...]` 是一个可选择项目，它代表该文本是否使用 **加粗字体** _斜体_ 等等
+### RGB 彩虹渐变色
+格式 `{rainbow[,<arg1>,<arg2>,...]}`，<br/>
+与上面介绍的一样，`[,<arg1>,<arg2>,...]` 是一个可选择项目，它代表该文本是否使用 **加粗字体** _斜体_ 等等
 可同时设置多个来达到不同的效果
 
 下面是示例:
@@ -115,23 +117,23 @@ annName:
     + 效果: <br/> ![gradient-example](docs/images/rgb-example/rainbow.JPG)
 
 ## 图片效果
-+ #### CHAT 类型
+### CHAT 类型
   ![chatType.gif](https://s2.loli.net/2023/01/23/mszgIDpcWUR6TAn.gif)
 
-+ #### ACTION_BAR 类型
+### ACTION_BAR 类型
   ![actionBarType.gif](https://s2.loli.net/2023/01/23/F2qKZnX1u8GcCx5.gif)
 
-+ #### BOSS_BAR 类型
+### BOSS_BAR 类型
   ![bossBarType.gif](https://s2.loli.net/2023/01/23/iZnydepk68mOgzM.gif)
 
-+ #### TITLE 类型
+### TITLE 类型
   ![titleType.gif](https://s2.loli.net/2023/01/23/gmNuj3ShGzpB5DK.gif)
 
-+ #### MULTIPLE_LINE_BOSS_BAR 类型
+### MULTIPLE_LINE_BOSS_BAR 类型
   **_自 1.0.2 版本起_** 加入了这个类型
   ![multipleBossBar.gif](https://s2.loli.net/2023/01/28/9TIz2WCZPnBaocS.gif)
 
-+ #### PRE_ANNOUNCE 类型
+### PRE_ANNOUNCE 类型
   PRE_ANNOUNCE 类型公告当到达规定时间的时候，**_会以上述 5 种类型去进行显示_**。
 
 
@@ -139,4 +141,4 @@ annName:
 由于配置内注释量有点大，请移步对应文件下的路径查看。
 + [config.yml](docs/config.yml_CN.md)
 + [announcements.yml](docs/announcements.yml_CN.md)
-+ [announcements.yml](docs/announcements.yml_CN.md)
++ [components.yml](docs/components.yml_CN.md)
