@@ -7,7 +7,7 @@ announcements:
     # delay to the next announcement
     # use parameter after a number to represent delay time.
     # examples:
-    # - 60s, the delay time is 60 seconds
+    # - 60s, the delay time is 60 seconds (default val)
     # - 1min, the delay time is 1 minute
     # - 1h, the delay time is 1 hour (are you sure?)
     # - 1d, the delay time is 1 day (are you sure?)

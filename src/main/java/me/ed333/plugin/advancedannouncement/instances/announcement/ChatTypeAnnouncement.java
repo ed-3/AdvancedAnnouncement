@@ -28,11 +28,7 @@ public class ChatTypeAnnouncement extends Announcement {
                     send(Bukkit.getConsoleSender());
                 }
 
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    String permissionName = permissionName();
-                    if (permissionName != null && !player.hasPermission(permissionName)) continue;
-                    send(player);
-                }
+                ChatTypeAnnouncement.super.broadcast();
             }
         }.runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, 1L);
     }

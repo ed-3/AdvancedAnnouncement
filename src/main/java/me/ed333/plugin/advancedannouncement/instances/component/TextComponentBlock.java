@@ -1,7 +1,9 @@
 package me.ed333.plugin.advancedannouncement.instances.component;
 
 import me.ed333.plugin.advancedannouncement.utils.TextHandler;
-import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -13,6 +15,7 @@ public class TextComponentBlock {
     private final TextComponent textComponent;
     private final String name;
 
+    // an empty component
     public TextComponentBlock(String name) {
         textComponent = new TextComponent();
         this.name = name;

@@ -65,7 +65,9 @@ public abstract class Announcement {
             public void run() {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     String permissionName = permissionName();
-                    if (permissionName != null && !player.hasPermission(permissionName)) continue;
+                    if (permissionName != null && !player.hasPermission(permissionName)) {
+                        continue;
+                    }
                     send(player);
                 }
             }

@@ -5,7 +5,9 @@ prefix: '&2&lAdvanced&a&lAnnouncement &6&l>>> &r'
 
 internalError: '&cAn internal error occurred, please contact with admin(see the console)。'
 ann-task-start: '&6Announce task has been started.'
-ann-task-cancel: '&6Announce task has been canceled.'
+ann-task-already-start: '&6The announcement task has been started, and there is no need to repeat the operation.'
+ann-task-stop: '&6Announce task has been canceled.'
+ann-task-already-stop: '&6The announcement task has been canceled, and there is no need to repeat the operation.'
 
 update:
   check: '&2Checking updates...'
@@ -45,6 +47,8 @@ command:
   help:
     - '&6========== &2&lAdvanced&a&lAnnouncement &6=========='
     - '&2/aa &ahelp &8- &6show this help'
+    - '&2/aa &astart &8- &6start broadcast announce'
+    - '&2/aa &astop &8- &6stop broadcast announce'
     - '&2/aa &alist &8- &6list all loaded announcement'
     - '&2/aa &adisplay <name> &8- &6display an announcement to you'
     - '&2/aa &aparse &8- &6parse a string with placeholders'

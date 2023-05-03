@@ -33,7 +33,7 @@ public class AA_CommandCompleter implements TabCompleter {
     }
 
     private enum TabEnum {
-        FIRST(Arrays.asList("help", "display", "list", "on", "off", "parse", "reload", "broadcast")),
+        FIRST(Arrays.asList("help", "start", "stop", "display", "list", "on", "off", "parse", "reload", "broadcast")),
         LOADED_ANN(AnnouncementManager.getAnnNames()),
         PARSE(Collections.singletonList("请输入要解析的字符串"));
         private final List<String> list;

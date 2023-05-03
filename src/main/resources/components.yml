@@ -4,13 +4,6 @@
 
 # component name, DO NOT HAVE DUPLICATE NAME.
 example:
-  # refers to a plain text
-  #
-  # Possible types:
-  # PLAIN: a plain text will be shown to CHAT BOX.
-  # JSON: a raw json text will be shown to ANYWHERE.
-  #       for more details, please go to https://minecraft.fandom.com/wiki/Raw_JSON_text_format
-  type: PLAIN
   # the text will be shown.
   text: '&f[&brun_command&f]'
   onClick:
@@ -28,20 +21,3 @@ example:
     &6you can use multiple lines.
 
     &f&l>>> &b&lClick here &e&lRun command
-
-# JSON type example
-json_example:
-  type: JSON
-  # Suggest website: https://minecraft.tools/en/json_text.php
-  # example json msg is available on minecraft 1.15+
-  # onClick and hover-value can use Json text
-  text: |-
-    {
-      "text": "This is an example Json text.",
-      "color": "aqua",
-      "hoverEvent": {
-        "action": "show_text",
-        "contents": "Press Shift and Left Click this text, there will be a message filled to your chat box."
-      },
-      "insertion": "suggest text example"
-    }

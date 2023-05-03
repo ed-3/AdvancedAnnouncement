@@ -3,6 +3,7 @@ package me.ed333.plugin.advancedannouncement.config;
 import me.ed333.plugin.advancedannouncement.utils.GlobalConsoleSender;
 import me.ed333.plugin.advancedannouncement.utils.Streams;
 import org.apache.commons.lang.Validate;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,18 +11,17 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class Config {
+public class Config {
     private final @NotNull File configFile;
     private final @NotNull String identify;
     private String rawContent;
-    private YamlConfiguration configurationInStream = null;
+    private final YamlConfiguration configurationInStream = new YamlConfiguration();
     private YamlConfiguration configuration = new YamlConfiguration();
 
     public Config(@NotNull String identify, @Nullable InputStream cfgStream, @NotNull File configFile) {
@@ -33,11 +33,11 @@ public abstract class Config {
         this.configFile = configFile;
         if (cfgStream != null) {
             try {
-                rawContent = Streams.read(cfgStream, StandardCharsets.UTF_8);
-            } catch (IOException e) {
+                this.rawContent = Streams.read(cfgStream, StandardCharsets.UTF_8);
+                this.configurationInStream.loadFromString(rawContent);
+            } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }
-            this.configurationInStream = YamlConfiguration.loadConfiguration(new InputStreamReader(cfgStream, StandardCharsets.UTF_8));
         }
 
         ConfigManager.addConfig(identify, this);

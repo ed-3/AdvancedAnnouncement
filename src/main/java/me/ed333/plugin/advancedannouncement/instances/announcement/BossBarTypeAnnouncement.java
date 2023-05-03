@@ -49,7 +49,7 @@ public class BossBarTypeAnnouncement extends Announcement {
                 barText.append(rawText.substring(lastIndex));
             }
 
-            settings.nextDelay = nextDelay;
+            settings.nextDelay = nextDelay + settings.stay + settings.delaySec;
             bars.add(new AdvancedBossBar(barText.toString(), settings));
 
             nextDelay = nextDelay + settings.stay + settings.delaySec;

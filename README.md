@@ -1,9 +1,8 @@
 ### AdvancedAnnouncement: Automatically announcement.
-[![Page Views Count](https://badges.toozhao.com/badges/01GYWAZ52JF155Z2GK2B572APH/green.svg)](https://badges.toozhao.com/stats/01GYWAZ52JF155Z2GK2B572APH "Get your own page views count badge on badges.toozhao.com")
 [简体中文](README_zh.md)
 
-[MCBBS](https://www.mcbbs.net/forum.php?mod=viewthread&tid=1420798&page=1&extra=#pid27960648)
-[SPIGOT](https://www.spigotmc.org/resources/advancedannouncement-automatically-announce-new-types-added.107574/)
+[MCBBS Page(China)](https://www.mcbbs.net/forum.php?mod=viewthread&tid=1420798&page=1&extra=#pid27960648)
+[SPIGOT Page](https://www.spigotmc.org/resources/advancedannouncement-automatically-announce-new-types-added.107574/)
 
 ![aa_preview](https://camo.githubusercontent.com/99ffa8fd8aace3339b68c6aeb9848b08c7a491a299f0b944697daae6d98762df/68747470733a2f2f6261646765732e746f6f7a68616f2e636f6d2f6261646765732f3031475957415a35324a463135355a32474b32423537324150482f677265656e2e737667)
 ![aa_buildState](https://img.shields.io/github/actions/workflow/status/ed-3/AdvancedAnnouncement/main.yml?label=build)
@@ -41,6 +40,8 @@ All available announcements are as below:
 | Command | permission | description |
 |---|---|---|
 |/aa help     | -------------------- | show plugin help        |
+|/aa start    | aa.command.start     | start announce task    |
+|/aa stop     | aa.command.stop      | stop announce task     |
 |/aa broadcast| aa.command.broadcast | broadcast an announcement     |
 |/aa display  | aa.command.display   | display an announcement to you  |
 |/aa list     | aa.command.list      | list all loaded announcements |
@@ -77,6 +78,9 @@ annName:
     - 'this announcement will be sent to chat box.'
     - 'multiple line supported'
 ```
+
+> Note: 
+> Only required options are listed in the example, see [announcements.yml](docs/announcements.yml_CN.md) for the rest of the details.
 
 ## Use RGB color code
 As the introduction said, AdvancedAnnouncement is supported to use RGB color code(your Minecraft server must be 1.16 or above).

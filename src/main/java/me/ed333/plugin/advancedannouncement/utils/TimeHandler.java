@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+// deal time unit
 public class TimeHandler {
     private static final Pattern TIME_INTERVAL_PATTERN = Pattern.compile("^(\\d+)(s|min|h|d|week|month|year)$");
 

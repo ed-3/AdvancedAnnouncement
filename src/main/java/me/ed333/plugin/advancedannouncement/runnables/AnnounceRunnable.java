@@ -33,27 +33,12 @@ public class AnnounceRunnable extends BukkitRunnable {
         lastIndex = announcement.getIndex();
 
         GlobalConsoleSender.debugInfo("Sending announcement: " + announcement.getName());
-        this.runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, announcement.delay() * 20L);
+        AdvancedAnnouncement.announceTask = new AnnounceRunnable().runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, announcement.delay()*20L);
     }
 
     @Override
     public synchronized void cancel() throws IllegalStateException {
         super.cancel();
-        GlobalConsoleSender.info(LangUtils.getLangText("ann-task-cancel"));
-    }
-
-    public void start() {
-        running = true;
-        this.runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, 600);
-        GlobalConsoleSender.info(LangUtils.getLangText("ann-task-start"));
-    }
-
-    public void stop() {
-        running = false;
-        this.cancel();
-    }
-
-    public boolean isRunning() {
-        return running;
+        GlobalConsoleSender.info(LangUtils.getLangText("ann-task-stop"));
     }
 }

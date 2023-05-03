@@ -2,7 +2,9 @@ prefix: '&2&lAdvanced&a&lAnnouncement &6&l>>> &r'
 
 internalError: '&c发生内部错误。请联系服务器管理员。'
 ann-task-start: '&6公告任务已建立。'
-ann-task-cancel: '&6已取消公告任务。'
+ann-task-already-start: '&e公告任务已经开始，无需重复开始。'
+ann-task-stop: '&6已取消公告任务。'
+ann-task-already-stop: '&6公告任务已取消，请不要重复取消。'
 
 update:
   check: '&2检查更新中...'
@@ -42,6 +44,8 @@ command:
   help:
     - '&6========== &2&lAdvanced&a&lAnnouncement &6=========='
     - '&2/aa &ahelp &8- &6显示本帮助'
+    - '&2/aa &astart &8- &6开始广播公告'
+    - '&2/aa &astop &8- &6停止广播公告'
     - '&2/aa &alist &8- &6列出所有已加载的公告'
     - '&2/aa &adisplay <name> &8- &6向你展示一条公告的内容'
     - '&2/aa &aparse &8- &6解析含颜色代码的字符串(用于测试用途)'

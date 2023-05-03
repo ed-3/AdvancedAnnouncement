@@ -1,9 +1,10 @@
 ### AdvancedAnnouncement: 更高级的自动公告
 
-[English](README.md)
+[Read In English](README.md)
 
-[MCBBS](https://www.mcbbs.net/forum.php?mod=viewthread&tid=1420798&page=1&extra=#pid27960648)
-[SPIGOT](https://www.spigotmc.org/resources/advancedannouncement-automatically-announce-new-types-added.107574/)
+[MCBBS 发布页](https://www.mcbbs.net/forum.php?mod=viewthread&tid=1420798&page=1&extra=#pid27960648)
+
+[SPIGOT 发布页](https://www.spigotmc.org/resources/advancedannouncement-automatically-announce-new-types-added.107574/)
 
 ![aa_preview](https://camo.githubusercontent.com/99ffa8fd8aace3339b68c6aeb9848b08c7a491a299f0b944697daae6d98762df/68747470733a2f2f6261646765732e746f6f7a68616f2e636f6d2f6261646765732f3031475957415a35324a463135355a32474b32423537324150482f677265656e2e737667)
 ![aa_buildState](https://img.shields.io/github/actions/workflow/status/ed-3/AdvancedAnnouncement/main.yml?label=build)
@@ -40,6 +41,8 @@
 |指令|权限|描述|
 |---|---|---|
 |/aa help     | -------------------- | 显示帮助        |
+|/aa start    | aa.command.start     | 开始广播公告     |
+|/aa stop     | aa.command.stop      | 停止广播公告     |
 |/aa broadcast| aa.command.broadcast | 广播一个公告     |
 |/aa display  | aa.command.display   | 向你展示一个公告  |
 |/aa list     | aa.command.list      | 列出所有加载的公告 |
@@ -76,6 +79,8 @@ annName:
     - '这是一条会被发送到聊天栏里的公告'
     - '可以发送多行'
 ```
+
+注意，事例中仅列出必填项目，其余内容详情请参见 [announcements.yml](docs/announcements.yml_CN.md)
 
 ## 使用 RGB 颜色代码
 正如介绍中所言，AdvancedAnnouncement 支持使用 RGB 颜色代码(1.16+) 来让你的公告拥有更多的颜色！

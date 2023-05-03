@@ -5,7 +5,6 @@ import me.ed333.plugin.advancedannouncement.Bootstrap;
 import me.ed333.plugin.advancedannouncement.ConfigKeys;
 import me.ed333.plugin.advancedannouncement.config.Config;
 import me.ed333.plugin.advancedannouncement.config.ConfigManager;
-import me.ed333.plugin.advancedannouncement.config.PluginConfig;
 import me.ed333.plugin.advancedannouncement.instances.announcement.Announcement;
 import me.ed333.plugin.advancedannouncement.instances.announcement.AnnouncementManager;
 import me.ed333.plugin.advancedannouncement.instances.announcement.AnnouncementType;
@@ -20,7 +19,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -45,13 +44,12 @@ public class AA_CommandExecutor implements CommandExecutor {
                 if (cmdAnn == null) continue;
 
                 for (String subStr : cmdAnn.value()) {
-                    if (subStr.equals(args[0])) {
+                    if (subStr.equalsIgnoreCase(args[0])) {
 
-                        if (!sender.hasPermission(permissionRequirement.value()[0])) {
+                        // check perm
+                        if (permissionRequirement != null && !sender.hasPermission(permissionRequirement.value()[0])) {
                             sender.sendMessage(LangUtils.getLangText_withPrefix("command.permissionDeny"));
-                            return false;
                         }
-
 
                         // invoke subcmd handler
                         try {
@@ -65,7 +63,7 @@ public class AA_CommandExecutor implements CommandExecutor {
                 }
             }
 
-            // not find
+            // subcmd not find
             sender.sendMessage(LangUtils.getLangText_withPrefix("command.invalidCommand"));
         }
         return true;
@@ -75,9 +73,11 @@ public class AA_CommandExecutor implements CommandExecutor {
     @PermissionRequirement("aa.command.start")
     @SuppressWarnings("unused")
     void start(CommandSender sender, String @NotNull [] args) {
-        AnnounceRunnable runnable = AdvancedAnnouncement.getAnnounceRunnable();
-        if (!runnable.isRunning()) {
-            runnable.start();
+        if (AdvancedAnnouncement.announceTask == null) {
+            AdvancedAnnouncement.announceTask = new AnnounceRunnable().runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, 600L);
+            sender.sendMessage(LangUtils.getLangText_withPrefix("ann-task-start"));
+        } else {
+            sender.sendMessage(LangUtils.getLangText_withPrefix("ann-task-already-start"));
         }
     }
 
@@ -85,9 +85,13 @@ public class AA_CommandExecutor implements CommandExecutor {
     @PermissionRequirement("aa.command.start")
     @SuppressWarnings("unused")
     void stop(CommandSender sender, String @NotNull [] args) {
-        AnnounceRunnable runnable = AdvancedAnnouncement.getAnnounceRunnable();
-        if (runnable.isRunning()) {
-            runnable.stop();
+        BukkitTask task = AdvancedAnnouncement.announceTask;
+        if (task != null) {
+            task.cancel();
+            AdvancedAnnouncement.announceTask = null;
+            sender.sendMessage(LangUtils.getLangText_withPrefix("ann-task-stop"));
+        } else {
+            sender.sendMessage(LangUtils.getLangText_withPrefix("ann-task-already-stop"));
         }
     }
 
@@ -174,9 +178,10 @@ public class AA_CommandExecutor implements CommandExecutor {
     void reload(@NotNull CommandSender sender, String @NotNull [] args) {
         sender.sendMessage(LangUtils.getLangText("reload.start"));
         PreAnnRunnable.preAnnRunnableList.forEach(PreAnnRunnable::cancel);
-        if (AdvancedAnnouncement.getAnnounceRunnable() != null) {
-            AdvancedAnnouncement.getAnnounceRunnable().cancel();
-            GlobalConsoleSender.info(LangUtils.getLangText("ann-task-cancel"));
+        if (AdvancedAnnouncement.announceTask != null) {
+            AdvancedAnnouncement.announceTask.cancel();
+            AdvancedAnnouncement.announceTask = null;
+            GlobalConsoleSender.info(LangUtils.getLangText("ann-task-stop"));
         }
         ConfigManager.checkAllFile();
         ConfigManager.loadAll();
@@ -185,7 +190,7 @@ public class AA_CommandExecutor implements CommandExecutor {
         // load translation
         Config config = ConfigManager.getConfig("config");
         String translationName = config.getConfiguration().getString("translation");
-        Config translationCfg = new PluginConfig(
+        Config translationCfg = new Config(
                 "lang",
                 AdvancedAnnouncement.INSTANCE.getResource("translations/" + translationName + ".yml"),
                 new File(AdvancedAnnouncement.DATA_FOLDER, "translations/" + translationName + ".yml")
@@ -195,37 +200,12 @@ public class AA_CommandExecutor implements CommandExecutor {
 
         // refresh translation
         LangUtils.refreshLang();
-        System.out.println(ConfigManager.getIdentifies());
-        System.out.println(ConfigManager.getConfig("lang").getConfigFile());
 
         Bootstrap.loadComponentBlock();
         Bootstrap.loadAnnouncements();
 
-        AdvancedAnnouncement.getAnnounceRunnable().start();
+        AdvancedAnnouncement.announceTask = new AnnounceRunnable().runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, 600L);;
         GlobalConsoleSender.setDEBUG(ConfigKeys.DEBUG);
         sender.sendMessage(LangUtils.getLangText("reload.done"));
-    }
-
-    private @NotNull String captureFirstChar(@NotNull String str){
-        char[] cs=str.toCharArray();
-        cs[0]-=32;
-        if (str.equals("broadcast")) {
-            cs[5]-=32;
-        }
-        return String.valueOf(cs);
-    }
-
-    private boolean hasPermissions(CommandSender sender, String... permissionStr) {
-        if (sender instanceof ConsoleCommandSender) {
-            return true;
-        }
-        if (!(sender instanceof Player)) return false;
-
-        for (String str : permissionStr) {
-            if (!sender.hasPermission(str)) {
-                return false;
-            }
-        }
-        return true;
     }
 }

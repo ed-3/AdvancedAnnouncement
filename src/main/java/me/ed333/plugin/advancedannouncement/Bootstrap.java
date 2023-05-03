@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.ed333.plugin.advancedannouncement.config.Config;
 import me.ed333.plugin.advancedannouncement.config.ConfigManager;
-import me.ed333.plugin.advancedannouncement.config.PluginConfig;
 import me.ed333.plugin.advancedannouncement.instances.announcement.*;
 import me.ed333.plugin.advancedannouncement.instances.component.TextComponentBlock;
 import me.ed333.plugin.advancedannouncement.runnables.PreAnnRunnable;
@@ -31,17 +30,17 @@ public class Bootstrap {
 
     static void initCfg() {
         final File DATA_FOLDER = AdvancedAnnouncement.DATA_FOLDER;
-        new PluginConfig(
+        new Config(
                 "config",
                 getResource("config.yml"),
                 new File(DATA_FOLDER, "config.yml")
         );
-        new PluginConfig(
+        new Config(
                 "components",
                 getResource("components.yml"),
                 new File(DATA_FOLDER, "components.yml")
         );
-        new PluginConfig(
+        new Config(
                 "announcements",
                 getResource("announcements.yml"),
                 new File(DATA_FOLDER, "announcements.yml")
@@ -51,7 +50,7 @@ public class Bootstrap {
 
         Config config = ConfigManager.getConfig("config");
         String translation = config.getConfiguration().getString("translation");
-        Config c = new PluginConfig(
+        Config c = new Config(
                 "lang",
                 getResource("translations/" + translation + ".yml"),
                 new File(DATA_FOLDER, "translations/" + translation + ".yml")
@@ -157,12 +156,13 @@ public class Bootstrap {
                 return;
             }
 
+            // compare version
             JsonObject object = parser.parse(responseBody.toString()).getAsJsonObject();
             String tag = object.get("tag_name").getAsString();
             Version latestVer = Version.parse(tag);
             Version pluginVer = Version.parse(AdvancedAnnouncement.INSTANCE.getDescription().getVersion());
             boolean isLatest = latestVer.isNewer(pluginVer);
-            if (isLatest) {
+            if (!isLatest) {
                 GlobalConsoleSender.warn(LangUtils.parseLang("update.has-update-line1", pluginVer, latestVer));
                 GlobalConsoleSender.warn(LangUtils.getLangText("update.has-update-line2"));
             } else {
