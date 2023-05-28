@@ -13,11 +13,6 @@ steps:
     commands:
       - gradle clean build
 
-trigger:
-  event: 
-    - push
-    - pull_request
-
 notifications:
   email:
     recipients: ed333.email@qq.com
