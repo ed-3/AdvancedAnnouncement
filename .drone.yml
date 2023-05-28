@@ -1,0 +1,25 @@
+kind: pipeline 
+type: docker 
+name: build jar
+
+steps:
+  - name: build
+    image: gradle:jdk8
+    commands:
+      - gradle clean build
+  - name: package
+    image: gradle:jdk8
+    commands:
+    - tar -czvf project.tar.gz -C build/libs .
+  - name: upload
+    image: ubuntu
+    commands:
+    - apt-get update && apt-get install -y openssh-client
+    - scp -o StrictHostKeyChecking=no project.tar.gz lighthouse@43.143.62.103:/www/artifacts/advanced-announcement
+
+
+trigger:
+  branch:
+  - master
+  event: 
+    - push
