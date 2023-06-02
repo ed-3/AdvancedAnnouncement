@@ -13,9 +13,10 @@ steps:
     - tar -czvf project.tar.gz -C build/libs .
   - name: docker  
     image: plugins/artifactory
-    url: 43.143.62.103/artifactory
-    source: release.tar.gz
-    target: build/libs/*.jar
+    settings:
+      url: 43.143.62.103/artifactory
+      source: release.tar.gz
+      target: build/libs/*.jar
 trigger:
   branch:
   - master
