@@ -1,6 +1,6 @@
 package me.ed333.plugin.advancedannouncement.cmd;
 
-import me.ed333.plugin.advancedannouncement.instances.announcement.AnnouncementManager;
+import me.ed333.plugin.advancedannouncement.announcement.AnnouncementManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -15,7 +15,7 @@ public class AA_CommandCompleter implements TabCompleter {
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String @NotNull [] args) {
-        if (command.getName().equals("autoannouncement")) {
+        if (command.getName().equals("advancedannouncement")) {
             if (args.length == 1) {
                 return TabEnum.FIRST.list;
             } else if (args.length == 2) {

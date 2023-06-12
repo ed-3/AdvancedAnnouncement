@@ -1,8 +1,11 @@
 package me.ed333.plugin.advancedannouncement.utils;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.ed333.plugin.advancedannouncement.ConfigKeys;
-import me.ed333.plugin.advancedannouncement.instances.component.TextComponentBlock;
+import me.ed333.plugin.advancedannouncement.components.ComponentBlock;
+import me.ed333.plugin.advancedannouncement.components.ComponentManager;
+import me.ed333.plugin.advancedannouncement.config.ConfigKeys;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -15,6 +18,33 @@ import java.awt.*;
 import java.util.regex.Matcher;
 
 public class TextHandler {
+
+    public static @NotNull JsonArray constructToJsonArr(@NotNull String content, @Nullable CommandSender sender) {
+        JsonArray array = new JsonArray();
+
+        Matcher componentMatcher = PlaceholderRegex.getCOMPONENT_PLACEHOLDER_MATCHER(content);
+
+        int lastIndex = 0;
+        while (componentMatcher.find()) {
+            int start = componentMatcher.start();
+            int end = componentMatcher.end();
+            JsonArray a1 = constructArr(content.substring(lastIndex, start), sender);
+            array.addAll(a1);
+            String placeholder = componentMatcher.group();
+            String placeholderName = placeholder.substring(1, placeholder.length() - 1);
+            ComponentBlock block = ComponentManager.forName(placeholderName);
+            if (block != null) {
+                array.addAll(block.constructToJsonArr(sender));
+            } else array.add("{\"text\": \"" + placeholder +  "\"}");
+            lastIndex = end;
+        }
+
+        if (lastIndex < content.length()) {
+            array.addAll(constructArr(content.substring(lastIndex), sender));
+        }
+        return array;
+    }
+
     public static @NotNull String handleColor(String content, @Nullable CommandSender sendTo) {
         StringBuilder sb = new StringBuilder();
         boolean legacy = ProtocolUtils.isLegacyServer();
@@ -50,6 +80,8 @@ public class TextHandler {
                 sb.append(dealColor(textBetween, lastCode, legacy));
             }
         }
+
+        // handle placeholder
         if (ConfigKeys.PLACEHOLDER_API_SUPPORT) {
             Player p = null;
             if (sendTo instanceof Player) {
@@ -61,11 +93,38 @@ public class TextHandler {
         }
     }
 
-    public static @NotNull String createGradientString(String text, Color from, Color to, boolean legacy, @Nullable String magicCode) {
-        return createGradientString(text, from.getRed(), from.getGreen(), from.getBlue(), to.getRed(), to.getGreen(), to.getBlue(), legacy, magicCode);
+    /**
+     * create gradient string by {@link Color}
+     * @param text the gradient text
+     * @param from the start color
+     * @param to the end color
+     * @param legacy use legacy color
+     * @param magicCode magic codes
+     * @return string that created
+     */
+    public static @NotNull String createGradientString(
+            String text,
+            Color from,
+            Color to,
+            boolean legacy,
+            @Nullable String magicCode
+    ) {
+        return createGradientString(
+                text,
+                from.getRed(), from.getGreen(), from.getBlue(),
+                to.getRed(), to.getGreen(), to.getBlue(),
+                legacy,
+                magicCode
+        );
     }
 
-    public static @NotNull String createGradientString(@NotNull String text, int r1, int g1, int b1, int r2, int g2, int b2, boolean legacy, @Nullable String magicCode) {
+    public static @NotNull String createGradientString(
+            @NotNull String text,
+            int r1, int g1, int b1,
+            int r2, int g2, int b2,
+            boolean legacy,
+            @Nullable String magicCode
+    ) {
         StringBuilder sb = new StringBuilder();
         int length = text.length();
         for (int i = 0; i < length; i++) {
@@ -105,38 +164,6 @@ public class TextHandler {
             sb.append(chatColor == null ? ChatColor.WHITE : chatColor).append(magicCode != null ? ChatColor.translateAlternateColorCodes('&', magicCode) : "").append(text.charAt(i));
         }
         return sb.toString();
-    }
-
-    public static @NotNull TextComponent toTextComponent(String content, CommandSender sendTo) {
-        TextComponent result = new TextComponent();
-        Matcher matcher = PlaceholderRegex.getCOMPONENT_PLACEHOLDER_MATCHER(content);
-
-        int lastIndex = 0;
-        while (matcher.find()) {
-            int start = matcher.start();
-            int end = matcher.end();
-            TextComponent coloredPlainText = new TextComponent();
-            for (BaseComponent baseComponent : TextComponent.fromLegacyText(handleColor(content.substring(lastIndex, start), sendTo))) {
-                coloredPlainText.addExtra(baseComponent);
-            }
-            result.addExtra(coloredPlainText);
-            String placeHolder = matcher.group();
-            String blockName = placeHolder.substring(1, placeHolder.length() - 1);
-            TextComponentBlock block = TextComponentBlock.forName(blockName);
-            if (block != null) {
-                result.addExtra(block.getComponent());
-            }
-            lastIndex = end;
-        }
-
-        if (lastIndex < content.length()) {
-            TextComponent coloredPlainText = new TextComponent();
-            for (BaseComponent baseComponent : TextComponent.fromLegacyText(handleColor(content.substring(lastIndex), sendTo))) {
-                coloredPlainText.addExtra(baseComponent);
-            }
-            result.addExtra(coloredPlainText);
-        }
-        return result;
     }
     
     private static String dealColor(String input, String lastCode, boolean legacy) {
@@ -191,5 +218,32 @@ public class TextHandler {
             input = ChatColor.translateAlternateColorCodes('&', lastCode + input);
         }
         return input;
+    }
+
+    private static JsonArray constructArr(String content, CommandSender sender) {
+        JsonArray array = new JsonArray();
+        if (content.isEmpty()) {
+            return array;
+        } else {
+            BaseComponent[] component = TextComponent.fromLegacyText(handleColor(content, sender));
+
+            for (BaseComponent baseComponent : component) {
+                JsonObject componentJsonObj = new JsonObject();
+                String componentText = baseComponent.toPlainText();
+
+                ChatColor componentColor = baseComponent.getColor();
+
+                componentJsonObj.addProperty("text", componentText);
+                if (componentColor != null) componentJsonObj.addProperty("color", componentColor.getName());
+                if (baseComponent.isBold()) componentJsonObj.addProperty("bold", baseComponent.isBold());
+                if (baseComponent.isItalic()) componentJsonObj.addProperty("italic", baseComponent.isItalic());
+                if (baseComponent.isObfuscated()) componentJsonObj.addProperty("obfuscated", baseComponent.isObfuscated());
+                if (baseComponent.isUnderlined()) componentJsonObj.addProperty("underlined", baseComponent.isUnderlined());
+                if (baseComponent.isStrikethrough()) componentJsonObj.addProperty("strikethrough", baseComponent.isStrikethrough());
+
+                array.add(componentJsonObj);
+            }
+        }
+        return array;
     }
 }

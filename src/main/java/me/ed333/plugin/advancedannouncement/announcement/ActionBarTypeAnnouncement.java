@@ -1,9 +1,7 @@
-package me.ed333.plugin.advancedannouncement.instances.announcement;
+package me.ed333.plugin.advancedannouncement.announcement;
 
 import me.ed333.plugin.advancedannouncement.AdvancedAnnouncement;
 import me.ed333.plugin.advancedannouncement.utils.LangUtils;
-import me.ed333.plugin.advancedannouncement.utils.TextHandler;
-import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -78,7 +76,8 @@ public class ActionBarTypeAnnouncement extends Announcement {
             stayTask = new BukkitRunnable() {
                 @Override
                 public void run() {
-                    sendTo.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextHandler.toTextComponent(text, sendTo));
+                    // TODO
+//                    sendTo.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextHandler.toTextComponent(text, sendTo));
                 }
             }.runTaskTimerAsynchronously(AdvancedAnnouncement.INSTANCE, (long) (delay * 20L), 40);
         }

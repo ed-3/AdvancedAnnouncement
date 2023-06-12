@@ -1,6 +1,6 @@
 package me.ed333.plugin.advancedannouncement.runnables;
 
-import me.ed333.plugin.advancedannouncement.instances.announcement.PreTypeAnnouncement;
+import me.ed333.plugin.advancedannouncement.announcement.PreTypeAnnouncement;
 import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.List;

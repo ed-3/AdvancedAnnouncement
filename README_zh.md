@@ -23,7 +23,7 @@
   + [BOSS_BAR 类型](#BOSS_BAR-类型)
   + [TITLE 类型](#TITLE-类型)
   + [MULTIPLE_LINE_BOSS_BAR 类型(自 1.0.2 版本起)](#MULTIPLE_LINE_BOSS_BAR-类型)
-+ [配置](#配置) 
++ [配置](#配置)
 
 ## 公告类型表
 目前的公告类型如下:

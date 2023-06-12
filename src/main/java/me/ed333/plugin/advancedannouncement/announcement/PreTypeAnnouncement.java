@@ -1,4 +1,4 @@
-package me.ed333.plugin.advancedannouncement.instances.announcement;
+package me.ed333.plugin.advancedannouncement.announcement;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +22,7 @@ public class PreTypeAnnouncement extends Announcement {
             Date date,
             AnnouncementType shownType
     ) {
-        this(index, name, permissionName, delay, content, date, shownType, -1, -1, -1);
+        this(index, name, permissionName, delay, content, date, shownType, -1, -1, -1, -1, -1, -1);
     }
 
     // if display type is TITLE
@@ -36,7 +36,10 @@ public class PreTypeAnnouncement extends Announcement {
             AnnouncementType shownType,
             double fadeIn,
             double stay,
-            double fadeout
+            double fadeout,
+            double sub_fadeIn,
+            double sub_stay,
+            double sub_fadeout
     ) {
         super(index, name, AnnouncementType.PRE_ANNOUNCE, permissionName, delay, content);
 
@@ -50,7 +53,11 @@ public class PreTypeAnnouncement extends Announcement {
                 shownAnn = new ChatTypeAnnouncement(subIndex, name, permissionName, delay, content);
                 break;
             case TITLE:
-                shownAnn = new TitleTypeAnnouncement(subIndex, name, permissionName, delay, content, fadeIn, stay, fadeout);
+                shownAnn = new TitleTypeAnnouncement(
+                        subIndex, name, permissionName, delay, content,
+                        fadeIn, stay, fadeout,
+                        sub_fadeIn, sub_stay, sub_fadeout
+                );
                 break;
             case BOSS_BAR:
                 shownAnn = new BossBarTypeAnnouncement(subIndex, name, permissionName, delay, content);

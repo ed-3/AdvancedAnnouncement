@@ -1,4 +1,4 @@
-package me.ed333.plugin.advancedannouncement.instances.announcement;
+package me.ed333.plugin.advancedannouncement.announcement;
 
 import me.ed333.plugin.advancedannouncement.utils.TextHandler;
 import org.bukkit.Bukkit;

@@ -18,10 +18,6 @@ updateSource: 1
 # https://bstats.org/plugin/bukkit/AdvancedAnnouncements/17508
 bStats: true
 
-# defines whether an announcement should be printed into console
-# ONLY CHAT TYPE AND PRE_ANNOUNCE TYPE WILL BE DISPLAYED
-Console-broadCast: true
-
 # enables PlaceholderAPI support
 PlaceholderAPI-support: true
 

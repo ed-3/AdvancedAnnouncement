@@ -1,4 +1,4 @@
-package me.ed333.plugin.advancedannouncement.instances.announcement;
+package me.ed333.plugin.advancedannouncement.announcement;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

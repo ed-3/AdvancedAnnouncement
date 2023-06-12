@@ -6,6 +6,6 @@ softdepend:
   - ProtocolLib
   - PlaceholderAPI
 commands:
-  autoannouncement:
+  advancedannouncement:
     aliases:
       - aa

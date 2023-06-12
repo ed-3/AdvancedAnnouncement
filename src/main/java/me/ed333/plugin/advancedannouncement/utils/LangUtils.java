@@ -34,10 +34,7 @@ public class LangUtils {
 
     public static @NotNull String getLangText(String path) {
         String result = langCfg.getConfiguration().getString(path);
-        /*
-        check path specified if exists in file.
-        if not exists, read and save the resource file's text.
-         */
+        /* prevent have NPE */
         if (result == null) {
             result = langCfg.getConfigurationInStream().getString(path);
             langCfg.set(path, result);
@@ -48,11 +45,7 @@ public class LangUtils {
 
     public static @NotNull List<String> getLangList(String path) {
         List<String> rawList = langCfg.getConfiguration().getStringList(path);
-
-        /*
-        check path specified if exists in file.
-        if not exists, read and save the resource file's text.
-         */
+        /* prevent have NPE */
         if (rawList.isEmpty()) {
             rawList = langCfg.getConfigurationInStream().getStringList(path);
             langCfg.set(path, rawList);

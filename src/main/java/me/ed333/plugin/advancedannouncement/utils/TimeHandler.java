@@ -1,6 +1,6 @@
 package me.ed333.plugin.advancedannouncement.utils;
 
-import me.ed333.plugin.advancedannouncement.ConfigKeys;
+import me.ed333.plugin.advancedannouncement.config.ConfigKeys;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;

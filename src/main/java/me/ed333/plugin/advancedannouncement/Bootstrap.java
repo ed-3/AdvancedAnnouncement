@@ -1,25 +1,19 @@
 package me.ed333.plugin.advancedannouncement;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import me.ed333.plugin.advancedannouncement.announcement.*;
+import me.ed333.plugin.advancedannouncement.components.*;
 import me.ed333.plugin.advancedannouncement.config.Config;
+import me.ed333.plugin.advancedannouncement.config.ConfigKeys;
 import me.ed333.plugin.advancedannouncement.config.ConfigManager;
-import me.ed333.plugin.advancedannouncement.instances.announcement.*;
-import me.ed333.plugin.advancedannouncement.instances.component.TextComponentBlock;
 import me.ed333.plugin.advancedannouncement.runnables.PreAnnRunnable;
 import me.ed333.plugin.advancedannouncement.utils.GlobalConsoleSender;
 import me.ed333.plugin.advancedannouncement.utils.LangUtils;
 import me.ed333.plugin.advancedannouncement.utils.TimeHandler;
-import me.ed333.toolkits.utils.version.InvalidVersionException;
-import me.ed333.toolkits.utils.version.Version;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
@@ -63,7 +57,7 @@ public class Bootstrap {
         return AdvancedAnnouncement.INSTANCE.getResource(path);
     }
 
-    static void collectData() {
+    static void metric() {
         final int pluginID = 17508;
         final Metrics metrics = new Metrics(AdvancedAnnouncement.INSTANCE, pluginID);
 
@@ -105,73 +99,40 @@ public class Bootstrap {
     public static void loadComponentBlock() {
         YamlConfiguration componentCfg = ConfigManager.getConfig("components").getConfiguration();
         for (String key : componentCfg.getKeys(false)) {
-            if (TextComponentBlock.blocks.containsKey(key)) continue;
+            if (ComponentManager.blocks.containsKey(key)) continue;
 
             ConfigurationSection componentSection = componentCfg.getConfigurationSection(key);
             if (componentSection == null) continue;
 
-            String text = componentSection.getString("text");
-            String clickActionName = componentSection.getString("onClick.action", "SUGGEST_COMMAND");
-            String hover_value = componentSection.getString("hover-value", "{#f4114a->#20d820}An example hover text. \n {rainbow}you can use multiple lines.");
-            ClickEvent.Action clickAction = ClickEvent.Action.valueOf(clickActionName);
-            String clickVal = componentSection.getString("onClick.value", "/say hello! this is a example action.");
+            ComponentType type;
+            String componentTypeName = componentSection.getString("type");
+            try {
+                type = ComponentType.valueOf(componentTypeName);
+            } catch (IllegalArgumentException e) {
+                GlobalConsoleSender.err(LangUtils.parseLang_withPrefix("load.load-comonents-unknown", componentTypeName, key));
+                continue;
+            }
 
-            TextComponentBlock componentBlock = new TextComponentBlock(key, text);
-            componentBlock.setClick(clickAction, clickVal);
-            componentBlock.setHover(HoverEvent.Action.SHOW_TEXT, hover_value);
+            switch (type) {
+                case NORMAL:
+                    String text = componentSection.getString("text");
+                    // load click action
+                    String clickActionName = componentSection.getString("onClick.action", "SUGGEST_COMMAND");
+                    String clickVal = componentSection.getString("onClick.value", "/say hello! this is a example action.");
+                    ClickEvent.Action clickAction = ClickEvent.Action.valueOf(clickActionName);
+                    // hover
+                    String hover_value = componentSection.getString("hover-value", "{#f4114a->#20d820}An example hover text. \n {rainbow}you can use multiple lines.");
+
+                    NormalBlock nb = new NormalBlock(key, text, hover_value, clickAction, clickVal);
+                    ComponentManager.blocks.put(key, nb);
+                    break;
+                case JSON:
+                    String jsonContent = componentSection.getString("content").replaceAll("\n", "").replaceAll("  ", "");
+                    JsonBlock jb = new JsonBlock(key, jsonContent);
+                    ComponentManager.blocks.put(key, jb);
+            }
         }
-        GlobalConsoleSender.info(LangUtils.parseLang("load.load-components-done", TextComponentBlock.blocks.size()));
-    }
-
-    static void checkUpdate() {
-        GlobalConsoleSender.info(LangUtils.getLangText("update.check"));
-        String updateUrl = "https://api.github.com/repos/ed-3/AdvancedAnnouncement/releases/latest";
-        if (ConfigKeys.UPDATE_SOURCE == 0) {
-            updateUrl = "https://gitee.com/api/v5/repos/ed3/advanced-announcement/releases/latest";
-        }
-        JsonParser parser = new JsonParser();
-
-        try {
-            // make http request
-            URL url = new URL(updateUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setReadTimeout(5000);
-            connection.setConnectTimeout(5000);
-            int statusCode = connection.getResponseCode();
-            InputStream inStream = connection.getInputStream();
-            InputStreamReader inReader = new InputStreamReader(inStream);
-            BufferedReader reader = new BufferedReader(inReader);
-            String lines;
-            StringBuilder responseBody = new StringBuilder();
-            while ((lines = reader.readLine()) != null) {
-                responseBody.append(lines);
-            }
-            reader.close();
-            inReader.close();
-            inStream.close();
-
-            if (statusCode != 200) {
-                GlobalConsoleSender.warn(LangUtils.getLangText("update.check-exception") + "HTTP: " + statusCode);
-                return;
-            }
-
-            // compare version
-            JsonObject object = parser.parse(responseBody.toString()).getAsJsonObject();
-            String tag = object.get("tag_name").getAsString();
-            Version latestVer = Version.parse(tag);
-            Version pluginVer = Version.parse(AdvancedAnnouncement.INSTANCE.getDescription().getVersion());
-            boolean isLatest = latestVer.isNewer(pluginVer);
-            if (!isLatest) {
-                GlobalConsoleSender.warn(LangUtils.parseLang("update.has-update-line1", pluginVer, latestVer));
-                GlobalConsoleSender.warn(LangUtils.getLangText("update.has-update-line2"));
-            } else {
-                GlobalConsoleSender.info(LangUtils.getLangText("update.check-latest"));
-            }
-        } catch (IOException e) {
-            GlobalConsoleSender.warn(LangUtils.getLangText("update.check-exception"));
-            e.printStackTrace();
-        } catch (InvalidVersionException ignored) {}
+        GlobalConsoleSender.info(LangUtils.parseLang("load.load-components-done", ComponentManager.blocks.size()));
     }
 
     public static void loadAnnouncements() {
@@ -198,9 +159,13 @@ public class Bootstrap {
 
             Announcement announcement = null;
             // for title type
-            double fadeIn = section.getDouble("fadeIn", 0.2);
             double stay = section.getDouble("stay", 3);
+            double fadeIn = section.getDouble("fadeIn", 0.2);
             double fadeOut = section.getDouble("fadeOut", 1);
+            // for subtitle
+            double sub_fadeIn = section.getDouble("sub-fadeIn", 3);
+            double sub_stay = section.getDouble("sub-stay", 0.2);
+            double sub_fadeout = section.getDouble("sub-fadeout", 1);
 
             switch (type) {
                 case CHAT:
@@ -225,7 +190,13 @@ public class Bootstrap {
                     } else if (contents.size() >= 3) {
                         GlobalConsoleSender.warn(LangUtils.parseLang_withPrefix("title-type-three-or-more", annName));
                     }
-                    announcement = new TitleTypeAnnouncement(index, annName, permission, delay, contents, fadeIn, stay, fadeOut);
+
+                    announcement = new TitleTypeAnnouncement(
+                            index, annName, permission, delay, contents,
+                            fadeIn, stay, fadeOut,
+                            sub_fadeIn, sub_stay, sub_fadeout
+                    );
+
                     break;
                 case PRE_ANNOUNCE:
                     Date dateTime;
@@ -252,7 +223,8 @@ public class Bootstrap {
                     announcement = new PreTypeAnnouncement(
                         index, annName, permission, delay, contents, dateTime, shownType, 
                         // display type may be the title type, transfer the time
-                        fadeIn, stay, fadeOut
+                        fadeIn, stay, fadeOut,
+                            sub_fadeIn, sub_stay, sub_fadeout
                         );
 
                     new PreAnnRunnable(((PreTypeAnnouncement) announcement)).runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, TimeHandler.getTimeSecRemain(dateTime) * 20L);

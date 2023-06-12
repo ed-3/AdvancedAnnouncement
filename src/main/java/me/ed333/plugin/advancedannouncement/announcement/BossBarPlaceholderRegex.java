@@ -1,4 +1,4 @@
-package me.ed333.plugin.advancedannouncement.instances.announcement;
+package me.ed333.plugin.advancedannouncement.announcement;
 
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;

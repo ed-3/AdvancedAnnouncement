@@ -120,6 +120,11 @@ announcements:
     # title fadeout time, Unit: seconds
     fadeout: 1
 
+    # time settings for subtitle (Since 1.2.0)
+    sub-fadeIn: 0.5
+    sub-stay: 3
+    sub-fadeout: 1
+
   # the pre_announce example
   pre_announce_example:
     # delay time to next announcement

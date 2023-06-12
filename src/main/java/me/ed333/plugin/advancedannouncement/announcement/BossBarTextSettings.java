@@ -1,4 +1,4 @@
-package me.ed333.plugin.advancedannouncement.instances.announcement;
+package me.ed333.plugin.advancedannouncement.announcement;
 
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -8,9 +8,9 @@ public class BossBarTextSettings {
     double delaySec = 0;
     double nextDelay = 0;
     double update = -1;
-    boolean progress = false;
-    BarColor barColor = BarColor.PURPLE;
-    BarStyle style = BarStyle.SOLID;
+    public boolean progress = false;
+    public BarColor barColor = BarColor.PURPLE;
+    public BarStyle style = BarStyle.SOLID;
 
     BossBarTextSettings() {}
 

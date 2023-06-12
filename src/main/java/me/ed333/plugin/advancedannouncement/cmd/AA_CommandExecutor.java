@@ -1,24 +1,27 @@
 package me.ed333.plugin.advancedannouncement.cmd;
 
+import com.comphenix.protocol.wrappers.WrappedChatComponent;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import me.ed333.plugin.advancedannouncement.AdvancedAnnouncement;
 import me.ed333.plugin.advancedannouncement.Bootstrap;
-import me.ed333.plugin.advancedannouncement.ConfigKeys;
+import me.ed333.plugin.advancedannouncement.announcement.Announcement;
+import me.ed333.plugin.advancedannouncement.announcement.AnnouncementManager;
+import me.ed333.plugin.advancedannouncement.components.ComponentManager;
 import me.ed333.plugin.advancedannouncement.config.Config;
+import me.ed333.plugin.advancedannouncement.config.ConfigKeys;
 import me.ed333.plugin.advancedannouncement.config.ConfigManager;
-import me.ed333.plugin.advancedannouncement.instances.announcement.Announcement;
-import me.ed333.plugin.advancedannouncement.instances.announcement.AnnouncementManager;
-import me.ed333.plugin.advancedannouncement.instances.announcement.AnnouncementType;
 import me.ed333.plugin.advancedannouncement.runnables.AnnounceRunnable;
 import me.ed333.plugin.advancedannouncement.runnables.PreAnnRunnable;
 import me.ed333.plugin.advancedannouncement.utils.GlobalConsoleSender;
 import me.ed333.plugin.advancedannouncement.utils.LangUtils;
+import me.ed333.plugin.advancedannouncement.utils.ProtocolUtils;
 import me.ed333.plugin.advancedannouncement.utils.TextHandler;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,7 +34,7 @@ public class AA_CommandExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (command.getName().equals("autoannouncement")) {
+        if (command.getName().equals("advancedannouncement")) {
             if (args.length == 0) {
                 help(sender, args);
                 return true;
@@ -69,6 +72,7 @@ public class AA_CommandExecutor implements CommandExecutor {
         return true;
     }
 
+    // sub command handler
     @SubCmd("start")
     @PermissionRequirement("aa.command.start")
     @SuppressWarnings("unused")
@@ -112,13 +116,6 @@ public class AA_CommandExecutor implements CommandExecutor {
         }
 
         ann.broadcast();
-
-        if (sender instanceof ConsoleCommandSender
-                && ann.type().equals(AnnouncementType.CHAT)
-                && ConfigKeys.CONSOLE_BROAD_CAST
-        ) {
-            ann.send(sender);
-        }
 
         sender.sendMessage(LangUtils.parseLang_withPrefix("command.command-broadcast-sent", ann.getName()));
     }
@@ -165,11 +162,17 @@ public class AA_CommandExecutor implements CommandExecutor {
     @PermissionRequirement("aa.command.parse")
     @SuppressWarnings("unused")
     void parse(@NotNull CommandSender sender, String @NotNull [] args) {
-        sender.sendMessage("handle color: " + TextHandler.handleColor(args[1], sender));
-        TextComponent textComponent = new TextComponent();
-        textComponent.addExtra("handle component: ");
-        textComponent.addExtra(TextHandler.toTextComponent(args[1], sender));
-        sender.spigot().sendMessage(textComponent);
+        if (sender instanceof Player) {
+            sender.sendMessage("handle color: " + TextHandler.handleColor(args[1], sender));
+            JsonArray jsonArray = new JsonArray();
+            JsonObject object = new JsonObject();
+            object.addProperty("text", "to component: ");
+            jsonArray.add(object);
+            jsonArray.addAll(TextHandler.constructToJsonArr(args[1], sender));
+            ProtocolUtils.sendJsonMsg((Player) sender, jsonArray.toString());
+        } else {
+            sender.sendMessage(LangUtils.getLangText_withPrefix("command.command-display-not-supported"));
+        }
     }
 
     @SubCmd("reload")
@@ -201,11 +204,19 @@ public class AA_CommandExecutor implements CommandExecutor {
         // refresh translation
         LangUtils.refreshLang();
 
+        ComponentManager.blocks.clear();
+        AnnouncementManager.loadedAnnouncements.clear();
         Bootstrap.loadComponentBlock();
         Bootstrap.loadAnnouncements();
 
         AdvancedAnnouncement.announceTask = new AnnounceRunnable().runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, 600L);;
         GlobalConsoleSender.setDEBUG(ConfigKeys.DEBUG);
         sender.sendMessage(LangUtils.getLangText("reload.done"));
+    }
+
+    @SubCmd("test")
+    @SuppressWarnings("unused")
+    void test(@NotNull CommandSender sender, String @NotNull [] args) {
+        ProtocolUtils.sendTitle((Player) sender, 4, 100, 20, WrappedChatComponent.fromJson(TextHandler.handleColor(args[1], sender)));
     }
 }

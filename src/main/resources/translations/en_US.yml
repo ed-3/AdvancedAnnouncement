@@ -20,6 +20,7 @@ load:
   exception: '&eAn exception occurred while loading announcement: &b{0}&e, (&c{1}&e)'
   load-announcements-done: '&3loaded &b{0} &3announcements。'
   load-components-done: '&3loaded &b{0} &3components。'
+  load-comonents-unknown: '&cUnknown component type &e{0}(Component name: {1}). Skipped.'
   title-type-empty: '&eTitle type announcement ''&b{0}&e'' is empty, skipped.'
   title-type-one-line: '&eTitle type announcement ''{0}'' only has 1 lines, it will be appear as the title.'
   title-type-three-or-more: '&eTitle type announcement ''{0}'' has 3 ore more lines, we will choose the first 2 lines as the title and subtitle'

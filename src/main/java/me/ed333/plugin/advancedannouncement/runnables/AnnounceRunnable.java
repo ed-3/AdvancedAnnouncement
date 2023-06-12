@@ -1,16 +1,15 @@
 package me.ed333.plugin.advancedannouncement.runnables;
 
 import me.ed333.plugin.advancedannouncement.AdvancedAnnouncement;
-import me.ed333.plugin.advancedannouncement.ConfigKeys;
-import me.ed333.plugin.advancedannouncement.instances.announcement.Announcement;
-import me.ed333.plugin.advancedannouncement.instances.announcement.AnnouncementManager;
-import me.ed333.plugin.advancedannouncement.instances.announcement.PreTypeAnnouncement;
+import me.ed333.plugin.advancedannouncement.config.ConfigKeys;
+import me.ed333.plugin.advancedannouncement.announcement.Announcement;
+import me.ed333.plugin.advancedannouncement.announcement.AnnouncementManager;
+import me.ed333.plugin.advancedannouncement.announcement.PreTypeAnnouncement;
 import me.ed333.plugin.advancedannouncement.utils.GlobalConsoleSender;
 import me.ed333.plugin.advancedannouncement.utils.LangUtils;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class AnnounceRunnable extends BukkitRunnable {
-    private boolean running;
 
     private int lastIndex = 0;
     @Override
