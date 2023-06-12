@@ -1,6 +1,5 @@
 package me.ed333.plugin.advancedannouncement.cmd;
 
-import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import me.ed333.plugin.advancedannouncement.AdvancedAnnouncement;
@@ -212,11 +211,5 @@ public class AA_CommandExecutor implements CommandExecutor {
         AdvancedAnnouncement.announceTask = new AnnounceRunnable().runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, 600L);;
         GlobalConsoleSender.setDEBUG(ConfigKeys.DEBUG);
         sender.sendMessage(LangUtils.getLangText("reload.done"));
-    }
-
-    @SubCmd("test")
-    @SuppressWarnings("unused")
-    void test(@NotNull CommandSender sender, String @NotNull [] args) {
-        ProtocolUtils.sendTitle((Player) sender, 4, 100, 20, WrappedChatComponent.fromJson(TextHandler.handleColor(args[1], sender)));
     }
 }

@@ -14,11 +14,6 @@ public class JsonBlock extends ComponentBlock {
     }
 
     @Override
-    public String constructToJsonStr(CommandSender sender) {
-        return jsonArr.toString();
-    }
-
-    @Override
     public JsonArray constructToJsonArr(CommandSender sender) {
         return jsonArr;
     }

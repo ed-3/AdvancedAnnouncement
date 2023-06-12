@@ -32,31 +32,6 @@ public class ConfigManager {
         return configMap.get(identify);
     }
 
-    public static List<File> getFiles() {
-        List<File> result = new ArrayList<>();
-        configMap.values().forEach(config -> result.add(config.getConfigFile()));
-        return result;
-    }
-
-    /**
-     * 保存指定配置
-     *
-     * @param c {@link Config}
-     */
-    public static void saveConfig(@NotNull Config c) {
-        c.save();
-    }
-
-    /**
-     * 获取所有配置的标识符
-     *
-     * @return 配置的标识符
-     */
-    public static @NotNull
-    Set<String> getIdentifies() {
-        return configMap.keySet();
-    }
-
     /**
      * 获取所有的配置
      *
@@ -96,10 +71,6 @@ public class ConfigManager {
                 }
             }
         }
-    }
-
-    public static void load(Config c) {
-        c.load();
     }
 
     public static void loadAll() {

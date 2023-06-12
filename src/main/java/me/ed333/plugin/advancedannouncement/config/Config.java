@@ -12,10 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Config {
     private final @NotNull File configFile;
@@ -41,10 +37,6 @@ public class Config {
         }
 
         ConfigManager.addConfig(identify, this);
-    }
-
-    public @NotNull String getIdentify() {
-        return identify;
     }
 
     public @NotNull File getConfigFile() {
@@ -78,55 +70,8 @@ public class Config {
         }
     }
 
-    public void save_WithComment() {
-        try {
-            Streams.save(saveToStr_withComment(), configFile);
-        } catch (IOException e) {
-            GlobalConsoleSender.err("could not save config into disk file '" + configFile + "'.\n " +
-                    "cause: " + e.getLocalizedMessage());
-        }
-    }
-
     public void set(String path, Object val) {
         configuration.set(path, val);
-    }
-
-    public void createSection(String path) {
-        if (this.configuration.getConfigurationSection(path) == null) {
-            this.configuration.createSection(path);
-            GlobalConsoleSender.debugInfo("create section for config '" + identify + "', path: " + path);
-        }
-    }
-
-    // not supported to set a section to null
-    public @NotNull String saveToStr_withComment() {
-        StringBuilder sb = new StringBuilder();
-        Map<Integer, String> toStringMap = new LinkedHashMap<>();
-        String[] saveToString = configuration.saveToString().split("\n");
-        int i = 1;
-        for (String s : saveToString) {
-            if (!s.startsWith("#")) {
-                toStringMap.put(i, s);
-                i ++;
-            }
-        }
-        try {
-            List<String> stringList = Files.readAllLines(configFile.toPath());
-            int z = 1;
-            for (String s : stringList) {
-                if (s.trim().startsWith("#") || s.trim().isEmpty()) {
-                    sb.append(s);
-                } else {
-                    sb.append(toStringMap.get(z));
-                    z++;
-                }
-                sb.append("\n");
-            }
-        } catch (IOException e) {
-            GlobalConsoleSender.err("could not read disk file '" + configFile + "'.\n " +
-                    "cause: " + e.getLocalizedMessage());
-        }
-        return sb.toString();
     }
 
     @Override

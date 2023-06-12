@@ -8,8 +8,6 @@ import java.util.Map;
 public class ComponentManager {
     public static final HashMap<String, ComponentBlock> blocks = new HashMap<>();
 
-    public static final ComponentBlock EMPTY_BLOCK = new NormalBlock("empty");
-
     public static @Nullable ComponentBlock forName(String name) {
         for (Map.Entry<String, ComponentBlock> entry : blocks.entrySet()) {
             if (entry.getKey().equals(name)) {

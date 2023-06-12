@@ -25,26 +25,6 @@ public class GlobalConsoleSender {
         }
     }
 
-    public static void debugWarn(String msg) {
-        if (useDebug) {
-            consoleSender.sendMessage("§2[§3AdvancedAnnouncement§2] §bDEBUG §f| §eWARN: §f" + msg);
-        }
-    }
-
-    public static void debugErr(String msg) {
-        if (useDebug) {
-            consoleSender.sendMessage("§2[§3AdvancedAnnouncement§2] §bDEBUG §f| §4ERROR: §f" + msg);
-        }
-    }
-
-    public static ConsoleCommandSender getConsoleSender() {
-        return consoleSender;
-    }
-
-    public static boolean isUseDebug() {
-        return useDebug;
-    }
-
     public static void setDEBUG(boolean state) {
         useDebug = state;
     }

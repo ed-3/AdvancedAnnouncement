@@ -9,8 +9,7 @@ import java.nio.charset.StandardCharsets;
 
 public class Streams {
 
-    // read
-    /////==== START ====/////
+    /////==== read START ====/////
     public static byte @NotNull [] read(@NotNull InputStream inputStream, int maxSize) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(maxSize);
         int len;
@@ -40,26 +39,9 @@ public class Streams {
     public static @NotNull String read(InputStream inputStream, Charset charset) throws IOException {
         return new String(read(inputStream), charset);
     }
+    ////==== read END ====/////
 
-    @Contract("_, _, _ -> new")
-    public static @NotNull String read(InputStream inputStream, Charset charset, int maxSize) throws IOException {
-        return new String(read(inputStream, maxSize), charset);
-    }
-
-    public static @NotNull String read(File file, Charset charset) throws IOException {
-        FileInputStream fIn = new FileInputStream(file);
-        String content = new String(read(fIn), charset);
-        fIn.close();
-        return content;
-    }
-
-    public static @NotNull String read(File file) throws IOException {
-        return read(file, StandardCharsets.UTF_8);
-    }
-    ////==== END ====/////
-
-    //save
-    ////==== START ====/////
+    ////==== save START ====/////
     public static void save(byte[] bytes, File file) throws IOException {
         if (file == null) {
             throw new NullPointerException("File cannot be null!");
@@ -87,16 +69,9 @@ public class Streams {
         save(content, dir, StandardCharsets.UTF_8);
     }
 
-    public static void save(InputStream stream, File dir) throws IOException {
-        save(read(stream), dir);
-    }
-
-    public static void save(InputStream stream, Charset charset, File dir) throws IOException {
-        save(read(stream, charset), dir, charset);
-    }
-
     @Deprecated
     public static void save(InputStream stream, String decoding, File dir) throws IOException {
         save(read(stream, decoding), dir, decoding);
     }
+    ////==== save END ====/////
 }

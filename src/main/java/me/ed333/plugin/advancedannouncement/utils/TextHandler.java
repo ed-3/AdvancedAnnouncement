@@ -226,24 +226,26 @@ public class TextHandler {
             return array;
         } else {
             BaseComponent[] component = TextComponent.fromLegacyText(handleColor(content, sender));
-
             for (BaseComponent baseComponent : component) {
-                JsonObject componentJsonObj = new JsonObject();
-                String componentText = baseComponent.toPlainText();
-
-                ChatColor componentColor = baseComponent.getColor();
-
-                componentJsonObj.addProperty("text", componentText);
-                if (componentColor != null) componentJsonObj.addProperty("color", componentColor.getName());
-                if (baseComponent.isBold()) componentJsonObj.addProperty("bold", baseComponent.isBold());
-                if (baseComponent.isItalic()) componentJsonObj.addProperty("italic", baseComponent.isItalic());
-                if (baseComponent.isObfuscated()) componentJsonObj.addProperty("obfuscated", baseComponent.isObfuscated());
-                if (baseComponent.isUnderlined()) componentJsonObj.addProperty("underlined", baseComponent.isUnderlined());
-                if (baseComponent.isStrikethrough()) componentJsonObj.addProperty("strikethrough", baseComponent.isStrikethrough());
-
-                array.add(componentJsonObj);
+                array.add(constructObj(baseComponent));
             }
         }
         return array;
+    }
+
+    public static JsonObject constructObj(BaseComponent component) {
+        JsonObject componentJsonObj = new JsonObject();
+        String componentText = component.toPlainText();
+
+        ChatColor componentColor = component.getColor();
+
+        componentJsonObj.addProperty("text", componentText);
+        if (componentColor != null) componentJsonObj.addProperty("color", componentColor.getName());
+        if (component.isBold()) componentJsonObj.addProperty("bold", component.isBold());
+        if (component.isItalic()) componentJsonObj.addProperty("italic", component.isItalic());
+        if (component.isObfuscated()) componentJsonObj.addProperty("obfuscated", component.isObfuscated());
+        if (component.isUnderlined()) componentJsonObj.addProperty("underlined", component.isUnderlined());
+        if (component.isStrikethrough()) componentJsonObj.addProperty("strikethrough", component.isStrikethrough());
+        return componentJsonObj;
     }
 }

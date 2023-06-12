@@ -14,8 +14,5 @@ public abstract class ComponentBlock {
         ComponentManager.blocks.put(name, this);
     }
 
-
-    public abstract String constructToJsonStr(CommandSender sender);
-
     public abstract JsonArray constructToJsonArr(CommandSender sender);
 }
