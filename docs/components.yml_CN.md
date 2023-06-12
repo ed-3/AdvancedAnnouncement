@@ -25,4 +25,69 @@ example:
     &6you can use multiple lines.
 
     &f&l>>> &b&lClick here &e&lRun command
+    
+# 使用 JSON 组件时，插件将不会对颜色代码进行转义。
+json_example:
+  type: JSON
+  # 生成工具: https://minecraft.tools/en/json_text.php
+  # 格式化: https://ctool.dev/tool.html#/tool/json
+  # 需要 服务器/客户端 版本 1.16+
+  # 格式必须为 JSON 数组形式，即用中括号: [] 包裹起来的格式，例如：
+  # [{"text": "这是一条示例消息"}]
+  content: |-
+    [
+      {
+        "text": "❤Hi this is a test message❤ ",
+        "color": "ff008c"
+      },
+      {
+        "text": "["
+      },
+      {
+        "text": "Hover Text here",
+        "underlined": true,
+        "color": "#10DD18",
+        "hoverEvent": {
+          "action": "show_text",
+          "contents": [
+            "",
+            {
+              "text": "Hi this is a",
+              "color": "gold"
+            },
+            {
+              "text": " Json Based",
+              "bold": "true",
+              "color": "yellow"
+            },
+            {
+              "text": " message!\nPress ",
+              "color": "gold"
+            },
+            {
+              "text": "Shift",
+              "bold": "true",
+              "color": "yellow"
+            },
+            {
+              "text": " + ",
+              "color": "gold"
+            },
+            {
+              "text": "Left Click",
+              "bold": "true",
+              "color": "yellow"
+            },
+            {
+              "text": " here, you will see an text filled in your chat box!",
+              "color": "gold"
+            }
+          ]
+        },
+        "insertion": "suggest text"
+      },
+      {
+        "text": "]"
+      }
+    ]
 ```

@@ -115,6 +115,11 @@ announcements:
     # 淡出时间, 单位：秒
     fadeout: 1
 
+    # 子标题的淡入、停留、淡出时间 (从 1.2.0-beta 开始)
+    sub-fadeIn: 0.5
+    sub-stay: 3
+    sub-fadeout: 1
+
   pre_announce_example:
     delay: 60s
     # 这个公告什么时候会被发送

@@ -4,7 +4,7 @@
 
 ```yaml
 announcements:
-  # announce name, DO NOT HAVE DUPLICATE NAME.
+  # announce name, DO NOT HAVE DUPLICATED NAME.
   chat_announce_type_example:
     # player who don't have this permission will not receive this announcement.
     # if empty or don't write this, that refers to any player can receive this announcement.
@@ -12,7 +12,7 @@ announcements:
     # delay to the next announcement
     # use parameter after a number to represent delay time.
     # examples:
-    # - 60s, the delay time is 60 seconds
+    # - 60s, the delay time is 60 seconds (default val)
     # - 1min, the delay time is 1 minute
     # - 1h, the delay time is 1 hour (are you sure?)
     # - 1d, the delay time is 1 day (are you sure?)
@@ -22,11 +22,11 @@ announcements:
     delay: 60s
     # Possible types:
     # 1. CHAT: this announcement type will be sent to chat box.
-    # 2. TITLE: this announcement type will be sent through a title.
+    # 5. TITLE: this announcement type will be sent through a title.
     # 3. BOSS_BAR: this announcement type will be displayed by a boss bar.
-    # 4. ACTION_BAR: this announcement type will be sent to player's action-bar.
-    # 5. PRE_ANNOUNCE: this announcement type will be sent to players at any time that you want.
-    # 6. MULTIPLE_LINE_BOSS_BAR: this announcement type will be displayed by multiple boss bars. (Since 1.0.2)
+    # 2. ACTION_BAR: this announcement type will be sent to player's action-bar.
+    # 6. PRE_ANNOUNCE: this announcement type will be sent to players at any time that you want.
+    # 4. MULTIPLE_LINE_BOSS_BAR: this announcement type will be displayed by multiple boss bars.
     type: CHAT
     # Content of this announcement.
     # +==+==+==+==+==+==+==+==+==+==+==+==+==
@@ -69,6 +69,7 @@ announcements:
       - '  {#ffff00}This is an example announcement'
       - '  {#04ff00->#bf0000}gradient color text @example@ '
       - '{rainbow}==============================='
+
   # the action bar type example
   action_bar_type_example:
     # anyone can receive this announcement
@@ -84,6 +85,7 @@ announcements:
       - 'the next action bar{delay:2}'
       - 'test{stay:2}'
 
+  # the boss bar type example
   boss_bar_type_example:
     delay: 60s
     type: BOSS_BAR
@@ -104,6 +106,7 @@ announcements:
       # default color sets to PURPLE
       - '&bthe next boss bar{segment:10}'
 
+  # the title type example
   title_type_example:
     delay: 60s
     type: TITLE
@@ -122,6 +125,12 @@ announcements:
     # title fadeout time, Unit: seconds
     fadeout: 1
 
+    # time settings for subtitle (Since 1.2.0-beta)
+    sub-fadeIn: 0.5
+    sub-stay: 3
+    sub-fadeout: 1
+
+  # the pre_announce example
   pre_announce_example:
     # delay time to next announcement
     delay: 60s
@@ -141,7 +150,6 @@ announcements:
       - '{rainbow}==============================='
 
   # the multiple line boss bar type example
-  # Since 1.0.2
   multiple_line_boss_bar_example:
     delay: 60s
     # stay time

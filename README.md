@@ -82,7 +82,7 @@ annName:
 ```
 
 > Note: 
-> Only required options are listed in the example, see [announcements.yml](docs/announcements.yml_CN.md) for the rest of the details.
+> Only required options are listed in the example, see [announcements.yml](docs/announcements.yml_EN.md) for the rest of the details.
 
 ## Use RGB color code
 As the introduction said, AdvancedAnnouncement is supported to use RGB color code(your Minecraft server must be 1.16 or above).
