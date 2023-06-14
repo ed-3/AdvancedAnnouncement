@@ -1,9 +1,10 @@
 ## Components.yml
 
 ```yaml
-# TextComponents that will be showed at chat box.
-# You can use it at any place!
 # placeholder name format @<name>@
+
+# component now can be used on:
+# CHAT, TITLE and ACTION_BAR (TITLE and ACTION_BAR supported since 1.2.0-beta)
 
 # component name, DO NOT HAVE DUPLICATE NAME.
 # color symbols provided by the plug-in is supported

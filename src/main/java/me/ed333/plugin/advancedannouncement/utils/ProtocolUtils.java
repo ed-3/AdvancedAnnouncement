@@ -25,12 +25,12 @@ public class ProtocolUtils {
         return protocolManager.getMinecraftVersion().compareTo(new MinecraftVersion("1.16")) < 0;
     }
 
-    public static void sendJsonMsg(Player sendTo, String json) {
+    public static void sendChat(Player sendTo, String json) {
         WrappedChatComponent chatComponent = WrappedChatComponent.fromJson(json);
-        sendComponent(sendTo, chatComponent);
+        sendChat(sendTo, chatComponent);
     }
 
-    public static void sendComponent(Player sendTo, WrappedChatComponent component) {
+    public static void sendChat(Player sendTo, WrappedChatComponent component) {
         PacketContainer packet = protocolManager.createPacket(PacketType.Play.Server.CHAT);
         packet.getChatTypes().write(0, EnumWrappers.ChatType.SYSTEM);
         packet.getChatComponents().write(0, component);
@@ -44,7 +44,6 @@ public class ProtocolUtils {
     public static void sendTitle(Player sendTo, int fadeIn, int stay, int fadeOut, WrappedChatComponent titleComponent) {
         PacketContainer packet = protocolManager.createPacket(PacketType.Play.Server.TITLE);
         packet.getTitleActions().write(0, EnumWrappers.TitleAction.TITLE);
-        System.out.println(packet.getIntegers());
         packet.getIntegers().write(0, fadeIn);
         packet.getIntegers().write(1, stay);
         packet.getIntegers().write(2, fadeOut);
@@ -60,11 +59,22 @@ public class ProtocolUtils {
     public static void sendSubtitle(Player sendTo, int fadeIn, int stay, int fadeOut, WrappedChatComponent subComponent) {
         PacketContainer packet = protocolManager.createPacket(PacketType.Play.Server.TITLE);
         packet.getTitleActions().write(0, EnumWrappers.TitleAction.SUBTITLE);
-        System.out.println(packet.getIntegers());
         packet.getIntegers().write(0, fadeIn);
         packet.getIntegers().write(1, stay);
         packet.getIntegers().write(2, fadeOut);
         packet.getChatComponents().write(0, subComponent);
+        protocolManager.sendServerPacket(sendTo, packet);
+    }
+
+    public static void sendActionBar(Player sendTo, String json) {
+        WrappedChatComponent component = WrappedChatComponent.fromJson(json);
+        sendActionBar(sendTo, component);
+    }
+
+    public static void sendActionBar(Player sendTo, WrappedChatComponent content) {
+        PacketContainer packet = protocolManager.createPacket(PacketType.Play.Server.TITLE);
+        packet.getTitleActions().write(0, EnumWrappers.TitleAction.ACTIONBAR);
+        packet.getChatComponents().write(0, content);
         protocolManager.sendServerPacket(sendTo, packet);
     }
 }

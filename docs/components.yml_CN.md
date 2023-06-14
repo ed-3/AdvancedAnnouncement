@@ -2,9 +2,10 @@
 聊天文本组件配置文件
 
 ```yaml
-# 将会被显示在聊天栏中的 JSON 文本组件
-# 只在 CHAT 类型公告下有用。
 # 通过 @<example_name>@ 调用
+
+# 组件现在可以用在以下类型:
+# CHAT, TITLE and ACTION_BAR (其中的 TITLE、ACTION_BAR 从 1.2.0-beta 开始支持)
 
 # 名称，不要重复
 example:

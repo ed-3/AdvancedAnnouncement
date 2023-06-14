@@ -22,7 +22,7 @@ public class TextHandler {
     public static @NotNull JsonArray constructToJsonArr(@NotNull String content, @Nullable CommandSender sender) {
         JsonArray array = new JsonArray();
 
-        Matcher componentMatcher = PlaceholderRegex.getCOMPONENT_PLACEHOLDER_MATCHER(content);
+        Matcher componentMatcher = PlaceholderRegex.TextRegex.getCOMPONENT_PLACEHOLDER_MATCHER(content);
 
         int lastIndex = 0;
         while (componentMatcher.find()) {
@@ -56,7 +56,7 @@ public class TextHandler {
 
         int lastIndex = 0;
         String lastCode = null;
-        Matcher colorMatcher = PlaceholderRegex.getCOLOR_PLACEHOLDER_MATCHER(content);
+        Matcher colorMatcher = PlaceholderRegex.TextRegex.getCOLOR_PLACEHOLDER_MATCHER(content);
 
         while (colorMatcher.find()) {
             int start = colorMatcher.start();
@@ -169,14 +169,14 @@ public class TextHandler {
     private static String dealColor(String input, String lastCode, boolean legacy) {
         // deal magic code
         StringBuilder magicCodes = new StringBuilder();
-        Matcher magicCodeMatcher = PlaceholderRegex.getMAGIC_CODE_MATCHER(lastCode);
+        Matcher magicCodeMatcher = PlaceholderRegex.TextRegex.getMAGIC_CODE_MATCHER(lastCode);
         while (magicCodeMatcher.find()) {
             magicCodes.append(magicCodeMatcher.group());
         }
 
         // deal hex color
-        if (lastCode.matches(PlaceholderRegex.HEX_COLOR_PLACEHOLDER_REGEX_STRING)) {
-            Matcher matcher = PlaceholderRegex.getHEX_COLOR_CODE_MATCHER(lastCode);
+        if (lastCode.matches(PlaceholderRegex.TextRegex.HEX_COLOR_PLACEHOLDER_REGEX_STRING)) {
+            Matcher matcher = PlaceholderRegex.TextRegex.getHEX_COLOR_CODE_MATCHER(lastCode);
             String colorCode ="#FFFFFF";
             if (matcher.find()) {
                 colorCode = matcher.group();
@@ -192,9 +192,9 @@ public class TextHandler {
 
             input = chatColor + ChatColor.translateAlternateColorCodes('&', magicCodes.toString()) + input;
 
-        } else if (lastCode.matches(PlaceholderRegex.GRADIENT_COLOR_PLACEHOLDER_REGEX_STRING)) {
+        } else if (lastCode.matches(PlaceholderRegex.TextRegex.GRADIENT_COLOR_PLACEHOLDER_REGEX_STRING)) {
             // deal gradient color
-            Matcher hexMatcher = PlaceholderRegex.getHEX_COLOR_CODE_MATCHER(lastCode);
+            Matcher hexMatcher = PlaceholderRegex.TextRegex.getHEX_COLOR_CODE_MATCHER(lastCode);
             String fromCode = null;
             String toCode = null;
             while (hexMatcher.find()) {
@@ -210,10 +210,10 @@ public class TextHandler {
 
                 input = createGradientString(input, fromColor, toColor, legacy, magicCodes.toString());
             }
-        } else if (lastCode.matches(PlaceholderRegex.RAINBOW_PLACEHOLDER_REGEX_STRING)) {
+        } else if (lastCode.matches(PlaceholderRegex.TextRegex.RAINBOW_PLACEHOLDER_REGEX_STRING)) {
             // deal rainbow color
             input = createRainbowGradient(input, legacy, magicCodes.toString());
-        } else if (lastCode.matches(PlaceholderRegex.LEGACY_CODE_REGEX_STRING)) {
+        } else if (lastCode.matches(PlaceholderRegex.TextRegex.LEGACY_CODE_REGEX_STRING)) {
             // deal legacy color
             input = ChatColor.translateAlternateColorCodes('&', lastCode + input);
         }

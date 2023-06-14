@@ -5,7 +5,6 @@ import me.ed333.plugin.advancedannouncement.cmd.AA_CommandExecutor;
 import me.ed333.plugin.advancedannouncement.config.ConfigKeys;
 import me.ed333.plugin.advancedannouncement.config.ConfigManager;
 import me.ed333.plugin.advancedannouncement.runnables.AnnounceRunnable;
-import me.ed333.plugin.advancedannouncement.runnables.PreAnnRunnable;
 import me.ed333.plugin.advancedannouncement.utils.GlobalConsoleSender;
 import me.ed333.plugin.advancedannouncement.utils.LangUtils;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -51,7 +50,6 @@ public final class AdvancedAnnouncement extends JavaPlugin {
     public void onDisable() {
         INSTANCE = null;
 
-        PreAnnRunnable.preAnnRunnableList.forEach(PreAnnRunnable::cancel);
         if (announceTask != null) {
             announceTask.cancel();
             GlobalConsoleSender.info(LangUtils.getLangText("ann-task-stop"));

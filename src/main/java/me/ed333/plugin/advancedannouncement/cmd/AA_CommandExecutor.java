@@ -11,7 +11,6 @@ import me.ed333.plugin.advancedannouncement.config.Config;
 import me.ed333.plugin.advancedannouncement.config.ConfigKeys;
 import me.ed333.plugin.advancedannouncement.config.ConfigManager;
 import me.ed333.plugin.advancedannouncement.runnables.AnnounceRunnable;
-import me.ed333.plugin.advancedannouncement.runnables.PreAnnRunnable;
 import me.ed333.plugin.advancedannouncement.utils.GlobalConsoleSender;
 import me.ed333.plugin.advancedannouncement.utils.LangUtils;
 import me.ed333.plugin.advancedannouncement.utils.ProtocolUtils;
@@ -168,7 +167,7 @@ public class AA_CommandExecutor implements CommandExecutor {
             object.addProperty("text", "to component: ");
             jsonArray.add(object);
             jsonArray.addAll(TextHandler.constructToJsonArr(args[1], sender));
-            ProtocolUtils.sendJsonMsg((Player) sender, jsonArray.toString());
+            ProtocolUtils.sendChat((Player) sender, jsonArray.toString());
         } else {
             sender.sendMessage(LangUtils.getLangText_withPrefix("command.command-display-not-supported"));
         }
@@ -179,12 +178,13 @@ public class AA_CommandExecutor implements CommandExecutor {
     @SuppressWarnings("unused")
     void reload(@NotNull CommandSender sender, String @NotNull [] args) {
         sender.sendMessage(LangUtils.getLangText("reload.start"));
-        PreAnnRunnable.preAnnRunnableList.forEach(PreAnnRunnable::cancel);
+
         if (AdvancedAnnouncement.announceTask != null) {
             AdvancedAnnouncement.announceTask.cancel();
             AdvancedAnnouncement.announceTask = null;
             GlobalConsoleSender.info(LangUtils.getLangText("ann-task-stop"));
         }
+
         ConfigManager.checkAllFile();
         ConfigManager.loadAll();
         ConfigKeys.initKey(ConfigManager.getConfigFile("config"));

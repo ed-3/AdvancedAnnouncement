@@ -1,3 +1,14 @@
+###################
+# Since 1.2.1-beta
+###################
+Settings:
+  # the default world to which an announcement will be sent
+  # If it is empty, an announcement is sent to all the worlds
+  # Since: 1.2.1-beta
+  enabled_worlds:
+    - some world
+    - another world
+
 announcements:
   # announce name, DO NOT HAVE DUPLICATED NAME.
   chat_announce_type_example:
@@ -17,11 +28,10 @@ announcements:
     delay: 60s
     # Possible types:
     # 1. CHAT: this announcement type will be sent to chat box.
-    # 5. TITLE: this announcement type will be sent through a title.
+    # 2. TITLE: this announcement type will be sent through a title.
     # 3. BOSS_BAR: this announcement type will be displayed by a boss bar.
-    # 2. ACTION_BAR: this announcement type will be sent to player's action-bar.
-    # 6. PRE_ANNOUNCE: this announcement type will be sent to players at any time that you want.
-    # 4. MULTIPLE_LINE_BOSS_BAR: this announcement type will be displayed by multiple boss bars.
+    # 4. ACTION_BAR: this announcement type will be sent to player's action-bar.
+    # 5. MULTIPLE_LINE_BOSS_BAR: this announcement type will be displayed by multiple boss bars.
     type: CHAT
     # Content of this announcement.
     # +==+==+==+==+==+==+==+==+==+==+==+==+==
@@ -125,25 +135,6 @@ announcements:
     sub-stay: 3
     sub-fadeout: 1
 
-  # the pre_announce example
-  pre_announce_example:
-    # delay time to next announcement
-    delay: 60s
-    # defines when this announcement will send to player
-    # time format can be defined in config.yml
-    date: '2024-1-1 00:00:00'
-    # refers to a pre-announcement
-    type: PRE_ANNOUNCE
-    # defines When the time arrives, what form will this announcement be displayed.
-    # name is the same as above, BUT NOT EQUALS 'PRE_ANNOUNCE' type.
-    displayType: CHAT
-    content:
-      - '{rainbow}==============================='
-      - ''
-      - '{#bf0000->#00bfbf,&l}HAPPY NEW YEAR!'
-      - ''
-      - '{rainbow}==============================='
-
   # the multiple line boss bar type example
   multiple_line_boss_bar_example:
     delay: 60s
@@ -162,9 +153,20 @@ announcements:
       - '{#4d6ea5->#a7bce5}this is an boss bar announcement{stay:2}{color:GREEN}{segment:20}'
       # requires placeholder expansion: Animations
       # command: /papi ecloud download Animations (if you enabled ecloud feature)
-      - '%animations_<shine start=&9 middle=&4 end=&9 normal=&b size=3>this is an auto-updated boss bar</shine>%{update:0.5}'
+      - '%animations_<shine start=&9 middle=&4 end=&9 normal=&b size=3>this is an auto-updated boss bar</shine>%{update:0.1}'
       - '&6progressing boss bar{progress:true}'
       # sets segments to 10
       # default delay sets to 5 sec
       # default color sets to PURPLE
       - '&bthe next boss bar{segment:10}'
+
+  limit_world_announcement_example:
+    delay: 60s
+    type: ACTION_BAR
+    content:
+      - '&cYou are in the nether world, be careful not to fall in to the lava!'
+    # the priority is larger than the default settings
+    # if you not use this section, plug-in will use the default settings.
+    # since 1.2.1-beta
+    worlds:
+      - world_the_nether

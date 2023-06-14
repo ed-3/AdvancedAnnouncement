@@ -3,6 +3,15 @@
 `announcements.yml` 中定义了所有可以被广播的公告
 
 ```yaml
+###################
+# 该项自 1.2.1-beta 添加
+###################
+Settings:
+  # 限制公告被发送的默认世界
+  # 空值代表一个公告会被发送到所有世界
+  # 从 1.2.1-beta 开始添加这个选项
+  enabled_worlds: []
+
 announcements:
   # 公告名称，不要重复
   chat_announce_type_example:
@@ -21,11 +30,10 @@ announcements:
     delay: 60s
     # 可用的类型:
     # 1. CHAT: 该公告会被发送到聊天栏中
-    # 2. PRE_ANNOUNCE: 指定时间发送的公告
-    # 3. TITLE: 该公告会以标题形式发送到玩家屏幕中间
-    # 4. ACTION_BAR: 该公告会被发送到玩家的物品栏上方
-    # 5. BOSS_BAR: 该公告会以 BOSS 栏的方式发送到玩家的屏幕上方
-    # 6. MULTIPLE_LINE_BOSS_BAR: 该公告会以多行 BOSS 栏的形式发送到玩家屏幕上方. (自 1.0.2 版本起)
+    # 2. TITLE: 该公告会以标题形式发送到玩家屏幕中间
+    # 3. ACTION_BAR: 该公告会被发送到玩家的物品栏上方
+    # 4. BOSS_BAR: 该公告会以 BOSS 栏的方式发送到玩家的屏幕上方
+    # 5. MULTIPLE_LINE_BOSS_BAR: 该公告会以多行 BOSS 栏的形式发送到玩家屏幕上方. (自 1.0.2 版本起)
     type: CHAT
     # 公告内容
     # +==+==+==+==+==+==+==+==+==+==+==+==+==
@@ -120,21 +128,6 @@ announcements:
     sub-stay: 3
     sub-fadeout: 1
 
-  pre_announce_example:
-    delay: 60s
-    # 这个公告什么时候会被发送
-    # 时间格式可以在 config.yml 中修改
-    date: '2024-1-1 00:00:00'
-    type: PRE_ANNOUNCE
-    # 时间到的时候，这个公告会以什么形式发送出来
-    displayType: CHAT
-    content:
-      - '{rainbow}==============================='
-      - ''
-      - '{#bf0000->#00bfbf,&l}HAPPY NEW YEAR!'
-      - ''
-      - '{rainbow}==============================='
-
   # 多行 BOSS 栏公告例子 (该类型自 1.0.2 版本增加)
   multiple_line_boss_bar_example:
     delay: 60s
@@ -158,4 +151,18 @@ announcements:
       # 默认停留时间是 5 秒
       # 默认颜色为 PURPLE
       - '&bthe next boss bar{segment:10}'
+
+
+  limit_world_announcement_example:
+    delay: 60s
+    type: ACTION_BAR
+    content:
+      - '&cYou are in the nether world, be careful not to fall in to the lava!'
+    
+    # 限制该公告所发送的世界
+    # 优先级高于默认设置
+    # 如果你不配置该项内容，那么公告则会使用默认设置
+    # 自从 1.2.1-beta 版本添加此选项
+    worlds:
+      - world_the_nether
 ```

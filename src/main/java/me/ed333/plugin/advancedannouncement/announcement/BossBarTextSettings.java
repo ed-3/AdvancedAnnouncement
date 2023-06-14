@@ -13,17 +13,4 @@ public class BossBarTextSettings {
     public BarStyle style = BarStyle.SOLID;
 
     BossBarTextSettings() {}
-
-    /**
-     * @param nextDelay total delay sec to next, (Count form the first one.)
-     */
-    BossBarTextSettings(double stay, double delaySec, double nextDelay, double update, boolean progress, BarColor barColor, BarStyle style) {
-        this.stay = stay;
-        this.delaySec = delaySec;
-        this.nextDelay = nextDelay;
-        this.update = update;
-        this.progress = progress;
-        this.barColor = barColor;
-        this.style = style;
-    }
 }

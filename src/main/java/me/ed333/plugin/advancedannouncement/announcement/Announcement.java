@@ -14,6 +14,7 @@ public abstract class Announcement {
     private final int index;
     private final String name;
     private final List<String> content;
+    private final List<String> worlds;
     private final String permissionName;
     private final int delay;
     private final AnnouncementType type;
@@ -26,13 +27,21 @@ public abstract class Announcement {
      * @param delay the delay time to next announcement.
      * @param content the content of this announcement.
      */
-    public Announcement(int index, @NotNull String name, @NotNull AnnouncementType type, @Nullable String permissionName, int delay, List<String> content) {
+    public Announcement(
+            int index, @NotNull String name,
+            @NotNull AnnouncementType type,
+            @Nullable String permissionName,
+            int delay,
+            List<String> content,
+            List<String> worlds
+    ) {
         this.index = index;
         this.name = name;
         this.content = content;
         this.permissionName = permissionName;
         this.delay = delay;
         this.type = type;
+        this.worlds = worlds;
     }
 
     public int getIndex() {
@@ -57,6 +66,10 @@ public abstract class Announcement {
 
     public @NotNull List<String> content() {
         return content;
+    }
+
+    public List<String> getWorlds() {
+        return worlds;
     }
 
     public void broadcast() {

@@ -1,11 +1,12 @@
 package me.ed333.plugin.advancedannouncement;
 
 import me.ed333.plugin.advancedannouncement.announcement.*;
-import me.ed333.plugin.advancedannouncement.components.*;
+import me.ed333.plugin.advancedannouncement.components.ComponentManager;
+import me.ed333.plugin.advancedannouncement.components.ComponentType;
+import me.ed333.plugin.advancedannouncement.components.JsonBlock;
+import me.ed333.plugin.advancedannouncement.components.NormalBlock;
 import me.ed333.plugin.advancedannouncement.config.Config;
-import me.ed333.plugin.advancedannouncement.config.ConfigKeys;
 import me.ed333.plugin.advancedannouncement.config.ConfigManager;
-import me.ed333.plugin.advancedannouncement.runnables.PreAnnRunnable;
 import me.ed333.plugin.advancedannouncement.utils.GlobalConsoleSender;
 import me.ed333.plugin.advancedannouncement.utils.LangUtils;
 import me.ed333.plugin.advancedannouncement.utils.TimeHandler;
@@ -13,9 +14,8 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.*;
-import java.text.ParseException;
-import java.util.Date;
+import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +66,6 @@ public class Bootstrap {
             int actionBarCount = 0;
             int bossBarCount = 0;
             int titleTypeCount = 0;
-            int preTypeCount = 0;
             int multipleBossBarCount = 0;
             for (Announcement ann : AnnouncementManager.loadedAnnouncements) {
                 if (ann.type().equals(AnnouncementType.CHAT)) {
@@ -77,9 +76,8 @@ public class Bootstrap {
                     bossBarCount++;
                 } else if (ann.type().equals(AnnouncementType.TITLE)) {
                     titleTypeCount++;
-                } else if (ann.type().equals(AnnouncementType.PRE_ANNOUNCE)) {
-                    preTypeCount++;
-                } else if (ann.type().equals(AnnouncementType.MULTIPLE_LINE_BOSS_BAR)) {
+                }
+                else if (ann.type().equals(AnnouncementType.MULTIPLE_LINE_BOSS_BAR)) {
                     multipleBossBarCount++;
                 }
             }
@@ -89,7 +87,6 @@ public class Bootstrap {
             data.put("ACTION_BAR", actionBarCount);
             data.put("BOSS_BAR", bossBarCount);
             data.put("TITLE", titleTypeCount);
-            data.put("PRE_ANNOUNCE", preTypeCount);
             data.put("MULTIPLE_LINE_BOSS_BAR", multipleBossBarCount);
             return data;
         });
@@ -136,14 +133,16 @@ public class Bootstrap {
     }
 
     public static void loadAnnouncements() {
-        ConfigurationSection announceCfg = ConfigManager.getConfig("announcements").getConfiguration().getConfigurationSection("announcements");
+        ConfigurationSection announceCfg = ConfigManager.getConfig("announcements").getConfiguration();
+        List<String> defaultWorlds = announceCfg.getStringList("Settings.enabled_worlds");
 
+        ConfigurationSection announceSection = announceCfg.getConfigurationSection("announcements");
         int index = 0;
-        for (String annName : announceCfg.getKeys(false)) {
+        for (String annName : announceSection.getKeys(false)) {
             // check if there is already loaded a similar announcement. 
             if (AnnouncementManager.forName(annName) != null) continue;
 
-            ConfigurationSection section = announceCfg.getConfigurationSection(annName);
+            ConfigurationSection section = announceSection.getConfigurationSection(annName);
             if (section == null) continue;
             String permission = section.getString("permission");
             int delay = TimeHandler.parse(section.getString("delay", "60s"));
@@ -156,6 +155,7 @@ public class Bootstrap {
             }
 
             List<String> contents = section.getStringList("content");
+            List<String> worlds = section.getStringList("worlds");
 
             Announcement announcement = null;
             // for title type
@@ -169,16 +169,16 @@ public class Bootstrap {
 
             switch (type) {
                 case CHAT:
-                    announcement = new ChatTypeAnnouncement(index, annName, permission, delay, contents);
+                    announcement = new ChatType(index, annName, permission, delay, contents, worlds.isEmpty() ? defaultWorlds : worlds);
                     break;
                 case MULTIPLE_LINE_BOSS_BAR:
-                    announcement = new MultipleLineBossBarTypeAnnouncement(index, annName, permission, delay, stay, contents);
+                    announcement = new LinedBossBarType(index, annName, permission, delay, stay, contents, worlds.isEmpty() ? defaultWorlds : worlds);
                     break;
                 case BOSS_BAR:
-                    announcement = new BossBarTypeAnnouncement(index, annName, permission, delay, contents);
+                    announcement = new BossBarType(index, annName, permission, delay, contents, worlds.isEmpty() ? defaultWorlds : worlds);
                     break;
                 case ACTION_BAR:
-                    announcement = new ActionBarTypeAnnouncement(index, annName, permission, delay, contents);
+                    announcement = new ActionBarType(index, annName, permission, delay, contents, worlds.isEmpty() ? defaultWorlds : worlds);
                     break;
                 case TITLE:
                     if (contents.size() == 0) {
@@ -191,43 +191,12 @@ public class Bootstrap {
                         GlobalConsoleSender.warn(LangUtils.parseLang_withPrefix("title-type-three-or-more", annName));
                     }
 
-                    announcement = new TitleTypeAnnouncement(
-                            index, annName, permission, delay, contents,
+                    announcement = new TitleType(
+                            index, annName, permission, delay, contents, worlds.isEmpty() ? defaultWorlds : worlds,
                             fadeIn, stay, fadeOut,
                             sub_fadeIn, sub_stay, sub_fadeout
                     );
 
-                    break;
-                case PRE_ANNOUNCE:
-                    Date dateTime;
-                    String dateStr = section.getString("date");
-                    try {
-                        dateTime = TimeHandler.toDate(dateStr);
-                    } catch (ParseException e) {
-                        GlobalConsoleSender.warn(LangUtils.parseLang("load.preann-time-format-err", annName, dateStr, ConfigKeys.DATE_FORMAT));
-                        continue;
-                    }
-
-                    AnnouncementType shownType;
-                    try {
-                        shownType = AnnouncementType.valueOf(section.getString("displayType"));
-                    } catch (IllegalArgumentException e) {
-                        GlobalConsoleSender.warn(LangUtils.parseLang_withPrefix("preann-shown-type-unknown", annName, section.getString("displayType")));
-                        continue;
-                    }
-                    if (shownType.equals(AnnouncementType.PRE_ANNOUNCE)) {
-                        GlobalConsoleSender.warn(LangUtils.parseLang_withPrefix("preann-shown-type-equals", annName));
-                        continue;
-                    }
-
-                    announcement = new PreTypeAnnouncement(
-                        index, annName, permission, delay, contents, dateTime, shownType, 
-                        // display type may be the title type, transfer the time
-                        fadeIn, stay, fadeOut,
-                            sub_fadeIn, sub_stay, sub_fadeout
-                        );
-
-                    new PreAnnRunnable(((PreTypeAnnouncement) announcement)).runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, TimeHandler.getTimeSecRemain(dateTime) * 20L);
             }
             if (announcement != null) {
                 AnnouncementManager.loadedAnnouncements.add(announcement);

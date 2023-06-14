@@ -58,9 +58,13 @@ public class Updater {
             Version latestVer = Version.parse(tag);
             Version pluginVer = Version.parse(AdvancedAnnouncement.INSTANCE.getDescription().getVersion());
             boolean result = latestVer.isNewer(pluginVer);
-            if (!result) {
-                GlobalConsoleSender.warn(LangUtils.parseLang("update.has-update-line1", pluginVer, latestVer));
-                GlobalConsoleSender.warn(LangUtils.getLangText("update.has-update-line2"));
+            if (!latestVer.equals(pluginVer)) {
+                if (result) {
+                    GlobalConsoleSender.warn(LangUtils.parseLang("update.has-update-line1", pluginVer, latestVer));
+                    GlobalConsoleSender.warn(LangUtils.getLangText("update.has-update-line2"));
+                } else {
+                    GlobalConsoleSender.info(LangUtils.getLangText("update.check-latest"));
+                }
             } else {
                 GlobalConsoleSender.info(LangUtils.getLangText("update.check-latest"));
             }
