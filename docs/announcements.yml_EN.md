@@ -25,11 +25,6 @@ announcements:
     # examples:
     # - 60s, the delay time is 60 seconds (default val)
     # - 1min, the delay time is 1 minute
-    # - 1h, the delay time is 1 hour (are you sure?)
-    # - 1d, the delay time is 1 day (are you sure?)
-    # - 1week, the delay time is 1 week(hey? are you serious?)
-    # - 1month, the delay time is 1 month (hey? are you serious?)
-    # - 1year, the delay time is 1 year (hey? are you serious?)
     delay: 60s
     # Possible types:
     # 1. CHAT: this announcement type will be sent to chat box.

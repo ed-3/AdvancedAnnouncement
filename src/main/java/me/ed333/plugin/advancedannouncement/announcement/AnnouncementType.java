@@ -8,5 +8,5 @@ public enum AnnouncementType {
     ACTION_BAR,
     BOSS_BAR,
     TITLE,
-    MULTIPLE_LINE_BOSS_BAR;
+    MULTIPLE_LINE_BOSS_BAR
 }

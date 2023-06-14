@@ -208,7 +208,7 @@ public class AA_CommandExecutor implements CommandExecutor {
         Bootstrap.loadComponentBlock();
         Bootstrap.loadAnnouncements();
 
-        AdvancedAnnouncement.announceTask = new AnnounceRunnable().runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, 600L);;
+        AdvancedAnnouncement.announceTask = new AnnounceRunnable().runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, 600L);
         GlobalConsoleSender.setDEBUG(ConfigKeys.DEBUG);
         sender.sendMessage(LangUtils.getLangText("reload.done"));
     }

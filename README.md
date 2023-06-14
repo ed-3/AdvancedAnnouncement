@@ -16,6 +16,9 @@
 + [All available placeholders](#all-available-placeholders)
 + [Usage of command aa parse](#usage-of-command-aa-parse)
 + [Create an announcement](#create-an-announcement)
+  + [Required fields in an announcement](#Required-fields-in-an-announcement)
+  + [Optional fields in an announcement](#Optional-fields-in-an-announcement)
+  + [Delay time format](#Delay-time-format)
 + [Use RGB color code](#Use-RGB-color-code)
 + [Usage of command '/aa parse'](#usage-of-command-aa-parse)
 + [Image view](#image-view)
@@ -29,7 +32,7 @@
 ## Announcement types table
 All available announcements are as below:
 
-| announcement type | instruction |
+| announcement type | description |
 | ------------ | --- |
 | CHAT         | this announcement type will be sent to chat box |
 | ACTION_BAR   | this announcement type will be sent to player's action-bar |
@@ -82,7 +85,43 @@ annName:
 ```
 
 > Note: 
-> Only required options are listed in the example, see [announcements.yml](docs/announcements.yml_EN.md) for the rest of the details.
+> **_Only required options are listed in the example_**, see [announcements.yml](docs/announcements.yml_EN.md) for the rest of the details.
+
+### Required fields in an announcement
+
+The required fields in the announcement are `type` and `content` fields, 
+which respectively indicate the announcement type and announcement content.
+
+### Optional fields in an announcement
+
+All the optional fields are list below:
+
+| Fields | description | you can use it on | NOTE |
+| --- | --- | --- | --- |
+| delay | The delay between the current announcement and the next announcement, <br/> The format can be found [here](#Delay-time-format) | ALL | |
+| permission | Restrict the player's access to this announcement, players without permission will not receive this announcement. <br/> If nothing is written or removed, it means that any player can receive the announcement. | ALL | |
+| worlds | Limit the world to which the announcement is sent, if you do not configure this field, the announcement uses the default settings | ALL | |
+| stay | Limited to use in the MULTIPLE_LINE_BOSS_BAR announcement type, which indicates how long the announcement stays. | MULTIPLE_LINE_BOSS_BAR | Added from v1.0.2 |
+| fadeIn | Limited to use in TITLE type announcement, which indicates the time when the **_title_** fades in | TITLE | |
+| stay | Limited to use in TITLE type announcement, which indicates the time when the **_title_** stays | TITLE | |
+| fadeout | Limited to use in TITLE type announcement, which indicates the time when the **_title_** fades out | TITLE | |
+| sub-fadeIn | Limited to use in TITLE type announcement, which indicates the time when the **_subtitle_** fades in | TITLE | Added from v1.2.0-beta |
+| sub-stay | Limited to use in TITLE type announcement, which indicates the time when the **_subtitle_** stays | TITLE | Added from v1.2.0-beta |
+| sub-fadeout | Limited to use in TITLE type announcement, which indicates the time when the **_subtitle_** fades out | TITLE | Added from v1.2.0-beta |
+
+### Delay time format
+
+The format is number + time unit, and the example content is as follows:
+
+Sample content|time represented|remarks|
+| --- | --- | --- |
+| 60s |  60 seconds | |
+| 1min | 1 min | | 
+| 1h | 1 hour (are you sure?) | The interval has been removed from v1.2.1-beta due to too long |
+| 1d | 1 day (are you sure?) | The interval has been removed from v1.2.1-beta due to too long |
+| 1week | 1 week (are you seriously?) | The interval has been removed from v1.2.1-beta due to too long |
+| 1month | 1 month (are you seriously?) | The interval has been removed from v1.2.1-beta due to too long |
+| 1year | 1 year (are you seriously?) | The interval has been removed from v1.2.1-beta due to too long |
 
 ## Use RGB color code
 As the introduction said, AdvancedAnnouncement is supported to use RGB color code(your Minecraft server must be 1.16 or above).
@@ -156,3 +195,10 @@ Due to the huge amount of documentation, please move to the path under the corre
 + [config.yml](docs/config.yml_EN.md)
 + [announcements.yml](docs/announcements.yml_EN.md)
 + [components.yml](docs/components.yml_EN.md)
+
+
+## In the last
+
+Thank you so much for choosing the AdvancedAnnouncement plugin! 
+If you have any good suggestions for this plugin, feel free give a feedback to me.
+The plugin is constantly being improved, if you have any questions, please open an issue and have a pleasant conversation with me.
