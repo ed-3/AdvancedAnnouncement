@@ -5,9 +5,7 @@ Settings:
   # the default world to which an announcement will be sent
   # If it is empty, an announcement is sent to all the worlds
   # Since: 1.2.1-beta
-  enabled_worlds:
-    - some world
-    - another world
+  enabled_worlds: []
 
 announcements:
   # announce name, DO NOT HAVE DUPLICATED NAME.
