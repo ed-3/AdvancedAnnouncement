@@ -11,7 +11,7 @@ ann-task-already-stop: '&6The announcement task has been canceled, and there is 
 
 update:
   check: '&2Checking updates...'
-  has-update-line1: '&eYou are running outdated version(&b{0}&e) while latest version is &b{0}&e.'
+  has-update-line1: '&eYou are running outdated version(&b{0}&e) while latest version is &b{1}&e.'
   has-update-line2: '&ePlease go to github(or gitee) release page to download the latest release.'
   check-latest: '&2You are running the latest AdvancedAnnouncement。'
   check-exception: '&eAn error occurred while checking update:'
@@ -52,4 +52,3 @@ command:
     - '&2/aa &aparse &8- &6parse a string with placeholders'
     - '&2/aa &abroadcast &8- &6broad an announcement'
     - '&2/aa &areload &8- &6reload this plugin'
-

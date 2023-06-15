@@ -8,7 +8,7 @@ ann-task-already-stop: '&6公告任务已取消，请不要重复取消。'
 
 update:
   check: '&2检查更新中...'
-  has-update-line1: '&e你正在运行旧版本的 &2AdvancedAnnouncement&e(&b{0}&e)，新版本 &b{0} &e已经发布! '
+  has-update-line1: '&e你正在运行旧版本的 &2AdvancedAnnouncement&e(&b{0}&e)，新版本 &b{1} &e已经发布! '
   has-update-line2: '&e请前往 GitHub(或者 Gitee) 发布页下载最新的插件。'
   check-latest: '&2当前运行的插件版本是最新的版本。'
   check-exception: '&e检查更新时发生异常: '
