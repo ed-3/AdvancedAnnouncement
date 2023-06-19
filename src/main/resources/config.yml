@@ -27,5 +27,5 @@ date-format: yyyy-MM-dd HH:mm:ss
 # random announcement used.
 random: true
 
-# debug, open when necessary.
+# debug, don't open unless it is necessary.
 debug: false

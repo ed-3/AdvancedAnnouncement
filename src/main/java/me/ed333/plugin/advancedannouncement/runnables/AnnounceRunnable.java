@@ -9,22 +9,23 @@ import me.ed333.plugin.advancedannouncement.utils.LangUtils;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class AnnounceRunnable extends BukkitRunnable {
+    private static int lastIndex = 0;
 
-    private int lastIndex = 0;
     @Override
     public void run() {
         Announcement announcement;
         if (ConfigKeys.RANDOM) {
             announcement = AnnouncementManager.randomNext();
         } else {
-            if (lastIndex >= AnnouncementManager.loadedAnnouncements.size()) lastIndex = 0;
+            if (lastIndex >= AnnouncementManager.loadedAnnouncements.size()) {
+                lastIndex = 0;
+            }
             announcement = AnnouncementManager.forIndex(lastIndex);
-            lastIndex++;
+            lastIndex = announcement.getIndex() + 1;
         }
         announcement.broadcast();
-        lastIndex = announcement.getIndex();
 
-        GlobalConsoleSender.debugInfo("Sending announcement: " + announcement.getName());
+        GlobalConsoleSender.debugInfo("Sending announcement: " + announcement.getName() + ", announce: " + announcement.getName() + ", index: " + announcement.getIndex());
         AdvancedAnnouncement.announceTask = new AnnounceRunnable().runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, announcement.delay()*20L);
     }
 

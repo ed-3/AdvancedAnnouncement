@@ -1,8 +1,10 @@
 package me.ed333.plugin.advancedannouncement.announcement;
 
 import me.ed333.plugin.advancedannouncement.AdvancedAnnouncement;
+import me.ed333.plugin.advancedannouncement.utils.LangUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -87,5 +89,16 @@ public abstract class Announcement {
         }.runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, 1L);
     }
 
-    public abstract boolean send(CommandSender sender);
+    public abstract void send(CommandSender sender);
+
+    public boolean canSend(CommandSender sender) {
+        if (sender instanceof ConsoleCommandSender) {
+            sender.sendMessage(LangUtils.getLangText_withPrefix("command.command-display-not-supported"));
+            return false;
+        } else if (!(sender instanceof Player)) {
+            sender.sendMessage(LangUtils.getLangText_withPrefix("command.command-display-sender-not-known"));
+            return false;
+        }
+        return true;
+    }
 }

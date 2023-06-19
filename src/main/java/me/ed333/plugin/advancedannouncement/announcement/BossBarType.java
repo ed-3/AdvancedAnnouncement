@@ -1,17 +1,14 @@
 package me.ed333.plugin.advancedannouncement.announcement;
 
 import me.ed333.plugin.advancedannouncement.AdvancedAnnouncement;
-import me.ed333.plugin.advancedannouncement.utils.LangUtils;
 import me.ed333.plugin.advancedannouncement.utils.PlaceholderRegex;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 
 public class BossBarType extends Announcement {
@@ -67,34 +64,20 @@ public class BossBarType extends Announcement {
     }
 
     @Override
-    public boolean send(CommandSender sender) {
-        AtomicBoolean result = new AtomicBoolean(false);
-
+    public void send(CommandSender sender) {
         Bukkit.getScheduler().runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, ()-> {
-            if (sender instanceof ConsoleCommandSender) {
-                sender.sendMessage(LangUtils.getLangText_withPrefix("command.command-display-not-supported"));
-                result.set(false);
-            } else if (sender instanceof Player) {
-                String playerWorldN = ((Player) sender).getWorld().getName();
-                if (!getWorlds().isEmpty() && !getWorlds().contains(playerWorldN)) {
-                    result.set(false);
-                    return;
-                }
+            String playerWorldN = ((Player) sender).getWorld().getName();
+            if (!getWorlds().isEmpty() && !getWorlds().contains(playerWorldN)) {
+                return;
+            }
 
-                for (AdvancedBossBar bar : bars) {
-                    new BossBarRunnable(bar, (Player) sender)
-                            .runTaskLaterAsynchronously(
-                                    AdvancedAnnouncement.INSTANCE,
-                                    (long) (bar.settings.nextDelay - bar.settings.delaySec) * 20L
-                            );
-                }
-                result.set(true);
-            } else {
-                sender.sendMessage(LangUtils.getLangText_withPrefix("command.command-display-sender-not-known"));
-                result.set(false);
+            for (AdvancedBossBar bar : bars) {
+                new BossBarRunnable(bar, (Player) sender)
+                        .runTaskLaterAsynchronously(
+                                AdvancedAnnouncement.INSTANCE,
+                                (long) (bar.settings.nextDelay - bar.settings.delaySec) * 20L
+                        );
             }
         }, 0L);
-
-        return result.get();
     }
 }

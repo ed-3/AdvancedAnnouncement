@@ -133,9 +133,10 @@ public class AA_CommandExecutor implements CommandExecutor {
             sender.sendMessage(LangUtils.getLangText_withPrefix("command.command-display-not-found"));
             return;
         }
-        boolean result = ann.send(sender);
-        if (result) {
+
+        if (ann.canSend(sender)) {
             sender.sendMessage(LangUtils.parseLang_withPrefix("command.command-display-message", ann.getName()));
+            ann.send(sender);
         }
     }
 
@@ -160,6 +161,11 @@ public class AA_CommandExecutor implements CommandExecutor {
     @PermissionRequirement("aa.command.parse")
     @SuppressWarnings("unused")
     void parse(@NotNull CommandSender sender, String @NotNull [] args) {
+        if (args.length != 2) {
+            sender.sendMessage(LangUtils.getLangText_withPrefix("command.invalidArgs"));
+            return;
+        }
+
         if (sender instanceof Player) {
             sender.sendMessage("handle color: " + TextHandler.handleColor(args[1], sender));
             JsonArray jsonArray = new JsonArray();
