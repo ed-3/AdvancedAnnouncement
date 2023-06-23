@@ -1,0 +1,53 @@
+prefix: '&2&lAdvanced&a&lAnnouncement &6&l>>> &r'
+
+internalError: '&c发生内部错误。请联系服务器管理员。'
+ann-task-start: '&6公告任务已建立。'
+ann-task-already-start: '&e公告任务已经开始，无需重复开始。'
+ann-task-stop: '&6已取消公告任务。'
+plugin-unload: '&2插件已卸载。'
+ann-task-already-stop: '&6公告任务已取消，请不要重复取消。'
+
+update:
+  check: '&2检查更新中...'
+  has-update-line1: '&e你正在运行旧版本的 &2AdvancedAnnouncement&e(&b{0}&e)，新版本 &b{1} &e已经发布! '
+  has-update-line2: '&e请前往 GitHub(或者 Gitee) 发布页下载最新的插件。'
+  check-latest: '&2当前运行的插件版本是最新的版本。'
+  check-exception: '&e检查更新时发生异常: '
+
+load:
+  exception: '&e加载公告(&2名称: &b{0}&e)时发生严重错误: &c{1}'
+  load-announcements-done: '&3加载了 &b{0} &3个公告。'
+  load-components-done: '&3加载了 &b{0} &3个 JSON 组件。'
+  load-comonents-unknown: '&c未知的组件类型 &e{0}(组件名称: {1})。已跳过加载。'
+  title-type-empty: '&e标题类型公告(&2名称: &b{0}&e)内容为空，已跳过加载。'
+  title-type-one-line: '&e标题类型公告(&2名称: &b{0}&e)只有一行内容，它将自动作为主标题出现。'
+  title-type-three-or-more: '&e标题类型公告(&2名称: &b{0}&e)内容已超过三行，将只选取前两行作为主标题和副标题出现。'
+  ann-type-unknown: '&e未知的公告类型(&2名称: &b{0}&2, 类型:{1}&e)，已跳过加载'
+  json-hover-unknow-action: '&eJSON 组件中未知的悬浮显示类型: {0}, 位于组件 {1}'
+
+reload:
+  start: "&e重新加载中..."
+  done: "&a重载完毕!"
+
+command:
+  permissionDeny: '&c你缺少权限 &e{0} &c来使用这个命令。'
+  invalidCommand: '&c命令错误, 请输入''/aa help'' 查看帮助。'
+  invalidArgs: '&c参数错误, 请输入 ''/aa help'' 查看帮助。'
+  playerOnly: '&c该命令只能由玩家执行! '
+  command-display-message: '&a你正在预览公告 &2{0}'
+  command-display-not-found: '&c该公告不存在哦。'
+  command-display-not-supported: '&c该公告不适合在控制台中预览~'
+  command-display-sender-not-known: '&c你是一个玩家吗¿'
+  command-broadcast-not-found: '&c该公告不存在哦。'
+  command-broadcast-sent: '&6向全服玩家发送了一个公告 &2{0}'
+
+  help:
+    - '&6========== &2&lAdvanced&a&lAnnouncement &6=========='
+    - '&2/aa &ahelp &8- &6显示本帮助'
+    - '&2/aa &astart &8- &6开始广播公告'
+    - '&2/aa &astop &8- &6停止广播公告'
+    - '&2/aa &alist &8- &6列出所有已加载的公告'
+    - '&2/aa &adisplay <name> &8- &6向你展示一条公告的内容'
+    - '&2/aa &aparse &8- &6解析含颜色代码的字符串(用于测试用途)'
+    - '&2/aa &abroadcast &8- &6广播一个公告'
+    - '&2/aa &areload &8- &6重载插件'

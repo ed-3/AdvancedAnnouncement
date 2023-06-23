@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+}
+
+group = 'me.ed333.mcplugin.advancedann.bukkit'
+version = rootProject.version
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+
+    maven {
+        url "https://repo.dmulloy2.net/repository/public/"
+    }
+
+    maven {
+        name = 'PAPI'
+        url 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+    }
+}
+
+test{
+    useJUnitPlatform()
+}
+
+
+dependencies {
+    implementation project(path: ':Common', configuration: 'default')
+
+    compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
+    implementation 'org.jetbrains:annotations:24.0.1'
+    compileOnly 'me.clip:placeholderapi:2.11.1'
+    compileOnly 'com.comphenix.protocol:ProtocolLib:5.0.0'
+    compileOnly 'org.junit.jupiter:junit-jupiter:5.9.2'
+}

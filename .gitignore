@@ -1,6 +1,10 @@
 gitee
 gitee.pub
 push.bat
+Bungee/build
+Common/build
+Bukkit/build
+artifacts
 /build
 /bin
 .gradle

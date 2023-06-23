@@ -1,0 +1,3 @@
+name: AdvancedAnnouncement
+version: '${version}'
+main: top.ed333.mcplugin.advancedann.bungee.AdvancedAnnouncement

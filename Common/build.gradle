@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+}
+
+group = 'me.ed333.mcplugin.advancedann'
+version = rootProject.version
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+}
+
+dependencies {
+    implementation 'org.jetbrains:annotations:24.0.1'
+    compileOnly 'net.md-5:bungeecord-chat:1.16-R0.4'
+}
