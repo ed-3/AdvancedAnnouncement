@@ -1,8 +1,9 @@
 plugins {
     id 'java'
+    id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
-group = 'me.ed333.mcplugin.advancedann'
+group = 'me.ed333.mcplugin.advancedann.bungee'
 version = rootProject.version
 
 repositories {
@@ -14,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jetbrains:annotations:24.0.1'
-    compileOnly 'net.md-5:bungeecord-chat:1.16-R0.4'
+    implementation project(':Common')
     compileOnly files('lib/BungeeCord.jar')
+    implementation 'org.jetbrains:annotations:24.0.1'
 }

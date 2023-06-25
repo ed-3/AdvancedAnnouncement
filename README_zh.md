@@ -14,6 +14,7 @@
 + [公告类型表](#公告类型表)
 + [指令](#指令)
 + [所有可用的占位符表](#所有可用的占位符表)
++ [使用 BungeeCord 版本插件](#使用-BungeeCord-版本插件)
 + [使用 '/aa parse' 解析字符串](#使用-'/aa-parse'-解析字符串)
 + [创建一个公告](#创建公告)
   + [公告中的 必填项目](#公告中的-**_必填项目_**)
@@ -64,6 +65,26 @@
 | {update:&lt;double&gt;} | BOSS 栏文本的更新时间 | 1. BOSS_BAR <br/> 2. MULTIPLE_LINE_BOSS_BAR |
 | {progress:&lt;true&#124;false&gt;} | 显示 BOSS 栏进度动画 | 1. BOSS_BAR <br/> 2. MULTIPLE_LINE_BOSS_BAR |
 | {segment:&lt;6&#124;10&#124;12&#124;20&gt;} | BOSS 栏的节段 | 1. BOSS_BAR <br/> 2. MULTIPLE_LINE_BOSS_BAR |
+
+## 使用 BungeeCord 版本插件
+### 安装方法
+将本插件直接丢到 BungeeCord 下的 plugins 文件夹中即可，**_子服务器无需安装本插件_**
+
+### 变化：
+_**本插件的 BungeeCord 版本配置文件**_有以下变化：
+`announcements.yml`:
++ 无法使用 `world` 来限制公告被发送的世界，因为这是不可能做到的。
++ 无法使用 `permission` 来限制接收公告的玩家
+
+`components.yml` 内容不变。
+
+> Tips:
+> 
+> 假如在这之前你已经配置好一份 Bukkit 的 `announcement.yml` 和 `components.yml`，
+> 
+> 你可以直接将它放置到 BungeeCord 下的插件配置文件夹中。这并不会导致任何报错
+
+其余内容完全相同
 
 ## 使用 '/aa parse' 解析字符串
 p话少说，直接上图:

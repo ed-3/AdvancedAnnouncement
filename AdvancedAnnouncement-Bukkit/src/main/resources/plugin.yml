@@ -1,0 +1,11 @@
+name: AdvancedAnnouncement
+version: '${version}'
+main: top.ed333.mcplugin.advancedann.bukkit.AdvancedAnnouncement
+api-version: 1.16
+softdepend:
+  - ProtocolLib
+  - PlaceholderAPI
+commands:
+  advancedannouncement:
+    aliases:
+      - aa

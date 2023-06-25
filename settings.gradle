@@ -1,5 +1,5 @@
 rootProject.name = 'AdvancedAnnouncement'
 
-include 'Bukkit'
-include 'Bungee'
-include 'Common'
+include ':AdvancedAnnouncement-Bukkit'
+include ':AdvancedAnnouncement-Bungee'
+include ':Common'

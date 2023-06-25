@@ -33,7 +33,11 @@ public class TextHandler {
             ComponentBlock block = ComponentManager.forName(placeholderName);
             if (block != null) {
                 array.addAll(block.constructToJsonArr(isLegacy));
-            } else array.add("{\"text\": \"" + placeholder +  "\"}");
+            } else {
+                JsonObject result = new JsonObject();
+                result.addProperty("text", placeholder);
+                array.add(result);
+            }
             lastIndex = end;
         }
 

@@ -66,6 +66,30 @@ All available announcements are as below:
 | {progress:&lt;true&#124;false&gt;} | show the progressing animation | 1. BOSS_BAR <br/> 2. MULTIPLE_LINE_BOSS_BAR |
 | {segment:&lt;6&#124;10&#124;12&#124;20&gt;} | the segments of the boss bar | 1. BOSS_BAR <br/> 2. MULTIPLE_LINE_BOSS_BAR |
 
+
+
+## Usage of BungeeCord version plugin
+### Installation method
+Throw this plugin directly into the plugins folder under BungeeCord, 
+**SUB-SERVER DOES NOT NEED TO INSTALL THIS PLUGIN**
+
+### Changes:
+
+The BungeeCord version configuration file for this plugin has the following changes:
+`announcements.yml`:
++ Cannot use 'world' to limit the world to which an announcement will be sent
++ Cannot use 'permission' to limit the players who receive announcements
+
+The 'components.yml' content remains unchanged.
+
+> Tips:
+>
+> suppose you have configured a copy of Bukkit's `announcement.yml` and `components.yml` before.
+>
+> You can place it directly in the plugin configuration folder under BungeeCord. This does not result in any errors
+
+The rest configurations is exactly the same as Bukkit's version
+
 ## Usage of command '/aa parse'
 ![parse.gif](https://s2.loli.net/2023/01/23/8vhblmMaDtGoCSZ.gif)
 

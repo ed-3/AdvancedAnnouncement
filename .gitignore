@@ -1,9 +1,11 @@
 gitee
 gitee.pub
 push.bat
-Bungee/build
+AdvancedAnnouncement-Bukkit/build
+AdvancedAnnouncement-Bungee/build
+# BungeeCord.jar
+AdvancedAnnouncement-Bungee/lib
 Common/build
-Bukkit/build
 artifacts
 /build
 /bin

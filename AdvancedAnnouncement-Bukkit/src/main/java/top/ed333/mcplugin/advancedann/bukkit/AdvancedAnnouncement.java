@@ -1,0 +1,62 @@
+package top.ed333.mcplugin.advancedann.bukkit;
+
+import top.ed333.mcplugin.advancedann.bukkit.cmd.AA_CommandExecutor;
+import top.ed333.mcplugin.advancedann.bukkit.config.ConfigKeys;
+import top.ed333.mcplugin.advancedann.bukkit.config.ConfigManager;
+import top.ed333.mcplugin.advancedann.bukkit.runnables.AnnounceRunnable;
+import top.ed333.mcplugin.advancedann.bukkit.cmd.AA_CommandCompleter;
+import top.ed333.mcplugin.advancedann.bukkit.utils.GlobalConsoleSender;
+import top.ed333.mcplugin.advancedann.bukkit.utils.LangUtils;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.io.File;
+
+public final class AdvancedAnnouncement extends JavaPlugin {
+    public static BukkitTask announceTask = null;
+
+    public static File DATA_FOLDER;
+    public static AdvancedAnnouncement INSTANCE;
+
+    public AdvancedAnnouncement() {
+        INSTANCE = this;
+        DATA_FOLDER = getDataFolder();
+    }
+
+    @Override
+    public void onEnable() {
+        BootStrap.printIcon();
+
+        BootStrap.initCfg();
+        ConfigKeys.initKey(ConfigManager.getConfigFile("config"));
+        BootStrap.loadComponentBlock();
+        BootStrap.loadAnnouncements();
+
+        // bStats
+        if (ConfigKeys.BSTATS) {
+            BootStrap.metric();
+        }
+
+        announceTask = new AnnounceRunnable().runTaskLaterAsynchronously(this, 600L);
+        GlobalConsoleSender.setDEBUG(ConfigKeys.DEBUG);
+        GlobalConsoleSender.info(LangUtils.getLangText("ann-task-start"));
+
+        String cmdName = "advancedannouncement";
+        getCommand(cmdName).setExecutor(new AA_CommandExecutor());
+        getCommand(cmdName).setTabCompleter(new AA_CommandCompleter());
+
+        if (ConfigKeys.UPDATE_CHECK) BootStrap.checkUpdate();
+    }
+
+    @Override
+    public void onDisable() {
+        INSTANCE = null;
+
+        if (announceTask != null) {
+            announceTask.cancel();
+            GlobalConsoleSender.info(LangUtils.getLangText("ann-task-stop"));
+        }
+
+        GlobalConsoleSender.info(LangUtils.getLangText("plugin-unload"));
+    }
+}
