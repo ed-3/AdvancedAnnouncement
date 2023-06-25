@@ -4,7 +4,7 @@ push.bat
 AdvancedAnnouncement-Bukkit/build
 AdvancedAnnouncement-Bungee/build
 # BungeeCord.jar
-AdvancedAnnouncement-Bungee/lib
+# AdvancedAnnouncement-Bungee/lib
 Common/build
 artifacts
 /build
