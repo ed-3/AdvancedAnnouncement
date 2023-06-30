@@ -34,11 +34,13 @@ public class BootStrap {
         try {
             String icon = Streams.read(getResource("icon.txt"), StandardCharsets.UTF_8);
             /*
-            Since it was not clear why the error occurred when running gradle processResources task,
-            this compromise approach was used.
+            Version code should be processed in build.gradle, but an unclear error occurred while
+            running processResources task, so this compromise approach was used.
              */
             icon = icon.replace("${version}", AdvancedAnnouncement.INSTANCE.getDescription().getVersion());
-            Bukkit.getConsoleSender().sendMessage(icon);
+
+            for (String line : icon.split("\n")) Bukkit.getConsoleSender().sendMessage(line);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -168,7 +170,7 @@ public class BootStrap {
             ConfigurationSection section = announceSection.getConfigurationSection(annName);
             if (section == null) continue;
             String permission = section.getString("permission");
-            int delay = TimeHandler.parse(section.getString("delay", "60s")) * 1000;
+            int delay = TimeHandler.parse(section.getString("delay", "60s"));
             AnnouncementType type;
             try {
                 type = AnnouncementType.valueOf(section.getString("type"));

@@ -17,9 +17,9 @@ public class TimeHandler {
         String unit = matcher.group(2);
         switch (unit) {
             case "s":
-                return value * 1000;
+                return value;
             case "min":
-                return value * 60 * 1000;
+                return value * 60;
             default:
                 throw new IllegalArgumentException("Invalid time unit: " + unit);
         }

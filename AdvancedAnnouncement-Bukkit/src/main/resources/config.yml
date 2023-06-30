@@ -18,6 +18,9 @@ updateSource: 1
 # https://bstats.org/plugin/bukkit/AdvancedAnnouncements/17508
 bStats: true
 
+# auto start announce task when plugin is loaded
+autoRun: true
+
 # random announcement used.
 random: true
 

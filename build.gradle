@@ -1,5 +1,5 @@
 group = 'me.ed333.mcplugin.advancedann'
-version = '1.2.3-release'
+version = '1.2.4-release'
 
 subprojects {
     apply plugin: 'java'
@@ -22,7 +22,7 @@ subprojects {
         def props = [version: rootProject.version]
         inputs.properties props
         filteringCharset 'UTF-8'
-        filesMatching(['bungee.yml', 'bungee.yml']) {
+        filesMatching(['bungee.yml', 'plugin.yml']) {
             expand props
         }
     }

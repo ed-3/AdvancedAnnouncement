@@ -11,6 +11,7 @@ public class ConfigKeys {
     public static boolean UPDATE_CHECK = true;
     public static int UPDATE_SOURCE = 1;
     public static boolean BSTATS = true;
+    public static boolean AUTO_RUN = true;
 
     public static void initKey(File cfgFile) {
         YamlConfiguration ymlCfg = YamlConfiguration.loadConfiguration(cfgFile);
@@ -20,6 +21,7 @@ public class ConfigKeys {
         UPDATE_SOURCE = ymlCfg.getInt("updateSource", 1);
         BSTATS = ymlCfg.getBoolean("bStats", true);
         RANDOM = ymlCfg.getBoolean("random", true);
+        AUTO_RUN = ymlCfg.getBoolean("autoRun", true);
         DEBUG = ymlCfg.getBoolean("debug", false);
     }
 }

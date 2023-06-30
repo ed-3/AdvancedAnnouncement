@@ -25,6 +25,7 @@ import top.ed333.mcplugin.advancedann.common.utils.TextHandler;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -48,7 +49,7 @@ public class AA_Cmd extends Command implements TabExecutor {
             SubCmd cmdAnn = method.getAnnotation(SubCmd.class);
             ArgLen argLen = method.getAnnotation(ArgLen.class);
             PlayerOnly playerOnly = method.getAnnotation(PlayerOnly.class);
-            PermissionRequirement pr = method.getAnnotation(PermissionRequirement.class);
+            PermissionRequirement preq = method.getAnnotation(PermissionRequirement.class);
 
             if (cmdAnn == null) continue;
 
@@ -67,8 +68,12 @@ public class AA_Cmd extends Command implements TabExecutor {
                     }
 
                     // check perm
-                    if (pr != null && !sender.hasPermission(pr.value()[0])) {
-                        LangUtils.sendMessage(sender, LangUtils.getLangText_withPrefix("command.permissionDeny"));
+                    if (
+                            (preq != null && !preq.value().isEmpty())
+                                    && !sender.hasPermission(preq.value())
+                    ) {
+                        LangUtils.sendMessage(sender, LangUtils.parseLang_withPrefix("command.permissionDeny", preq.value()));
+                        return;
                     }
 
                     // invoke subcmd handler
@@ -235,7 +240,7 @@ public class AA_Cmd extends Command implements TabExecutor {
                     return TabEnum.PARSE.list;
             }
         }
-        return null;
+        return new ArrayList<>();
     }
 
     private enum TabEnum {

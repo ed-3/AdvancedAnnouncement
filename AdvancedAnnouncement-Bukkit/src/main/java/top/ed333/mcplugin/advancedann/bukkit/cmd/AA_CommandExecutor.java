@@ -42,15 +42,19 @@ public class AA_CommandExecutor implements CommandExecutor {
             Method[] subCmd = this.getClass().getDeclaredMethods();
             for (Method method : subCmd) {
                 SubCmd cmdAnn = method.getAnnotation(SubCmd.class);
-                PermissionRequirement permissionRequirement = method.getAnnotation(PermissionRequirement.class);
+                PermissionRequirement preq = method.getAnnotation(PermissionRequirement.class);
                 if (cmdAnn == null) continue;
 
                 for (String subStr : cmdAnn.value()) {
                     if (subStr.equalsIgnoreCase(args[0])) {
 
                         // check perm
-                        if (permissionRequirement != null && !sender.hasPermission(permissionRequirement.value()[0])) {
-                            sender.sendMessage(LangUtils.getLangText_withPrefix("command.permissionDeny"));
+                        if (
+                                (preq != null && !preq.value().isEmpty())
+                                        && !sender.hasPermission(preq.value())
+                        ) {
+                            sender.sendMessage(LangUtils.parseLang_withPrefix("command.permissionDeny", preq.value()));
+                            return true;
                         }
 
                         // invoke subcmd handler
@@ -197,7 +201,7 @@ public class AA_CommandExecutor implements CommandExecutor {
     @PermissionRequirement("aa.command.reload")
     @SuppressWarnings("unused")
     void reload(@NotNull CommandSender sender, String @NotNull [] args) {
-        sender.sendMessage(LangUtils.getLangText("reload.start"));
+        sender.sendMessage(LangUtils.getLangText_withPrefix("reload.start"));
 
         if (AdvancedAnnouncement.announceTask != null) {
             AdvancedAnnouncement.announceTask.cancel();
@@ -230,6 +234,6 @@ public class AA_CommandExecutor implements CommandExecutor {
 
         AdvancedAnnouncement.announceTask = new AnnounceRunnable().runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, 600L);
         GlobalConsoleSender.setDEBUG(ConfigKeys.DEBUG);
-        sender.sendMessage(LangUtils.getLangText("reload.done"));
+        sender.sendMessage(LangUtils.getLangText_withPrefix("reload.done"));
     }
 }

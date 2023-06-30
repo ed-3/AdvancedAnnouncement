@@ -35,11 +35,13 @@ public class BootStrap {
         try {
             String icon = Streams.read(getResource("icon.txt"), StandardCharsets.UTF_8);
             /*
-            Since it was not clear why the error occurred when running gradle processResources task,
-            this compromise approach was used.
+            Version code should be processed in build.gradle, but an unclear error occurred while
+            running processResources task, so this compromise approach was used.
              */
             icon = icon.replace("${version}", AdvancedAnnouncement.INSTANCE.getDescription().getVersion());
-            AdvancedAnnouncement.INSTANCE.getProxy().getConsole().sendMessage(new TextComponent(icon));
+
+            for (String line : icon.split("\n")) ConsoleSender.info(line);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

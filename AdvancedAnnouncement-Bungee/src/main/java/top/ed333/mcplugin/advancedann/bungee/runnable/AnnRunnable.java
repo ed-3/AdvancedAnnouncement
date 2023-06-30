@@ -27,6 +27,6 @@ public class AnnRunnable implements Runnable {
         announcement.broadcast();
 
         ConsoleSender.debugInfo("Sending announcement: " + announcement.getName() + ", announce: " + announcement.getName() + ", index: " + announcement.getIndex());
-        AdvancedAnnouncement.announceTask = SchedulerUtils.scheduleNew(this, announcement.getDelay(), TimeUnit.MILLISECONDS);
+        AdvancedAnnouncement.announceTask = SchedulerUtils.scheduleNew(this, announcement.getDelay() * 1000L, TimeUnit.MILLISECONDS);
     }
 }
