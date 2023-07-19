@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="BungeeDebug" type="JarApplication" singleton="false">
+    <option name="JAR_PATH" value="$PROJECT_DIR$/servers/bungee/BungeeCord.jar" />
+    <option name="WORKING_DIRECTORY" value="D:\Build\AdvancedAnnouncement\servers\bungee" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+    <method v="2">
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="shadowJar" externalProjectPath="$PROJECT_DIR$/AdvancedAnnouncement-Bungee" vmOptions="" scriptParameters="" />
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="copyArtifact" externalProjectPath="$PROJECT_DIR$/AdvancedAnnouncement-Bungee" vmOptions="" scriptParameters="" />
+    </method>
+  </configuration>
+</component>

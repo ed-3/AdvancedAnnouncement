@@ -1,6 +1,7 @@
 package top.ed333.mcplugin.advancedann.bukkit.announcement;
 
 import com.google.gson.JsonArray;
+import me.clip.placeholderapi.PlaceholderAPI;
 import top.ed333.mcplugin.advancedann.bukkit.AdvancedAnnouncement;
 import top.ed333.mcplugin.advancedann.bukkit.utils.ProtocolUtils;
 import org.bukkit.Bukkit;
@@ -32,7 +33,9 @@ public class ChatType extends Announcement {
             }
 
             for (String raw : content()) {
-                JsonArray array = TextHandler.constructToJsonArr(raw, legacy);
+                // #I7MEPP
+                String rawStr = PlaceholderAPI.setPlaceholders((Player) sender, raw);
+                JsonArray array = TextHandler.constructToJsonArr(rawStr, legacy);
                 ProtocolUtils.sendChat((Player) sender, array.toString());
             }
         }, 0L);

@@ -1,5 +1,6 @@
 package top.ed333.mcplugin.advancedann.bukkit.announcement;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import top.ed333.mcplugin.advancedann.bukkit.AdvancedAnnouncement;
 import top.ed333.mcplugin.advancedann.bukkit.utils.LangUtils;
 import org.bukkit.Bukkit;
@@ -89,6 +90,10 @@ public abstract class Announcement {
                 }
             }
         }.runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, 1L);
+    }
+
+    public static @NotNull String dealPlaceholder(String str, Player player) {
+        return PlaceholderAPI.setPlaceholders(player, str);
     }
 
     public abstract void send(CommandSender sender, boolean legacy);

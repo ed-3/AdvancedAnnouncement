@@ -1,5 +1,6 @@
 package top.ed333.mcplugin.advancedann.bukkit.announcement;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import top.ed333.mcplugin.advancedann.bukkit.AdvancedAnnouncement;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -14,6 +15,9 @@ public class BossBarRunnable extends BukkitRunnable {
     private final BukkitTask progressTask;
 
     BossBarRunnable(AdvancedBossBar bar, Player sendTo) {
+        // #I7MEPP
+        bar.bar.setTitle(PlaceholderAPI.setPlaceholders(sendTo, TextHandler.handleColor(bar.title, !ProtocolUtils.canHandleRGB(sendTo))));
+
         this.bar = bar;
         this.sendTo = sendTo;
 

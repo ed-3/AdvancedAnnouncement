@@ -76,14 +76,6 @@ public class TextHandler {
                 sb.append(dealColor(textBetween, lastCode, isLegacy));
             }
         }
-
-/*
-        // TODO: request handle placeholder
-        Player p = null;
-        if (sendTo instanceof Player) {
-            p = ((Player) sendTo);
-        }
-*/
         return sb.toString();
     }
 

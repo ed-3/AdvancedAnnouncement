@@ -1,6 +1,7 @@
 package top.ed333.mcplugin.advancedann.bukkit.announcement;
 
 import com.google.gson.JsonArray;
+import me.clip.placeholderapi.PlaceholderAPI;
 import top.ed333.mcplugin.advancedann.bukkit.AdvancedAnnouncement;
 import top.ed333.mcplugin.advancedann.bukkit.utils.ProtocolUtils;
 import org.bukkit.Bukkit;
@@ -44,8 +45,12 @@ public class TitleType extends Announcement {
     @Override
     public void send(CommandSender sender, boolean legacy) {
         Bukkit.getScheduler().runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, () -> {
-            JsonArray titleArr = TextHandler.constructToJsonArr(TextHandler.handleColor(content().get(0), legacy), legacy);
-            JsonArray subArr = TextHandler.constructToJsonArr(TextHandler.handleColor(content().get(1).isEmpty() ? "" : content().get(1), legacy), legacy);
+            // #I7MEPP
+            String title = PlaceholderAPI.setPlaceholders((Player) sender, content().get(0));
+            String sub = PlaceholderAPI.setPlaceholders((Player) sender, content().get(1));
+
+            JsonArray titleArr = TextHandler.constructToJsonArr(TextHandler.handleColor(title, legacy), legacy);
+            JsonArray subArr = TextHandler.constructToJsonArr(TextHandler.handleColor(content().get(1).isEmpty() ? "" : sub, legacy), legacy);
             ProtocolUtils.sendTitle((Player) sender, fadeIn, stay, fadeout, titleArr.toString());
             ProtocolUtils.sendSubtitle((Player) sender, sub_fadeIn, sub_stay, sub_fadeout, subArr.toString());
         }, 0L);

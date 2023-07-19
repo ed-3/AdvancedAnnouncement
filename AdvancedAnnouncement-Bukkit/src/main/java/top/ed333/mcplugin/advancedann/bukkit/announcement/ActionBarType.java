@@ -1,5 +1,6 @@
 package top.ed333.mcplugin.advancedann.bukkit.announcement;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import top.ed333.mcplugin.advancedann.bukkit.AdvancedAnnouncement;
 import top.ed333.mcplugin.advancedann.bukkit.utils.ProtocolUtils;
 import org.bukkit.Bukkit;
@@ -74,8 +75,10 @@ public class ActionBarType extends Announcement {
             }
 
             for (ActionBarText barText : barTexts) {
+                // #I7MEPP
+                String barTextStr = PlaceholderAPI.setPlaceholders((Player) sender, barText.text);
                 ActionBarRunnable abr = new ActionBarRunnable(
-                        TextHandler.constructToJsonArr(barText.text, legacy).toString(),
+                        TextHandler.constructToJsonArr(barTextStr, legacy).toString(),
                         (Player) sender,
                         barText.settings.next_delay
                 );

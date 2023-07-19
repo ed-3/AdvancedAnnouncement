@@ -115,8 +115,8 @@ announcements:
   multiple_line_boss_bar_example:
     delay: 60s
     # stay time
-    # unit: millisecond, default sets to 5000
-    stay: 3000
+    # unit: second, default is set to 5
+    stay: 3
     type: MULTIPLE_LINE_BOSS_BAR
     # Placeholders below are not supported:
     # {stay:<double>}

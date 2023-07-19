@@ -4,8 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.boss.BossBar;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import top.ed333.mcplugin.advancedann.bukkit.utils.ProtocolUtils;
-import top.ed333.mcplugin.advancedann.common.utils.TextHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +16,7 @@ public class AdvancedBossBar {
     AdvancedBossBar(@NotNull String title, @NotNull BossBarTextSettings settings) {
 
         if (!BarManager.hasBar(title)) {
-            bar = Bukkit.createBossBar(TextHandler.handleColor(title, ProtocolUtils.isLegacyServer()), settings.barColor, settings.style);
+            bar = Bukkit.createBossBar(title, settings.barColor, settings.style);
             BarManager.barMap.put(title.hashCode(), bar);
         } else {
             bar = BarManager.forTitle(title);

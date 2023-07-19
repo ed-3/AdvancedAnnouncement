@@ -1,5 +1,5 @@
 group = 'me.ed333.mcplugin.advancedann'
-version = '1.2.4-release'
+version = '1.2.5-release'
 
 subprojects {
     apply plugin: 'java'

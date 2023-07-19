@@ -8,6 +8,9 @@ AdvancedAnnouncement-Bungee/build
 Common/build
 artifacts
 /build
-/bin
 .gradle
 .idea
+# for debug
+servers
+bin
+/.vscode/
