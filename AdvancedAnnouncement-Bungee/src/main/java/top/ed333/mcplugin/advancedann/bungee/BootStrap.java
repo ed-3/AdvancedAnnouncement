@@ -3,22 +3,19 @@ package top.ed333.mcplugin.advancedann.bungee;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.config.Configuration;
-import net.md_5.bungee.config.YamlConfiguration;
 import top.ed333.mcplugin.advancedann.bungee.announcement.*;
 import top.ed333.mcplugin.advancedann.bungee.config.Config;
 import top.ed333.mcplugin.advancedann.bungee.config.ConfigKeys;
 import top.ed333.mcplugin.advancedann.bungee.config.ConfigManager;
 import top.ed333.mcplugin.advancedann.bungee.utils.ConsoleSender;
 import top.ed333.mcplugin.advancedann.bungee.utils.LangUtils;
-import top.ed333.mcplugin.advancedann.bungee.utils.Serializer;
+import top.ed333.mcplugin.advancedann.common.announcement.AnnouncementType;
 import top.ed333.mcplugin.advancedann.common.components.ComponentManager;
 import top.ed333.mcplugin.advancedann.common.components.ComponentType;
 import top.ed333.mcplugin.advancedann.common.components.JsonBlock;
 import top.ed333.mcplugin.advancedann.common.components.NormalBlock;
 import top.ed333.mcplugin.advancedann.common.utils.Streams;
-import top.ed333.mcplugin.advancedann.common.utils.TextHandler;
 import top.ed333.mcplugin.advancedann.common.utils.TimeHandler;
 import top.ed333.mcplugin.advancedann.common.utils.Updater;
 
@@ -193,6 +190,9 @@ public class BootStrap {
             double sub_fadeout = section.getDouble("sub-fadeout", 1);
 
             switch (type) {
+                case BOSSBAR_KEEP:
+                    announcement = new BossBarKeepType(index, annName, contents, permission, -1);
+                    break;
                 case CHAT:
                     announcement = new ChatType(index, annName, contents, permission, delay);
                     break;

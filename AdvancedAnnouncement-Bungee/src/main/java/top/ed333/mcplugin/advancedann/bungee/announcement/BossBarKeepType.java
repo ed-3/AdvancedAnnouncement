@@ -1,27 +1,24 @@
 package top.ed333.mcplugin.advancedann.bungee.announcement;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import top.ed333.mcplugin.advancedann.bungee.utils.SchedulerUtils;
 import top.ed333.mcplugin.advancedann.common.announcement.AnnouncementType;
 import top.ed333.mcplugin.advancedann.common.utils.PlaceholderRegex;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.Set;
 import java.util.regex.Matcher;
 
-public class BossBarType extends Announcement {
-    private final List<AdvancedBossBar> bars = new ArrayList<>();
-
-    public BossBarType(
+public class BossBarKeepType extends Announcement {
+    Set<AdvancedBossBar> bars = new HashSet<>();
+    public BossBarKeepType(
             int index,
             String name,
             List<String> content,
             String permissionName,
             int delay
     ) {
-        super(index, name, content, permissionName, delay, AnnouncementType.BOSS_BAR);
-        double nextDelay = 0;
+        super(index, name, content, permissionName, delay, AnnouncementType.BOSSBAR_KEEP);
 
         for (String rawText : getContent()) {
             StringBuilder barText = new StringBuilder();
@@ -34,14 +31,8 @@ public class BossBarType extends Announcement {
                 int end = placeHolderMatcher.end();
 
                 String placeHolder = placeHolderMatcher.group();
-                if (placeHolder.matches(PlaceholderRegex.BossBarRegex.STAY_PLACEHOLDER_REGEX_STRING)) {
-                    settings.stay = PlaceholderRegex.getSec(placeHolder);
-                } else if (placeHolder.matches(PlaceholderRegex.BossBarRegex.DELAY_PLACEHOLDER_REGEX_STRING)) {
-                    settings.delaySec = PlaceholderRegex.getSec(placeHolder);
-                } else if (placeHolder.matches(PlaceholderRegex.BossBarRegex.UPDATE_PLACEHOLDER_REGEX_STRING)) {
+                if (placeHolder.matches(PlaceholderRegex.BossBarRegex.UPDATE_PLACEHOLDER_REGEX_STRING)) {
                     settings.update = PlaceholderRegex.getSec(placeHolder);
-                } else if (placeHolder.matches(PlaceholderRegex.BossBarRegex.PROGRESS_PLACEHOLDER_REGEX_STRING)) {
-                    settings.progress = PlaceholderRegex.getBool(placeHolder);
                 } else if (placeHolder.matches(PlaceholderRegex.BossBarRegex.COLOR_PLACEHOLDER_REGEX_STRING)) {
                     settings.barColor = PlaceholderRegex.BossBarRegex.getBarColor(placeHolder);
                 } else if (placeHolder.matches(PlaceholderRegex.BossBarRegex.SEGMENT_PLACEHOLDER_REGEX_STRING)) {
@@ -50,25 +41,30 @@ public class BossBarType extends Announcement {
                 barText.append(rawText, lastIndex, start);
                 lastIndex = end;
             }
+
             if (lastIndex < rawText.length()) {
                 barText.append(rawText.substring(lastIndex));
             }
-
-            settings.nextDelay = nextDelay + settings.stay + settings.delaySec;
             bars.add(new AdvancedBossBar(barText.toString(), settings));
-
-            nextDelay = nextDelay + settings.stay + settings.delaySec;
         }
     }
 
     @Override
     public void send(ProxiedPlayer sender, boolean legacy) {
-        SchedulerUtils.runAsync(() -> {
-            for (AdvancedBossBar bar : bars) {
-                SchedulerUtils.scheduleNew(
-                        new BossBarScheduler(bar, sender),
-                        (long) ((bar.settings.nextDelay - bar.settings.delaySec) * 1000), TimeUnit.MILLISECONDS);
-            }
+        bars.forEach(bar -> {
+            bar.bar.addPlayer(sender);
+        });
+    }
+
+    public void removeAllPlayer() {
+        bars.forEach(bar-> {
+            bar.bar.removeAllPlayer();
+        });
+    }
+
+    public void removePlayer(ProxiedPlayer player) {
+        bars.forEach(bar -> {
+            bar.bar.removePlayer(player);
         });
     }
 }

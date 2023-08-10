@@ -1,11 +1,16 @@
 group = 'me.ed333.mcplugin.advancedann'
-version = '1.2.5-release'
+version = '1.2.6-release'
 
 subprojects {
     apply plugin: 'java'
 
     tasks.withType(Jar) {
         getDestinationDirectory().set(file("$rootDir/artifacts"))
+    }
+
+    jar {
+        setBuildDir(file("$rootDir/build/$project.name/"))
+        getDestinationDirectory().set(file("$rootDir/artifacts/build-jar"))
     }
 
     def targetJavaVersion = 8

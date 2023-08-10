@@ -9,6 +9,7 @@ import top.ed333.mcplugin.advancedann.bukkit.config.ConfigKeys;
 import top.ed333.mcplugin.advancedann.bukkit.config.ConfigManager;
 import top.ed333.mcplugin.advancedann.bukkit.utils.GlobalConsoleSender;
 import top.ed333.mcplugin.advancedann.bukkit.utils.LangUtils;
+import top.ed333.mcplugin.advancedann.common.announcement.AnnouncementType;
 import top.ed333.mcplugin.advancedann.common.utils.Streams;
 import top.ed333.mcplugin.advancedann.common.utils.TimeHandler;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -193,6 +194,9 @@ public class BootStrap {
             double sub_fadeout = section.getDouble("sub-fadeout", 1);
 
             switch (type) {
+                case BOSSBAR_KEEP:
+                    announcement = new BossBarKeepType(index, annName, permission, delay, contents, worlds.isEmpty() ? defaultWorlds : worlds);
+                    break;
                 case CHAT:
                     announcement = new ChatType(index, annName, permission, delay, contents, worlds.isEmpty() ? defaultWorlds : worlds);
                     break;

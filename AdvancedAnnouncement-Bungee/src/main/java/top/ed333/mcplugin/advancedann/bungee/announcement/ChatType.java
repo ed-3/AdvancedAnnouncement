@@ -6,6 +6,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import top.ed333.mcplugin.advancedann.bungee.utils.ProtocolUtils;
 import top.ed333.mcplugin.advancedann.bungee.utils.SchedulerUtils;
 import top.ed333.mcplugin.advancedann.bungee.utils.Serializer;
+import top.ed333.mcplugin.advancedann.common.announcement.AnnouncementType;
 import top.ed333.mcplugin.advancedann.common.utils.TextHandler;
 
 import java.util.List;

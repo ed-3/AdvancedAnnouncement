@@ -3,6 +3,7 @@ package top.ed333.mcplugin.advancedann.bungee.runnable;
 import top.ed333.mcplugin.advancedann.bungee.AdvancedAnnouncement;
 import top.ed333.mcplugin.advancedann.bungee.announcement.Announcement;
 import top.ed333.mcplugin.advancedann.bungee.announcement.AnnouncementManager;
+import top.ed333.mcplugin.advancedann.bungee.announcement.BossBarKeepType;
 import top.ed333.mcplugin.advancedann.bungee.config.ConfigKeys;
 import top.ed333.mcplugin.advancedann.bungee.utils.ConsoleSender;
 import top.ed333.mcplugin.advancedann.bungee.utils.SchedulerUtils;
@@ -17,11 +18,17 @@ public class AnnRunnable implements Runnable {
         Announcement announcement;
         if (ConfigKeys.RANDOM) {
             announcement = AnnouncementManager.randomNext();
+            while (announcement instanceof BossBarKeepType) {
+                announcement = AnnouncementManager.randomNext();
+            }
         } else {
             if (lastIndex >= AnnouncementManager.loadedAnnouncements.size()) {
                 lastIndex = 0;
             }
             announcement = AnnouncementManager.forIndex(lastIndex);
+            while (announcement instanceof BossBarKeepType) {
+                announcement = AnnouncementManager.randomNext();
+            }
             lastIndex = announcement.getIndex() + 1;
         }
         announcement.broadcast();

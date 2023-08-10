@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import top.ed333.mcplugin.advancedann.bungee.AdvancedAnnouncement;
 import top.ed333.mcplugin.advancedann.bungee.utils.ProtocolUtils;
 import top.ed333.mcplugin.advancedann.bungee.utils.SchedulerUtils;
+import top.ed333.mcplugin.advancedann.common.announcement.AnnouncementType;
 
 import java.util.Collection;
 import java.util.List;

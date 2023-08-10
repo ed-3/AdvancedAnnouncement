@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
+import top.ed333.mcplugin.advancedann.common.announcement.AnnouncementType;
 import top.ed333.mcplugin.advancedann.common.utils.PlaceholderRegex;
 import top.ed333.mcplugin.advancedann.common.utils.TextHandler;
 

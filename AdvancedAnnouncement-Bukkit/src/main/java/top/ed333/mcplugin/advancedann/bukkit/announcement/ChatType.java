@@ -7,6 +7,7 @@ import top.ed333.mcplugin.advancedann.bukkit.utils.ProtocolUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import top.ed333.mcplugin.advancedann.common.announcement.AnnouncementType;
 import top.ed333.mcplugin.advancedann.common.utils.TextHandler;
 
 import java.util.List;

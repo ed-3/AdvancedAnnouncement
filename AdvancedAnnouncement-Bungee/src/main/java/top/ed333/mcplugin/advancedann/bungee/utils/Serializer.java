@@ -17,12 +17,13 @@ import java.util.List;
 public class Serializer {
     public static BaseComponent[] serializeToComponent(JsonArray array) {
         List<BaseComponent> result = new ArrayList<>();
+
         for (JsonElement element : array) {
             JsonObject singleObj = element.getAsJsonObject();
             TextComponent aComponent = constructComponent(singleObj);
             if (singleObj.has("hoverEvent")) {
                 JsonObject hoverObj = singleObj.get("hoverEvent").getAsJsonObject();
-                BaseComponent[] hoverContents = serializeToComponent(hoverObj.get("contents").getAsJsonArray());
+                BaseComponent[] hoverContents = contents(hoverObj.get("contents").getAsJsonArray());
                 HoverEvent event = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(hoverContents));
                 aComponent.setHoverEvent(event);
             }
@@ -33,7 +34,7 @@ public class Serializer {
                 String actionName = clickObj.get("action").getAsString();
                 String actionValue = clickObj.get("value").getAsString();
                 try {
-                    clickAction = ClickEvent.Action.valueOf(actionName);
+                    clickAction = ClickEvent.Action.valueOf(actionName.toUpperCase());
                 } catch (IllegalArgumentException e) {
                     continue;
                 }
@@ -49,6 +50,18 @@ public class Serializer {
             resultArr[i] = result.get(i);
         }
         return resultArr;
+    }
+
+    private static BaseComponent[] contents(JsonArray array) {
+        BaseComponent[] result = new BaseComponent[array.size()];
+        int i = 0;
+        for (JsonElement jsonElement : array) {
+            JsonObject object = jsonElement.getAsJsonObject();
+            TextComponent component = constructComponent(object);
+            result[i] = component;
+            i ++;
+        }
+        return result;
     }
 
     private static TextComponent constructComponent(JsonObject inputJson) {

@@ -38,24 +38,27 @@ public class AA_Cmd extends Command implements TabExecutor {
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(CommandSender sender, String @NotNull [] args) {
         if (args.length == 0) {
             help(sender, args);
             return;
         }
 
-        Method[] subCmd = this.getClass().getDeclaredMethods();
-        for (Method method : subCmd) {
-            SubCmd cmdAnn = method.getAnnotation(SubCmd.class);
-            ArgLen argLen = method.getAnnotation(ArgLen.class);
-            PlayerOnly playerOnly = method.getAnnotation(PlayerOnly.class);
-            PermissionRequirement preq = method.getAnnotation(PermissionRequirement.class);
+        try {
+            Method subCmdMethod = getClass().getDeclaredMethod(args[0], CommandSender.class, String[].class);
+            SubCmd cmdAnn = subCmdMethod.getAnnotation(SubCmd.class);
+            ArgLen argLen = subCmdMethod.getAnnotation(ArgLen.class);
+            PlayerOnly playerOnly = subCmdMethod.getAnnotation(PlayerOnly.class);
+            PermissionRequirement preq = subCmdMethod.getAnnotation(PermissionRequirement.class);
 
-            if (cmdAnn == null) continue;
+            if (cmdAnn == null) {
+                LangUtils.sendMessage(sender, LangUtils.getLangText_withPrefix("command.invalidCommand"));
+                return;
+            }
 
             if (playerOnly != null && !(sender instanceof ProxiedPlayer)) {
                 LangUtils.sendMessage(sender, LangUtils.getLangText_withPrefix("command.playerOnly"));
-                continue;
+                return;
             }
 
             for (String subStr : cmdAnn.value()) {
@@ -78,7 +81,7 @@ public class AA_Cmd extends Command implements TabExecutor {
 
                     // invoke subcmd handler
                     try {
-                        method.invoke(this, sender, args);
+                        subCmdMethod.invoke(this, sender, args);
                         return;
                     } catch (IllegalAccessException | InvocationTargetException e) {
                         LangUtils.sendMessage(sender, LangUtils.getLangText_withPrefix("internalError") + "\n" + Arrays.toString(e.getStackTrace()));
@@ -86,6 +89,9 @@ public class AA_Cmd extends Command implements TabExecutor {
                     }
                 }
             }
+
+        } catch (NoSuchMethodException e) {
+            LangUtils.sendMessage(sender, LangUtils.getLangText_withPrefix("command.invalidCommand"));
         }
     }
 
