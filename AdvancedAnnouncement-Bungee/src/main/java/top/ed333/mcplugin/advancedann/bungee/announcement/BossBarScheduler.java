@@ -2,11 +2,10 @@ package top.ed333.mcplugin.advancedann.bungee.announcement;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
-import top.ed333.mcplugin.advancedann.bungee.AdvancedAnnouncement;
 import top.ed333.mcplugin.advancedann.bungee.objects.bossbar.BossBar;
 import top.ed333.mcplugin.advancedann.bungee.utils.ProtocolUtils;
 import top.ed333.mcplugin.advancedann.bungee.utils.SchedulerUtils;
-import top.ed333.mcplugin.advancedann.bungee.utils.Serializer;
+import top.ed333.mcplugin.advancedann.common.utils.Serializer;
 import top.ed333.mcplugin.advancedann.common.utils.TextHandler;
 
 import java.util.concurrent.TimeUnit;

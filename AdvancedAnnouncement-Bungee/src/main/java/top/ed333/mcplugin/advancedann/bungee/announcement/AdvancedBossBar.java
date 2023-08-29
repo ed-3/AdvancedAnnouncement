@@ -3,7 +3,7 @@ package top.ed333.mcplugin.advancedann.bungee.announcement;
 import org.jetbrains.annotations.Nullable;
 import top.ed333.mcplugin.advancedann.bungee.objects.bossbar.BossBar;
 import top.ed333.mcplugin.advancedann.bungee.utils.ProtocolUtils;
-import top.ed333.mcplugin.advancedann.bungee.utils.Serializer;
+import top.ed333.mcplugin.advancedann.common.utils.Serializer;
 import top.ed333.mcplugin.advancedann.common.objects.bossbar.BarColor;
 import top.ed333.mcplugin.advancedann.common.objects.bossbar.BarStyle;
 import top.ed333.mcplugin.advancedann.common.utils.TextHandler;

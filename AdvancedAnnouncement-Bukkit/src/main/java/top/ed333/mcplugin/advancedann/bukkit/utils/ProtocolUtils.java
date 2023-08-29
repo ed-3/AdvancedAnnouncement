@@ -7,13 +7,19 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import top.ed333.mcplugin.advancedann.common.utils.Serializer;
 
 public class ProtocolUtils {
 
     private static final ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
+    private static final String SERVER_NAME = Bukkit.getServer().getName();
     private static final short SERVER_VERSION = Short.parseShort(Bukkit.getServer().getBukkitVersion().split("\\.")[1].split("-")[0]);
 
     public static int getPlayerClientVersion(Player p) {
@@ -33,21 +39,32 @@ public class ProtocolUtils {
     }
 
     public static void sendChat(Player sendTo, String json) {
-        WrappedChatComponent chatComponent = WrappedChatComponent.fromJson(json);
-        sendChat(sendTo, chatComponent);
+        if (SERVER_NAME.equals("Arclight")) {
+            BaseComponent[] components = Serializer.serializeToComponent(new JsonParser().parse(json).getAsJsonArray());
+            sendTo.spigot().sendMessage(components);
+        } else {
+            WrappedChatComponent chatComponent = WrappedChatComponent.fromJson(json);
+            sendChat(sendTo, chatComponent);
+        }
     }
 
     public static void sendChat(Player sendTo, WrappedChatComponent component) {
-        PacketContainer packet;
-        if (SERVER_VERSION >= 19) {
-            packet = protocolManager.createPacket(Play.Server.SYSTEM_CHAT);
-            packet.getStrings().write(0, component.getJson());
+        if (SERVER_NAME.equals("Arclight")) {
+            BaseComponent[] components = Serializer.serializeToComponent(new JsonParser().parse(component.getJson()).getAsJsonArray());
+            sendTo.spigot().sendMessage(components);
         } else {
-            packet = protocolManager.createPacket(Play.Server.CHAT);
-            packet.getChatTypes().write(0, EnumWrappers.ChatType.SYSTEM);
-            packet.getChatComponents().write(0, component);
+            PacketContainer packet;
+            if (SERVER_VERSION >= 19) {
+
+                packet = protocolManager.createPacket(Play.Server.SYSTEM_CHAT);
+                packet.getStrings().write(0, component.getJson());
+            } else {
+                packet = protocolManager.createPacket(Play.Server.CHAT);
+                packet.getChatTypes().write(0, EnumWrappers.ChatType.SYSTEM);
+                packet.getChatComponents().write(0, component);
+            }
+            protocolManager.sendServerPacket(sendTo, packet);
         }
-        protocolManager.sendServerPacket(sendTo, packet);
     }
 
     public static void sendTitle(Player sendTo, int fadeIn, int stay, int fadeOut, String json) {

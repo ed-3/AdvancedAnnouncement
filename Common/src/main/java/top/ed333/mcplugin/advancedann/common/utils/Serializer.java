@@ -1,4 +1,4 @@
-package top.ed333.mcplugin.advancedann.bungee.utils;
+package top.ed333.mcplugin.advancedann.common.utils;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

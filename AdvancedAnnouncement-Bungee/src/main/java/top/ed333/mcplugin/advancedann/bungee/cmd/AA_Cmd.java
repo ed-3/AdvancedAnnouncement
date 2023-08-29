@@ -20,6 +20,7 @@ import top.ed333.mcplugin.advancedann.bungee.config.ConfigManager;
 import top.ed333.mcplugin.advancedann.bungee.runnable.AnnRunnable;
 import top.ed333.mcplugin.advancedann.bungee.utils.*;
 import top.ed333.mcplugin.advancedann.common.components.ComponentManager;
+import top.ed333.mcplugin.advancedann.common.utils.Serializer;
 import top.ed333.mcplugin.advancedann.common.utils.TextHandler;
 
 import java.io.File;
