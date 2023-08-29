@@ -1,16 +1,25 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "7.1.2"
+}
+
 group = 'me.ed333.mcplugin.advancedann'
 version = '1.2.7-release'
 
 subprojects {
-    apply plugin: 'java'
-
-    tasks.withType(Jar) {
-        getDestinationDirectory().set(file("$rootDir/artifacts"))
+    apply {
+        plugin('java')
+        plugin('com.github.johnrengelman.shadow')
     }
 
     jar {
         setBuildDir(file("$rootDir/build/$project.name/"))
-        getDestinationDirectory().set(file("$rootDir/artifacts/build-jar"))
+        getDestinationDirectory().set(file("$rootDir/build/jar"))
+    }
+
+    shadowJar {
+        archiveBaseName = "AdvancedAnnouncement-$project.name-$rootProject.version-build$buildVer"
+        minimize()
+        getDestinationDirectory().set(file("$rootDir/build"))
     }
 
     def targetJavaVersion = 8
@@ -24,7 +33,7 @@ subprojects {
     }
 
     processResources {
-        def props = [version: rootProject.version]
+        def props = [version: "$rootProject.version-build$buildVer"]
         inputs.properties props
         filteringCharset 'UTF-8'
         filesMatching(['bungee.yml', 'plugin.yml']) {
@@ -37,5 +46,36 @@ subprojects {
             options.release = targetJavaVersion
         }
         options.encoding = "UTF-8"
+    }
+}
+
+tasks.register("shadePlugin") {
+    dependsOn ':cleanDir', 'Bukkit:shadowJar', 'Bungee:shadowJar', ':addBuildVer'
+}
+
+tasks.register("cleanDir") {
+    file("$rootDir/build").deleteDir()
+}
+
+tasks.register("addBuildVer") {
+    addBuildVer()
+}
+
+def getBuildVer() {
+    def properties = new Properties()
+    def buildVerFile = file("buildver.properties")
+    buildVerFile.withInputStream {
+        properties.load(it)
+    }
+    int buildVer = properties.getProperty("buildVer") as int
+    return buildVer
+}
+
+def addBuildVer() {
+    def properties = new Properties()
+    def buildVerFile = file("buildver.properties")
+    properties.setProperty("buildVer", String.valueOf(buildVer + 1))
+    buildVerFile.withOutputStream {
+        properties.store(new OutputStreamWriter(it), null)
     }
 }
