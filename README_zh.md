@@ -1,5 +1,7 @@
 ### AdvancedAnnouncement: 更高级的自动公告
 
+<h4 style="color:red">注意：本插件运行在 Bukkit 环境中的最新版本(1.3.0+), 将不再对服务端版本低于 1.16 的服务器提供支持, 同时将不再依赖 ProtocolLib.</h4>
+
 [Read In English](README.md)
 
 [MCBBS 发布页](https://www.mcbbs.net/forum.php?mod=viewthread&tid=1420798&page=1&extra=#pid27960648)

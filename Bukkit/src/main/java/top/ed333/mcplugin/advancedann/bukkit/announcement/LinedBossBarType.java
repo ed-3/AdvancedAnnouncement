@@ -62,7 +62,7 @@ public class LinedBossBarType extends Announcement {
     }
 
     @Override
-    public void send(CommandSender sender, boolean legacy) {
+    public void send(CommandSender sender) {
         Bukkit.getScheduler().runTaskLaterAsynchronously(
                 AdvancedAnnouncement.INSTANCE,
                 () -> bars.forEach(

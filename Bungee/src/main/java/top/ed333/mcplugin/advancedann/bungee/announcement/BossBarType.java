@@ -18,9 +18,10 @@ public class BossBarType extends Announcement {
             String name,
             List<String> content,
             String permissionName,
-            int delay
+            int delay,
+            List<String> servers
     ) {
-        super(index, name, content, permissionName, delay, AnnouncementType.BOSS_BAR);
+        super(index, name, content, permissionName, delay, AnnouncementType.BOSS_BAR, servers);
         double nextDelay = 0;
 
         for (String rawText : getContent()) {

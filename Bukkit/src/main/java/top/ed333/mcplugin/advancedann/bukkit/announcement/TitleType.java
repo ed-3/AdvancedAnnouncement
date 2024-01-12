@@ -1,13 +1,12 @@
 package top.ed333.mcplugin.advancedann.bukkit.announcement;
 
-import com.google.gson.JsonArray;
 import me.clip.placeholderapi.PlaceholderAPI;
 import top.ed333.mcplugin.advancedann.bukkit.AdvancedAnnouncement;
-import top.ed333.mcplugin.advancedann.bukkit.utils.ProtocolUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import top.ed333.mcplugin.advancedann.bukkit.utils.AnnouncementUtils;
 import top.ed333.mcplugin.advancedann.common.announcement.AnnouncementType;
 import top.ed333.mcplugin.advancedann.common.utils.TextHandler;
 
@@ -44,16 +43,16 @@ public class TitleType extends Announcement {
     }
 
     @Override
-    public void send(CommandSender sender, boolean legacy) {
+    public void send(CommandSender sender) {
         Bukkit.getScheduler().runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, () -> {
             // #I7MEPP
             String title = PlaceholderAPI.setPlaceholders((Player) sender, content().get(0));
             String sub = PlaceholderAPI.setPlaceholders((Player) sender, content().get(1));
 
-            JsonArray titleArr = TextHandler.constructToJsonArr(TextHandler.handleColor(title, legacy), legacy);
-            JsonArray subArr = TextHandler.constructToJsonArr(TextHandler.handleColor(content().get(1).isEmpty() ? "" : sub, legacy), legacy);
-            ProtocolUtils.sendTitle((Player) sender, fadeIn, stay, fadeout, titleArr.toString());
-            ProtocolUtils.sendSubtitle((Player) sender, sub_fadeIn, sub_stay, sub_fadeout, subArr.toString());
+            String coloredTitle = TextHandler.handleColor(title, isUseLegacyColorDefault());
+            String coloredSubtitle = TextHandler.handleColor(content().get(1).isEmpty() ? "" : sub, isUseLegacyColorDefault());
+            AnnouncementUtils.sendTitle((Player) sender, coloredTitle, fadeIn, stay, fadeout);
+            AnnouncementUtils.sendSubtitle((Player) sender, coloredSubtitle, sub_fadeIn, sub_stay, sub_fadeout);
         }, 0L);
     }
 }

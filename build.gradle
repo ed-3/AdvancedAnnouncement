@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'me.ed333.mcplugin.advancedann'
-version = '1.2.7-release'
+version = '1.3.0-release'
 
 subprojects {
     apply {
@@ -46,6 +46,10 @@ subprojects {
             options.release = targetJavaVersion
         }
         options.encoding = "UTF-8"
+    }
+
+    repositories {
+        mavenLocal()
     }
 }
 

@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import top.ed333.mcplugin.advancedann.bukkit.announcement.Announcement;
 import top.ed333.mcplugin.advancedann.bukkit.announcement.AnnouncementManager;
 import top.ed333.mcplugin.advancedann.bukkit.cmd.AA_CommandExecutor;
@@ -17,7 +16,6 @@ import top.ed333.mcplugin.advancedann.bukkit.utils.GlobalConsoleSender;
 import top.ed333.mcplugin.advancedann.bukkit.utils.LangUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
-import top.ed333.mcplugin.advancedann.bukkit.utils.ProtocolUtils;
 import top.ed333.mcplugin.advancedann.common.announcement.AnnouncementType;
 
 import java.io.File;
@@ -78,7 +76,7 @@ public final class AdvancedAnnouncement extends JavaPlugin implements Listener {
             if (ann.type().equals(AnnouncementType.BOSSBAR_KEEP) &&
                     ann.getWorlds().contains(player.getWorld().getName())
             ) {
-                ann.send(player, ProtocolUtils.canHandleRGB(player));
+                ann.send(player);
             }
         }
     }

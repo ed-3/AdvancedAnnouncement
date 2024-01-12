@@ -66,7 +66,7 @@ public class BossBarType extends Announcement {
     }
 
     @Override
-    public void send(CommandSender sender, boolean legacy) {
+    public void send(CommandSender sender) {
         Bukkit.getScheduler().runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, ()-> {
             String playerWorldN = ((Player) sender).getWorld().getName();
             if (!getWorlds().isEmpty() && !getWorlds().contains(playerWorldN)) {

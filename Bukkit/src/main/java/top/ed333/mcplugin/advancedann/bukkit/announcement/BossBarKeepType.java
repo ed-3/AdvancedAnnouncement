@@ -53,7 +53,7 @@ public class BossBarKeepType extends Announcement {
     }
 
     @Override
-    public void send(CommandSender sender, boolean legacy) {
+    public void send(CommandSender sender) {
         bars.forEach(bar -> {
             bar.bar.addPlayer((Player) sender);
         });

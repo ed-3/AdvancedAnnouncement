@@ -3,7 +3,7 @@ package top.ed333.mcplugin.advancedann.bukkit.announcement;
 import com.google.gson.JsonArray;
 import me.clip.placeholderapi.PlaceholderAPI;
 import top.ed333.mcplugin.advancedann.bukkit.AdvancedAnnouncement;
-import top.ed333.mcplugin.advancedann.bukkit.utils.ProtocolUtils;
+import top.ed333.mcplugin.advancedann.bukkit.utils.AnnouncementUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -25,7 +25,7 @@ public class ChatType extends Announcement {
     }
 
     @Override
-    public void send(CommandSender sender, boolean legacy) {
+    public void send(CommandSender sender) {
 
         Bukkit.getScheduler().runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, () -> {
             String playerWorldN = ((Player) sender).getWorld().getName();
@@ -34,10 +34,9 @@ public class ChatType extends Announcement {
             }
 
             for (String raw : content()) {
-                // #I7MEPP
-                String rawStr = PlaceholderAPI.setPlaceholders((Player) sender, raw);
-                JsonArray array = TextHandler.constructToJsonArr(rawStr, legacy);
-                ProtocolUtils.sendChat((Player) sender, array.toString());
+                /* gitee issue: #I7MEPP */ String rawStr = PlaceholderAPI.setPlaceholders((Player) sender, raw);
+                JsonArray array = TextHandler.constructToJsonArr(rawStr, isUseLegacyColorDefault());
+                AnnouncementUtils.sendChat((Player) sender, array);
             }
         }, 0L);
     }

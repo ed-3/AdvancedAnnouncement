@@ -2,15 +2,12 @@ package top.ed333.mcplugin.advancedann.bukkit.announcement;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import top.ed333.mcplugin.advancedann.bukkit.AdvancedAnnouncement;
-import top.ed333.mcplugin.advancedann.bukkit.utils.LangUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import top.ed333.mcplugin.advancedann.bukkit.utils.ProtocolUtils;
 import top.ed333.mcplugin.advancedann.common.announcement.AnnouncementType;
 
 import java.util.List;
@@ -87,7 +84,7 @@ public abstract class Announcement {
                         continue;
                     }
 
-                    send(player, !ProtocolUtils.canHandleRGB(player));
+                    send(player);
                 }
             }
         }.runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, 1L);
@@ -97,5 +94,9 @@ public abstract class Announcement {
         return PlaceholderAPI.setPlaceholders(player, str);
     }
 
-    public abstract void send(CommandSender sender, boolean legacy);
+    public abstract void send(CommandSender sender);
+
+    protected final boolean isUseLegacyColorDefault() {
+        return false;
+    }
 }

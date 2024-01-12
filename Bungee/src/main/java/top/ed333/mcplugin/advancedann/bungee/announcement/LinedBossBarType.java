@@ -18,9 +18,10 @@ public class LinedBossBarType extends Announcement {
             List<String> content,
             String permissionName,
             int delay,
-            double stay
+            double stay,
+            List<String> servers
     ) {
-        super(index, name, content, permissionName, delay, AnnouncementType.MULTIPLE_LINE_BOSS_BAR);
+        super(index, name, content, permissionName, delay, AnnouncementType.MULTIPLE_LINE_BOSS_BAR, servers);
 
         for (String rawText : getContent()) {
             StringBuilder barText = new StringBuilder();

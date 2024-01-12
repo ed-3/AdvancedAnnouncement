@@ -1,14 +1,15 @@
 package top.ed333.mcplugin.advancedann.bukkit.announcement;
 
+import com.google.gson.JsonArray;
 import me.clip.placeholderapi.PlaceholderAPI;
 import top.ed333.mcplugin.advancedann.bukkit.AdvancedAnnouncement;
-import top.ed333.mcplugin.advancedann.bukkit.utils.ProtocolUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
+import top.ed333.mcplugin.advancedann.bukkit.utils.AnnouncementUtils;
 import top.ed333.mcplugin.advancedann.common.announcement.AnnouncementType;
 import top.ed333.mcplugin.advancedann.common.utils.PlaceholderRegex;
 import top.ed333.mcplugin.advancedann.common.utils.TextHandler;
@@ -67,7 +68,7 @@ public class ActionBarType extends Announcement {
     }
 
     @Override
-    public void send(CommandSender sender, boolean legacy) {
+    public void send(CommandSender sender) {
         Bukkit.getScheduler().runTaskLaterAsynchronously(AdvancedAnnouncement.INSTANCE, () -> {
 
             String playerWorldN = ((Player) sender).getWorld().getName();
@@ -76,10 +77,9 @@ public class ActionBarType extends Announcement {
             }
 
             for (ActionBarText barText : barTexts) {
-                // #I7MEPP
-                String barTextStr = PlaceholderAPI.setPlaceholders((Player) sender, barText.text);
+                /* gitee issue: #I7MEPP */ String barTextStr = PlaceholderAPI.setPlaceholders((Player) sender, barText.text);
                 ActionBarRunnable abr = new ActionBarRunnable(
-                        TextHandler.constructToJsonArr(barTextStr, legacy).toString(),
+                        TextHandler.constructToJsonArr(barTextStr, isUseLegacyColorDefault()),
                         (Player) sender,
                         barText.settings.next_delay
                 );
@@ -91,13 +91,13 @@ public class ActionBarType extends Announcement {
 
     private static class ActionBarRunnable extends BukkitRunnable {
         private final BukkitTask stayTask;
-        private ActionBarRunnable(String text, Player sendTo, double delay) {
+        private ActionBarRunnable(JsonArray jsonComponent, Player sendTo, double delay) {
             // task for refresh action bar, due to we cannot set the bar stay time,
             // so use it to refresh actionbar like text stays.
             stayTask = new BukkitRunnable() {
                 @Override
                 public void run() {
-                    ProtocolUtils.sendActionBar(sendTo, text);
+                    AnnouncementUtils.sendActionBar(sendTo, jsonComponent);
                 }
             }.runTaskTimerAsynchronously(AdvancedAnnouncement.INSTANCE, (long) (delay * 20L), 40);
         }

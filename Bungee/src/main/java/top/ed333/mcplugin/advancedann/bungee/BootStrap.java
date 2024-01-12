@@ -159,6 +159,7 @@ public class BootStrap {
     public static void loadAnnouncements() {
         Configuration announceCfg = ConfigManager.getConfig("announcements").getConfig();
 
+        List<String> defaultEnabledServers = announceCfg.getStringList("Settings.enabled_servers");
         Configuration announceSection = announceCfg.getSection("announcements");
         int index = 0;
         for (String annName : announceSection.getKeys()) {
@@ -178,6 +179,7 @@ public class BootStrap {
             }
 
             List<String> contents = section.getStringList("content");
+            List<String> servers = section.getStringList("servers");
 
             Announcement announcement = null;
             // for title type
@@ -191,22 +193,22 @@ public class BootStrap {
 
             switch (type) {
                 case BOSSBAR_KEEP:
-                    announcement = new BossBarKeepType(index, annName, contents, permission, -1);
+                    announcement = new BossBarKeepType(index, annName, contents, permission, -1, servers.isEmpty() ? defaultEnabledServers : servers);
                     break;
                 case CHAT:
-                    announcement = new ChatType(index, annName, contents, permission, delay);
+                    announcement = new ChatType(index, annName, contents, permission, delay, servers.isEmpty() ? defaultEnabledServers : servers);
                     break;
                 case MULTIPLE_LINE_BOSS_BAR:
-                    announcement = new LinedBossBarType(index, annName, contents, permission, delay, stay);
+                    announcement = new LinedBossBarType(index, annName, contents, permission, delay, stay, servers.isEmpty() ? defaultEnabledServers : servers);
                     break;
                 case BOSS_BAR:
-                    announcement = new BossBarType(index, annName, contents, permission, delay);
+                    announcement = new BossBarType(index, annName, contents, permission, delay, servers.isEmpty() ? defaultEnabledServers : servers);
                     break;
                 case ACTION_BAR:
-                    announcement = new ActionBarType(index, annName, contents, permission, delay);
+                    announcement = new ActionBarType(index, annName, contents, permission, delay, servers.isEmpty() ? defaultEnabledServers : servers);
                     break;
                 case TITLE:
-                    if (contents.size() == 0) {
+                    if (contents.isEmpty()) {
                         ConsoleSender.warn(LangUtils.parseLang_withPrefix("load.title-type-empty", annName));
                         break;
                     } else if (contents.size() == 1) {
@@ -219,7 +221,8 @@ public class BootStrap {
                     announcement = new TitleType(
                             index, annName, contents, permission, delay,
                             fadeIn, stay, fadeOut,
-                            sub_fadeIn, sub_stay, sub_fadeout
+                            sub_fadeIn, sub_stay, sub_fadeout,
+                            servers.isEmpty() ? defaultEnabledServers : servers
                     );
 
             }

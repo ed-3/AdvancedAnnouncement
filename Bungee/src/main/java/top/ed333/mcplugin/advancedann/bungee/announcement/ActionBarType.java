@@ -24,9 +24,10 @@ public class ActionBarType extends Announcement {
             String name,
             List<String> content,
             String permissionName,
-            int delay
+            int delay,
+            List<String> servers
     ) {
-        super(index, name, content, permissionName, delay, AnnouncementType.ACTION_BAR);
+        super(index, name, content, permissionName, delay, AnnouncementType.ACTION_BAR, servers);
 
         double nextDelay = 0;
         for (String rawText : getContent()) {

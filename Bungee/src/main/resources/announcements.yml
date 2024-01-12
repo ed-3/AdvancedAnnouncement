@@ -1,3 +1,13 @@
+###################
+# Since 1.2.1-beta
+###################
+Settings:
+  # the default server name configured at bungee.yml,
+  # to which an announcement will be sent
+  # If it is empty, an announcement is sent to all the servers
+  # Since: 1.2.1-beta
+  enabled_servers: []
+
 announcements:
   # announce name, DO NOT HAVE DUPLICATED NAME.
   chat_announce_type_example:
@@ -134,3 +144,11 @@ announcements:
       # default delay sets to 5 sec
       # default color sets to PURPLE
       - '&bthe next boss bar{segment:10}'
+
+  server_limited_example:
+    type: CHAT
+    content:
+      - 'you are in the survival server'
+    # The Server name configured at bungee.yml
+    servers:
+      - survival_server

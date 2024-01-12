@@ -8,10 +8,10 @@ import top.ed333.mcplugin.advancedann.bukkit.announcement.Announcement;
 import top.ed333.mcplugin.advancedann.bukkit.config.Config;
 import top.ed333.mcplugin.advancedann.bukkit.config.ConfigManager;
 import top.ed333.mcplugin.advancedann.bukkit.runnables.AnnounceRunnable;
-import top.ed333.mcplugin.advancedann.bukkit.utils.ProtocolUtils;
 import top.ed333.mcplugin.advancedann.bukkit.AdvancedAnnouncement;
 import top.ed333.mcplugin.advancedann.bukkit.announcement.AnnouncementManager;
 import top.ed333.mcplugin.advancedann.bukkit.config.ConfigKeys;
+import top.ed333.mcplugin.advancedann.bukkit.utils.AnnouncementUtils;
 import top.ed333.mcplugin.advancedann.bukkit.utils.GlobalConsoleSender;
 import top.ed333.mcplugin.advancedann.bukkit.utils.LangUtils;
 import org.bukkit.ChatColor;
@@ -150,7 +150,7 @@ public class AA_CommandExecutor implements CommandExecutor {
         }
 
         sender.sendMessage(LangUtils.parseLang_withPrefix("command.command-display-message", ann.getName()));
-        ann.send(sender, !ProtocolUtils.canHandleRGB((Player) sender));
+        ann.send(sender);
     }
 
     @SubCmd("help")
@@ -180,18 +180,13 @@ public class AA_CommandExecutor implements CommandExecutor {
         }
 
         if (sender instanceof Player) {
-            boolean isLegacy = ProtocolUtils.isPlayerLegacyVer((Player) sender);
-            if (ProtocolUtils.isLegacyServer()) {
-                isLegacy = true;
-            }
-
-            sender.sendMessage("handle color: " + TextHandler.handleColor(args[1], isLegacy));
+            sender.sendMessage("handle color: " + TextHandler.handleColor(args[1], false));
             JsonArray jsonArray = new JsonArray();
             JsonObject object = new JsonObject();
             object.addProperty("text", "to component: ");
             jsonArray.add(object);
-            jsonArray.addAll(TextHandler.constructToJsonArr(args[1], !ProtocolUtils.canHandleRGB((Player) sender)));
-            ProtocolUtils.sendChat((Player) sender, jsonArray.toString());
+            jsonArray.addAll(TextHandler.constructToJsonArr(args[1], false));
+            AnnouncementUtils.sendChat((Player) sender, jsonArray);
         } else {
             sender.sendMessage(LangUtils.getLangText_withPrefix("command.command-display-not-supported"));
         }

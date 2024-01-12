@@ -1,6 +1,7 @@
 package top.ed333.mcplugin.advancedann.bungee.announcement;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.connection.Server;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.ed333.mcplugin.advancedann.bungee.AdvancedAnnouncement;
@@ -18,6 +19,7 @@ public abstract class Announcement {
     private final String permissionName;
     private final int delay;
     private final AnnouncementType type;
+    private final List<String> servers;
 
     public Announcement(
             int index,
@@ -25,7 +27,8 @@ public abstract class Announcement {
             List<String> content,
             String permissionName,
             int delay,
-            AnnouncementType type
+            AnnouncementType type,
+            List<String> servers
     ) {
         this.index = index;
         this.name = name;
@@ -33,6 +36,7 @@ public abstract class Announcement {
         this.permissionName = permissionName;
         this.delay = delay;
         this.type = type;
+        this.servers = servers;
     }
 
     public int getIndex() {
@@ -67,10 +71,17 @@ public abstract class Announcement {
                     continue;
                 }
 
+                Server playerServer = player.getServer();
+                if (!servers.contains(playerServer.getInfo().getName())) return;
+
                 send(player, !ProtocolUtils.canHandleRGB(player));
             }
         });
     }
 
-    public abstract void send(ProxiedPlayer sender, boolean legacy);
+    public List<String> getEnabledServers() {
+        return servers;
+    }
+
+    public abstract void send(ProxiedPlayer sender, boolean isLegacy);
 }

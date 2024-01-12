@@ -26,9 +26,10 @@ public class TitleType extends Announcement {
             String permissionName, 
             int delay,
             double fadeIn, double stay, double fadeout,
-            double sub_fadeIn, double sub_stay, double sub_fadeout
+            double sub_fadeIn, double sub_stay, double sub_fadeout,
+            List<String> servers
     ) {
-        super(index, name, content, permissionName, delay, AnnouncementType.TITLE);
+        super(index, name, content, permissionName, delay, AnnouncementType.TITLE, servers);
 
         this.fadeIn = (int) Math.round(fadeIn * 20);
         this.stay = (int) Math.round(stay * 20);

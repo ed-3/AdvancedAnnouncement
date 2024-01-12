@@ -1,5 +1,7 @@
 ### AdvancedAnnouncement: Automatically announcement.
 
+<H4 style="color:red">NOTICE: Note: The latest version of the plugin (1.3.0+) running in the Bukkit environment will no longer support servers with server versions earlier than 1.16, and the dependent plugin ProtocolLib will be removed.</H4>
+
 [简体中文](README_zh.md)
 
 [MCBBS Page(China)](https://www.mcbbs.net/forum.php?mod=viewthread&tid=1420798&page=1&extra=#pid27960648)
@@ -137,15 +139,15 @@ All the optional fields are list below:
 
 The format is number + time unit, and the example content is as follows:
 
-Sample content|time represented|remarks|
-| --- | --- | --- |
-| 60s |  60 seconds | |
-| 1min | 1 min | | 
-| 1h | 1 hour (are you sure?) | The interval has been removed from v1.2.1-beta due to too long |
-| 1d | 1 day (are you sure?) | The interval has been removed from v1.2.1-beta due to too long |
-| 1week | 1 week (are you seriously?) | The interval has been removed from v1.2.1-beta due to too long |
-| 1month | 1 month (are you seriously?) | The interval has been removed from v1.2.1-beta due to too long |
-| 1year | 1 year (are you seriously?) | The interval has been removed from v1.2.1-beta due to too long |
+| Sample content | time represented             | remarks                                                        |
+|----------------|------------------------------|----------------------------------------------------------------|
+| 60s            | 60 seconds                   |                                                                |
+| 1min           | 1 min                        |                                                                | 
+| 1h             | 1 hour (are you sure?)       | The interval has been removed from v1.2.1-beta due to too long |
+| 1d             | 1 day (are you sure?)        | The interval has been removed from v1.2.1-beta due to too long |
+| 1week          | 1 week (are you seriously?)  | The interval has been removed from v1.2.1-beta due to too long |
+| 1month         | 1 month (are you seriously?) | The interval has been removed from v1.2.1-beta due to too long |
+| 1year          | 1 year (are you seriously?)  | The interval has been removed from v1.2.1-beta due to too long |
 
 ## Use RGB color code
 As the introduction said, AdvancedAnnouncement is supported to use RGB color code(your Minecraft server must be 1.16 or above).

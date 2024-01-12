@@ -16,9 +16,10 @@ public class BossBarKeepType extends Announcement {
             String name,
             List<String> content,
             String permissionName,
-            int delay
+            int delay,
+            List<String> servers
     ) {
-        super(index, name, content, permissionName, delay, AnnouncementType.BOSSBAR_KEEP);
+        super(index, name, content, permissionName, delay, AnnouncementType.BOSSBAR_KEEP, servers);
 
         for (String rawText : getContent()) {
             StringBuilder barText = new StringBuilder();

@@ -3,7 +3,6 @@ package top.ed333.mcplugin.advancedann.bungee.announcement;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 import top.ed333.mcplugin.advancedann.bungee.objects.bossbar.BossBar;
-import top.ed333.mcplugin.advancedann.bungee.utils.ProtocolUtils;
 import top.ed333.mcplugin.advancedann.bungee.utils.SchedulerUtils;
 import top.ed333.mcplugin.advancedann.common.utils.Serializer;
 import top.ed333.mcplugin.advancedann.common.utils.TextHandler;
@@ -27,13 +26,7 @@ public class BossBarScheduler implements Runnable {
 
         // update task
         if (bar.settings.update != -1) {
-            updateTask = SchedulerUtils.scheduleNewTimer(() -> {
-                boolean isLegacy = ProtocolUtils.isPlayerLegacyVer(sendTo);
-                if (ProtocolUtils.isLegacyServer()) {
-                    isLegacy = true;
-                }
-                bar.bar.setTitle(Serializer.serializeToComponent(TextHandler.constructToJsonArr(bar.title, isLegacy)));
-            }, startTime < 0 ? 0 : startTime, (long) (bar.settings.update * 1000), TimeUnit.MILLISECONDS);
+            updateTask = SchedulerUtils.scheduleNewTimer(() -> bar.bar.setTitle(Serializer.serializeToComponent(TextHandler.constructToJsonArr(bar.title, false))), startTime < 0 ? 0 : startTime, (long) (bar.settings.update * 1000), TimeUnit.MILLISECONDS);
         } else {
             updateTask = null;
         }
@@ -44,7 +37,7 @@ public class BossBarScheduler implements Runnable {
                     new Runnable() {
                         private double elapsedTime = 0.0;
                         // 20: frames per second
-                        double progressPerTick = 1 / (bar.settings.stay * 20);
+                        final double progressPerTick = 1 / (bar.settings.stay * 20);
                         @Override
                         public void run() {
                             elapsedTime ++;

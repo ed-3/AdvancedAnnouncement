@@ -5,7 +5,6 @@ import top.ed333.mcplugin.advancedann.bukkit.AdvancedAnnouncement;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import top.ed333.mcplugin.advancedann.bukkit.utils.ProtocolUtils;
 import top.ed333.mcplugin.advancedann.common.utils.TextHandler;
 
 public class BossBarRunnable extends BukkitRunnable {
@@ -15,8 +14,7 @@ public class BossBarRunnable extends BukkitRunnable {
     private final BukkitTask progressTask;
 
     BossBarRunnable(AdvancedBossBar bar, Player sendTo) {
-        // #I7MEPP
-        bar.bar.setTitle(PlaceholderAPI.setPlaceholders(sendTo, TextHandler.handleColor(bar.title, !ProtocolUtils.canHandleRGB(sendTo))));
+        /* gitee issue: #I7MEPP */ bar.bar.setTitle(PlaceholderAPI.setPlaceholders(sendTo, TextHandler.handleColor(bar.title, false)));
 
         this.bar = bar;
         this.sendTo = sendTo;
@@ -36,11 +34,7 @@ public class BossBarRunnable extends BukkitRunnable {
             updateTask = new BukkitRunnable() {
                 @Override
                 public void run() {
-                    boolean isLegacy = ProtocolUtils.isPlayerLegacyVer(sendTo);
-                    if (ProtocolUtils.isLegacyServer()) {
-                        isLegacy = true;
-                    }
-                    bar.bar.setTitle(TextHandler.handleColor(bar.title, isLegacy));
+                    bar.bar.setTitle(TextHandler.handleColor(bar.title, false));
                 }
             }.runTaskTimerAsynchronously(
                     AdvancedAnnouncement.INSTANCE,
